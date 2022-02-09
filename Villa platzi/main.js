@@ -15,7 +15,7 @@ var pollo = {
 }
 
 var vaca = {
-    url: "https://drive.google.com/uc?id=13Q_6msUgPylSaOiia584R2RhmS9DI3CZ",
+    url: "https://drive.google.com/uc?id=1TDKFd4uAeQcKujpAa8XwRbME9QcoYvUU",
     cargaOk: false,
 }
 
