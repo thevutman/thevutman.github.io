@@ -22,35 +22,34 @@ html{
 
 /* Navegation-var */
 
-.header{
+.header {
     background-color: var(--background);
     color: white;
     position: fixed;
     width: 100%;
-    height: 4rem;
 }
 
-.navegation-var{
+.navegation-var {
     display: flex;
     justify-content: space-between;
-    padding: 1rem 2rem
+    padding: 1.5rem 2rem;
 }
 
 .navegation-var ul li{
     display: inline-block;
 }
 
-.logo{
+.logo {
     font-family: var(--second-font);
     color: white;
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 800;
 }
 
-.navegation-icons{
+.navegation-icons {
     padding: 0.2rem 0.8rem;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .navegation-icons a{
@@ -102,7 +101,7 @@ li.menu-content {
 }
 
 .important-content {
-    margin: 0 0 1.7rem 0;
+    margin: 2rem 0 2rem 0;
 }
 
 section.main-open {
@@ -122,7 +121,7 @@ section.main-open {
 
 section.openjs {
     display: flex;
-    padding-top: 4.5rem;
+    padding: 5rem 0 2rem 0;
     flex-direction: column;
     background-color: var(--first-color);
 }
@@ -133,20 +132,21 @@ section.openjs {
 
 .color {
     background-color: var(--second-color);
-    padding: 1rem;
+    padding: 2rem;
     border-radius: 5px;
 }
 
 p.title {
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-family: var(--second-font);
     font-weight: 700;
 }
 
 p.text {
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
+    padding: 1rem 0.5rem;
     font-family: var(--fist-font);
     font-weight: 100;
     margin-bottom: 10px;
@@ -155,10 +155,12 @@ p.text {
 a.links {
     color: white;
     text-decoration: none;
-    padding: 0.5rem;
+    padding: 1rem;
+    margin: 0 1.5rem 0 0;
     font-family: var(--second-font);
     background-color: var(--background);
     border-radius: 3px;
+    font-size: 1.3rem;
 }
 
 .main-content-web {
@@ -170,7 +172,7 @@ a.links {
 
 section.openweb {
     display: flex;
-    padding-top: 4.5rem;
+    padding: 5rem 0 2rem 0;
     flex-direction: column;
     background-color: var(--first-color);
 }
