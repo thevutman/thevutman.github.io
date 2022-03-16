@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;500;700&family=Raleway:wght@100;400;700;900&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+html{
+    font-size: 62.5%;
+}
+
+:root{
+    /*colors*/
+    --first-color: #000814;
+    --second-color: #003566;
+    --background: #001d3d;
+    --optional-color: #ffb703;
+    /*fonts*/
+    --fist-font: 'Fredoka', sans-serif;
+    --second-font: 'Raleway', sans-serif;
+}
+
+/* Navegation-var */
+
+.header{
+    background-color: var(--background);
+    color: white;
+    position: fixed;
+    width: 100%;
+    height: 4rem;
+}
+
+.navegation-var{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem
+}
+
+.navegation-var ul li{
+    display: inline-block;
+}
+
+.logo{
+    font-family: var(--second-font);
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.navegation-icons{
+    padding: 0.2rem 0.8rem;
+    font-size: 1.2rem;
+}
+
+.navegation-icons a{
+    color: white;
+    text-decoration: none;
+}
+
+ul.menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background-color: var(--background);
+    padding: 2rem;
+    position: fixed;
+    left: 100%;
+    transition: left 0.5s;
+}
+
+
+ul.menu-active {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background-color: var(--background);
+    padding: 2rem;
+    position: fixed;
+    width: 48%;
+    left: 52.2%;
+}
+
+li.menu-content {
+    font-size: 1.8rem;
+    list-style: none;
+    font-weight: 600;
+    font-family: var(--second-font);
+    padding: 1rem;
+}
+
+.menu-content a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Home */
+
+.main {
+    background-color: var(--first-color);
+    padding: 6rem 2rem 1rem;
+}
+
+.important-content {
+    margin: 0 0 1.7rem 0;
+}
+
+section.main-open {
+    display: none;
+}
+
+
+
+/* Content */
+
+.main-content {
+    display: none;
+    padding-top: 4.5rem;
+    flex-direction: column;
+    background-color: var(--first-color);
+}
+
+section.openjs {
+    display: flex;
+    padding-top: 4.5rem;
+    flex-direction: column;
+    background-color: var(--first-color);
+}
+
+.js-content {
+    padding: 1rem 1.5rem;
+}
+
+.color {
+    background-color: var(--second-color);
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+p.title {
+    color: white;
+    font-size: 1.5rem;
+    font-family: var(--second-font);
+    font-weight: 700;
+}
+
+p.text {
+    color: white;
+    font-size: 1.2rem;
+    font-family: var(--fist-font);
+    font-weight: 100;
+    margin-bottom: 10px;
+}
+
+a.links {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem;
+    font-family: var(--second-font);
+    background-color: var(--background);
+    border-radius: 3px;
+}
+
+.main-content-web {
+    display: none;
+    padding-top: 4.5rem;
+    flex-direction: column;
+    background-color: var(--first-color);
+}
+
+section.openweb {
+    display: flex;
+    padding-top: 4.5rem;
+    flex-direction: column;
+    background-color: var(--first-color);
+}
+
+.web-content {
+    padding: 1rem 1.5rem;
+}
