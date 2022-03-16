@@ -1,0 +1,130 @@
+@media screen and (min-width:750px){
+    #first li:nth-child(1){
+        display: none;
+    }
+
+    .movil{
+        display: none;
+    }
+}
+
+@media screen and (max-width:1180px){
+
+    .container{
+        background-color: rgb(27, 25, 25);
+        padding-bottom: 30px;
+        text-align: center;
+    }
+
+    .burgers p {
+        padding-right: 0;
+    }
+
+}
+
+@media screen and (max-width:750px){
+    #first li:nth-last-child(2){
+        display: none;
+    }
+    #first li:nth-last-child(1){
+        display: none;
+    }
+    #first li:nth-last-child(3){
+        display: none;
+    }
+
+    .movil{
+        flex-direction: column;
+        text-align: center;
+        margin-right: 20px;
+        background-color: rgb(27, 25, 25);
+        list-style: none;
+        position: fixed;
+        width: 100%;
+        top: 90px;
+        padding: 20px 0;
+        height: calc(100% - 90px);
+        overflow-y: auto;
+
+        left: 100%;
+        transition: left 0.3s;
+    }
+
+    .movil-active{
+        flex-direction: column;
+        text-align: center;
+        margin-right: 20px;
+        background-color: rgb(27, 25, 25);
+        list-style: none;
+        position: fixed;
+        width: 100%;
+        top: 90px;
+        padding: 20px 0;
+        height: calc(100% - 90px);
+        overflow-y: auto;
+
+        left: 0%;
+        transition: 0.3s;
+    }
+
+    .movil:active{
+        color: rgb(131, 5, 5);
+    }
+
+}
+
+@media screen and (max-width:470px){
+    
+    .burgers{
+        font-size: 1.8rem;
+    }
+    
+    .container h1{
+        font-size: 2.4rem;
+    }
+    
+    .burgers h2{
+        font-size: 2rem;
+    }
+    
+    .burgers p{
+        font-size: 1.2rem;
+        width: 300px;
+    }
+
+    #logo {
+        margin-top: 10px;
+        font-size: 4rem;
+    }
+
+    .burgers li a{
+        font-size: 15px;
+        padding: 6px;
+    }
+    
+}
+
+@media screen and (max-width:300px){
+    .container h1{
+        font-size: 2rem;
+    }
+    
+    .burgers h2{
+        font-size: 1.7rem;
+    }
+    
+    .burgers p{
+        font-size: 0.9rem;
+        width: 250px;
+    }
+
+    #logo {
+        margin-top: 15px;
+        font-size: 2.8rem;
+    }
+
+    .burgers li a{
+        font-size: 10px;
+        padding: 5px;
+    }
+}

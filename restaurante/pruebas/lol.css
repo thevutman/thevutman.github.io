@@ -1,0 +1,17 @@
+div{
+    color: rgb(21, 68, 168);
+}
+
+div p::after{
+    content: '';
+    display: block;
+    background-color: black;
+    height: 10px;
+    width: 10px;
+}
+
+button::before{
+    content: 'h';
+    display: block;
+    background-color: black;
+}

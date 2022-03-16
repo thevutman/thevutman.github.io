@@ -1,0 +1,366 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;600;700&family=Dancing+Script:wght@400;700&family=Gloria+Hallelujah&display=swap');
+/*font-family: 'Comfortaa', cursive;
+font-family: 'Dancing Script', cursive;
+font-family: 'Gloria Hallelujah', cursive;
+*/
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html{
+    font-size: 62.5%;
+}
+
+body{
+    background-color: gray;
+}
+
+.header{
+    background-color: rgb(136, 13, 13);
+}
+
+.header nav{
+    position: fixed;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transition: transform 0.4s;
+}
+
+.header .scrollDown{
+    transform: translate3d(0, -100%, 0);
+}
+
+.header .scrollUp{
+    background-color: rgb(136, 13, 13);
+    transform: none;
+}
+
+#logo{
+    font-family: 'Dancing Script', cursive;
+    font-size: 50px;
+    font-weight: bold;
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    cursor: default;
+}
+
+#first li{
+    display: inline-block;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+#logo:active{
+    color: gray;
+}
+
+.icon-movil{
+    font-family: 'Comfortaa', cursive;
+    vertical-align: middle;
+    font-size: 18px;
+    padding: 20px;
+}
+
+.icon{
+    font-family: 'Comfortaa', cursive;
+    vertical-align: middle;
+    font-size: 18px;
+    padding: 15px;
+}
+
+.icon-m{
+    font-family: 'Comfortaa', cursive;
+    vertical-align: middle;
+    font-size: 18px;
+    padding: 15px;
+}
+
+.icon-m a:hover{
+    color: gray;
+    cursor: pointer;
+}
+
+#iconc a{
+    font-family: 'Comfortaa', cursive;
+    border-style: solid;
+    border-radius: 8px;
+    border-color: rgb(75, 4, 4);
+    padding: 10px;
+}
+
+.icon a:hover{
+    color: gray;
+    cursor: pointer;
+}
+
+.icon-movil a:hover{
+    color: gray;
+    cursor: pointer;
+}
+
+#iconc a:hover{
+    background-color: rgb(75, 4, 4);
+    color: gray;
+}
+
+.header ul li a{
+    color: white;
+    text-decoration: none;
+}
+
+/*////////////////////////////////////////*/
+
+.head {
+    padding-top: 95px;
+    color: black;
+}
+
+.combos{
+    background-image: url(https://i.pinimg.com/564x/02/3e/8c/023e8c0d3496805f126a478c699f1325.jpg);
+    background-size: cover;
+    text-align: center;
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.combos-dos{
+    background-image: url(https://i.pinimg.com/564x/dd/e6/87/dde687acbc8cf89e872a3080697daf67.jpg);
+    background-size: cover;
+    text-align: center;
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.combos-dos img{
+    width: 100%;
+}
+
+.combos-dos .txti{
+    font-family: 'Comfortaa', cursive;
+    font-weight: bold;
+}
+
+.combos-dos .txti::before{
+    content: 'Combo 2';
+    font-size: 8vw; 
+    margin: 25px;
+    cursor: default;
+    display: block;
+}
+
+.combos img{
+    width: 100%;
+}
+
+.combos .txti{
+    font-family: 'Comfortaa', cursive;
+    font-weight: bold;
+}
+
+.combos .txti::before{
+    content: 'Combo 1';
+    font-size: 8vw; 
+    margin: 25px;
+    cursor: default;
+    display: block;
+}
+.txti button{
+    background-color: rgb(177, 7, 7);
+    border-color: rgb(177, 7, 7);
+    padding: 1.5vw;
+    border-radius: 10px;
+}
+
+.txti button a{
+    color: white;
+    text-decoration: none;
+    font-size: 2vw;
+    font-weight: bold;
+}
+
+.txti button:hover{
+    background-color: rgb(131, 5, 5);
+    border-color: rgb(131, 5, 5);
+}
+
+.pause {
+    display: flex;
+    font-size: 2vw;
+    
+}
+
+.iconss{
+    list-style: none;
+    display: inline;
+    padding: 6px;
+}
+
+/*#butt:hover::after{
+    content: '';
+    display: block;
+    height: 10px;
+    width: 9.8rem;
+    border-bottom: 20px outset rgb(131, 5, 5);
+    border-radius: 0 0 50% 100%;
+    position: absolute;
+    bottom: 0;
+    border-color: rgb(131, 5, 5);
+}*/
+
+/*///////////////////////////////////////////////////*/
+
+.container{
+    background-color: rgb(27, 25, 25);
+    padding-bottom: 30px;
+}
+
+.burgers{
+    padding: 20px;
+    color: white;
+    display: inline-block;
+    font-size: 1.8rem;
+}
+
+.container h1{
+    font-family: 'Comfortaa', cursive;
+    padding: 15px;
+    color: white;
+    font-size: 3rem;
+}
+
+.burgers h2{
+    font-family: 'Dancing Script', cursive;
+    padding-bottom: 15px;
+    vertical-align: middle;
+}
+
+.burgers p{
+    width: 400px;
+    padding-right: 90px;
+    font-family: 'Comfortaa', cursive;
+    margin: 0px;
+    padding-bottom: 30px;
+}
+
+.burgers li{
+    display: inline;
+    margin: 15px;
+}
+
+.burgers li a{
+    color: rgb(224, 220, 220);
+    text-decoration: none;
+    font-size: 20px;
+    border-style: solid;
+    border-color: rgb(136, 13, 13);
+    border-radius: 6px;
+    padding: 8px;
+    background-color: rgb(136, 13, 13);
+    font-weight: 700;
+    font-family: 'Comfortaa', cursive;
+}
+
+.burgers li a:hover{
+    background-color: rgb(104, 2, 2);
+    color: gray;
+    border-color: rgb(104, 2, 2);
+}
+
+.imgh{
+    max-width: 10%;
+    border-radius: 5px;  
+    margin-left: 20px;
+}
+
+/*////////*footer//////////*/
+
+.menu{
+    background-image: url(https://i.pinimg.com/564x/4c/80/3b/4c803b6dcc4b96172ee2667ac3f80eff.jpg);
+    height: 400px;
+    text-align: center;
+    font-family: 'Comfortaa', cursive;
+}
+
+.menue{
+    padding-top: 130px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 40px;
+    font-weight: bold;
+    color: black;
+}
+
+.menue p{
+    background-color: rgb(237, 209, 170);
+    margin-bottom: 20px;
+}
+
+.menue a{
+    color: black;
+    text-decoration: none;
+    border-style: solid;
+    border-color: beige;
+    background-color: beige;
+    border-radius: 8px;
+    padding: 7px;
+}
+
+.menue a:hover{
+    background-color: rgb(218, 218, 190);
+    border-color: rgb(218, 218, 190);
+
+}
+
+#foot{
+    background-color: rgb(177, 7, 7);
+    text-align: center;
+    font-family: 'Comfortaa', cursive; 
+    padding: 7px; 
+    color: white;
+}
+
+#foot h2{
+    padding: 7px;
+    font-size: 2.8rem;
+}
+
+#foot p{
+    font-size: 1.2rem;
+}
+
+#foot h4{
+    font-size: 2rem;
+    margin-top: 7px;
+}
+
+#foot ul li{
+    display: inline-block;
+    margin: 20px;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 30px;
+    background-color: rgb(136, 13, 13);
+}
+
+#foot ul li:nth-child(2):hover{
+    background-color: blue;
+}
+
+#foot ul li:nth-child(1):hover{
+    background-color: rgb(2, 2, 2);
+}
+
+#foot ul li:nth-child(3):hover{
+    background-color: rgb(148, 55, 181);
+}
+
+
+/*///////////////////////////////////////////*/
