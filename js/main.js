@@ -6,21 +6,26 @@ menu.addEventListener("click", desplegable);
 function desplegable()
 {
     change.classList.toggle("menu-active");
+    menu.classList.toggle("menu-icon-active");
 }
 
 /* opciones */
 
 var first = document.getElementById('first-content');
 var second = document.getElementById('second-content');
-var web = document.getElementById('web-botton');
-var js = document.getElementById('js-botton');
+
+var buttons = {
+    web: document.getElementById('web-botton'),
+    js: document.getElementById('js-botton')
+}
+
 
 var main = document.getElementById("main");
 var home = document.getElementById("home-icon")
 
-web.addEventListener("click", openweb);
-js.addEventListener("click", openjs);
-js.addEventListener("click", openhome);
+buttons.web.addEventListener("click", openweb);
+buttons.js.addEventListener("click", openjs);
+home.addEventListener("click", openhome);
 
 function openweb()
 {
@@ -28,6 +33,7 @@ function openweb()
         first.classList.remove('openjs');
         second.classList.add('openweb');
         change.classList.toggle("menu-active");
+        menu.classList.remove("menu-icon-active");
 }
 
 function openjs()
@@ -36,7 +42,28 @@ function openjs()
     second.classList.remove('openweb');
     first.classList.add('openjs');
     change.classList.toggle("menu-active");
+    menu.classList.remove("menu-icon-active");
+    select()
 }
 
 function openhome()
-{}
+{
+    main.classList.remove('main-open');
+    second.classList.remove('openweb');
+    first.classList.remove('openjs');
+    change.classList.remove("menu-active");
+    menu.classList.remove("menu-icon-active");
+}
+
+function select()
+{
+    switch (buttons){
+        case web:
+            if (first.classList.contains("openjs"))
+            {
+                web.classList.add("js-open")
+                alert('hola')
+            }
+        break;
+    }
+}

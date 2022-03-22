@@ -22,6 +22,8 @@ html{
     --p: 1.6rem;
     --title: 1.8rem;
     --button: 1.3rem;
+    /*pseudo*/
+    --hover-button: #010e1d;
 }
 
 /* Navegation-var */
@@ -61,6 +63,10 @@ html{
     text-decoration: none;
 }
 
+ul .navegation-icons .menu-icon-active{
+    color: gray;
+}
+
 ul.menu {
     display: flex;
     flex-direction: column;
@@ -90,6 +96,10 @@ li.menu-content {
     font-weight: 600;
     font-family: var(--second-font);
     padding: 1rem;
+}
+
+ul .li.menu-content .js-open{
+    color: gray;
 }
 
 .menu-content a {
@@ -257,4 +267,57 @@ li.social-link {
     height: 3rem;
     border-radius: 50%;
     padding: 0.5rem 0;
+}
+
+/*hover & activ*/
+
+.logo:hover{
+    color: gray;
+}
+
+.logo:active{
+    color: rgb(61, 60, 60);
+}
+
+a.links:hover{
+    background-color: var(--hover-button);
+    color: gray
+}
+
+a.links:active{
+    background-color: var(--hover-button);
+    color: rgb(85, 84, 84)
+}
+
+.facebook:hover{
+    background-color: rgb(40, 109, 177);
+    border-radius: 50%;
+}
+
+.facebook:active{
+    background-color: rgb(31, 80, 129);
+    color: lightgray;
+    border-radius: 50%;
+}
+
+.instagram:hover{
+    background-color: rgb(242, 1, 67);
+    border-radius: 50%;
+}
+
+.instagram:active{
+    background-color: rgb(214, 2, 59);
+    color: lightgray;
+    border-radius: 50%;
+}
+
+.twitter:hover{
+    background-color: rgb(28, 153, 230);
+    border-radius: 50%;
+}
+
+.twitter:active{
+    background-color: rgb(29, 135, 201);
+    color: lightgray;
+    border-radius: 50%;
 }
