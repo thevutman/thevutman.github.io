@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cuanto pesas</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div id="inicio"> 
+    <h1> Quíeres saber cuanto pesas?</h1>
+    <h2>Imagina tu peso en marte o jupiter</h2>
+    <p> Estas listo?</p>
+    <input id="cP" type="number" value="Cual es tu peso?">
+    <div id="button">
+      <button id="1">Marte</button>
+      <button id="2">Jupiter</button>
+    </div>
+    <p id="resultado"></p>
+    <script id="planet" src="js/main.js"></script>
+  </div>
+  <h1>Ahora dibujemos</h1>
+  <p id="p">Cuantas lineas deseas?</p>
+  <div id="inp">
+    <input type="number" id="txt">
+    <input type="button" value="Ok!" id="butt">
+  </div>
+  <canvas id="dibujo" width="300" height="300"></canvas>
+  <p id="tx">Que bonito UwU</p>
+  <script src="js/dibujo.js"></script>
+  <div id="flechas">
+    <h2>Ahora dibujemos con las flehas</h2>
+    <p>Usa tus flechas</p>
+    <canvas width="900" height="300" id="dibujo_a"></canvas>
+    <script src="js/flechas.js"></script>
+  </div>
+  <div id="dedo">
+    <h2>Ahora dibujemos con el mouse</h2>
+    <p>Usa tu puntero <br>  y tu click :) </p>
+    <input id="colore" type="color">
+    <input id="bo" type="button" value="Borrar">
+    <canvas width="1750" height="300" id="dibujo_b"></canvas>
+    <script src="js/mouse.js"></script>
+  </div>
+
+</body>
+</html>
