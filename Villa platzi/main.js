@@ -5,22 +5,22 @@ var cantidadV = aleatorio(4, 7)
 var movimiento = 8;
 
 var fondo = {
-    url: "https://drive.google.com/uc?id=1L5Sfvdl7CRSxGs-r5eP90f6cP6JsuXeZ",
+    url: "/Villa platzi/img/tile.png",
     cargaOk: false
 }
 
 var pollo = {
-    url: "https://drive.google.com/uc?id=11lyCmJjIW6OafG-WYW0O8caupoKVw5sw",
+    url: "/Villa platzi/img/pollo.png",
     cargaOk: false,
 }
 
-var vaca = {
+/*var vaca = {
     url: "https://drive.google.com/uc?id=13Q_6msUgPylSaOiia584R2RhmS9DI3CZ",
     cargaOk: false,
-}
+}*/
 
 var cerdo = {
-    url: "https://drive.google.com/uc?id=1aRQIjdrWD_eqUMNCzELGl7kzFLC5Uk8q",
+    url: "/Villa platzi/img/cerdo.png",
     cargaOk: false,
     xc: 10,
     yc: 10
@@ -55,9 +55,9 @@ pollo.imagen = new Image();
 pollo.imagen.src = pollo.url;
 pollo.imagen.addEventListener("load", dibujarPollo);
 
-vaca.imagen = new Image();
+/*vaca.imagen = new Image();
 vaca.imagen.src = vaca.url;
-vaca.imagen.addEventListener("load", dibujarVaca);
+vaca.imagen.addEventListener("load", dibujarVaca);*/    
 
 document.addEventListener("keydown", moverCerdito);
 
@@ -140,11 +140,11 @@ function dibujarPollo()
     dibujar();
 }
 
-function dibujarVaca()
+/*function dibujarVaca()
 {
     vaca.cargaOk = true;
     dibujar();
-}
+}*/
 
 function dibujar()
 {
@@ -169,7 +169,7 @@ function dibujar()
             posP.py[i] = y;
         }
     }
-    if (vaca.cargaOk)
+    /*if (vaca.cargaOk)
     {
         for(var i=0; i < cantidadV; i++)
         {
@@ -179,7 +179,7 @@ function dibujar()
             posV.vx[i] = x;
             posV.vy[i] = y;
         }
-    }
+    }*/
 }
 
 function rDibujar()
@@ -187,10 +187,10 @@ function rDibujar()
     var i
     papel.drawImage(fondo.imagen, 0, 0);
 
-    for(var i=0; i < cantidadV; i++)
+    /*for(var i=0; i < cantidadV; i++)
     {
         papel.drawImage(vaca.imagen, posV.vx[i], posV.vy[i]);
-    }
+    }*/
     
     papel.drawImage(cerdo.imagen, cerdo.xc, cerdo.yc);
 

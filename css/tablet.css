@@ -1,0 +1,121 @@
+@media screen and (min-width:720px)
+{
+
+    /*var*/
+    :root{
+        --p: 1.8rem;
+        --title: 2rem;
+        --button: 1.5rem;
+    }
+
+    /*display:none*/
+
+    ul.mobile-menu {
+        display: none;
+    }
+
+    ul.desktop-menu{
+        display: block;
+    }
+
+    #menu {
+        display: none;
+    }
+
+    /*content*/
+
+    .main {
+        padding: 6.5rem 2rem 1rem 2rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .desktop-menu {
+        font-family: var(--fist-font);
+    }
+
+    .logo {
+        font-size: 2.5rem;
+    }
+
+    .navegation-icons {
+        padding: 0.2rem 0.8rem;
+        font-size: 2rem;
+    }
+
+    p.show-title {
+        width: 100%;
+    }
+
+    .important-content {
+        margin: 2rem 2rem 0 2rem;
+        padding: 0;
+    }
+
+    div#atm {
+        width: 40vw;;
+        height: 100%;
+    }
+
+    div#restaurant {
+        width: 40vw;
+        height: 100%;
+    }
+
+    .img-content img {
+        max-width: -webkit-fill-available;
+        margin-bottom: 2.5rem;
+        border-radius: 10px;
+    }
+
+    .second-color {
+        text-align: center;
+    }
+
+    section.openjs {
+        display: flex;
+        padding: 6.5rem 2rem 1rem 2rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    div#bank {
+        width: 90vw;
+        text-align: -webkit-center;
+    }
+
+    div#fizzbozz {
+        width: 40vw;
+        height: 100%;
+    }
+
+    section.openweb {
+        display: flex;
+        padding: 6.5rem 2rem 1rem 2rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    div#pakiman {
+        width: 90vw;
+        text-align: -webkit-center;
+    }
+
+    div#villa-platzi {
+        width: 40vw;
+        height: 100%;
+    }
+
+    section.opencontact {
+        justify-content: space-evenly;
+    }
+
+    section.openaboutme {
+        padding: 25vh 2rem;
+    }
+
+    
+}

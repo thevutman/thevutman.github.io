@@ -21,15 +21,27 @@ var js = document.getElementById('js-botton')
 var contact = document.getElementById('contact-botton')
 var aboutme = document.getElementById('aboutme-botton')
 
+var webD = document.getElementById('web-botton-desktop')
+var jsD = document.getElementById('js-botton-desktop')
+var contactD = document.getElementById('contact-botton-desktop')
+var aboutmeD = document.getElementById('aboutme-botton-desktop')
+
 
 var main = document.getElementById("main");
 var home = document.getElementById("home-icon")
+var homeD = document.getElementById("home-icon-desktop")
 
 web.addEventListener("click", openweb);
 js.addEventListener("click", openjs);
 contact.addEventListener("click", opencontact)
 aboutme.addEventListener("click", openaboutme)
 home.addEventListener("click", openhome);
+
+webD.addEventListener("click", openweb);
+jsD.addEventListener("click", openjs);
+contactD.addEventListener("click", opencontact)
+aboutmeD.addEventListener("click", openaboutme)
+homeD.addEventListener("click", openhome);
 
 function openweb()
 {
@@ -44,6 +56,10 @@ function openweb()
         web.style.color="gray"
         aboutme.style.color="white"
         contact.style.color="white"
+        jsD.style.color="white"
+        webD.style.color="gray"
+        aboutmeD.style.color="white"
+        contactD.style.color="white"
 }
 
 function openjs()
@@ -59,6 +75,10 @@ function openjs()
     web.style.color="white"
     aboutme.style.color="white"
     contact.style.color="white"
+    jsD.style.color="gray"
+    webD.style.color="white"
+    aboutmeD.style.color="white"
+    contactD.style.color="white"
 }
 
 function openhome()
@@ -74,6 +94,10 @@ function openhome()
     web.style.color="white"
     aboutme.style.color="white"
     contact.style.color="white"
+    jsD.style.color="white"
+    webD.style.color="white"
+    aboutmeD.style.color="white"
+    contactD.style.color="white"
 }
 
 function opencontact()
@@ -89,6 +113,10 @@ function opencontact()
     web.style.color="white"
     aboutme.style.color="white"
     contact.style.color="gray"
+    jsD.style.color="white"
+    webD.style.color="white"
+    aboutmeD.style.color="white"
+    contactD.style.color="gray"
 }
 
 function openaboutme()
@@ -104,4 +132,8 @@ function openaboutme()
     web.style.color="white"
     aboutme.style.color="gray"
     contact.style.color="white"
+    jsD.style.color="white"
+    webD.style.color="white"
+    aboutmeD.style.color="gray"
+    contactD.style.color="white"
 }

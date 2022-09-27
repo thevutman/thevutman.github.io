@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio/Portafolio</title>
     <link rel="stylesheet" href="./css/mobile.css">
-    <link rel="stylesheet" href="./css/tablet.css" media="">
-    <link rel="stylesheet" href="./css/desktop.css" media="">
+    <link rel="stylesheet" href="./css/tablet.css" media="screen and (min-width:720px)">
+    <link rel="stylesheet" href="./css/desktop.css" media="screen and (min-width:1024px)">
     <script src="https://kit.fontawesome.com/a9f694e572.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -15,9 +15,16 @@
         <header class="header">
             <nav class="navegation-var">
                 <a class="logo" href="">Portafolio</a>
-                <ul>
+                <ul class="mobile-menu">
                     <li class="navegation-icons"><a id="home-icon" class="fa-solid fa-house"></a></li>
                     <li class="navegation-icons"><a id="menu-icon"  class="fa-solid fa-bars"></a></li>
+                </ul>
+                <ul class="desktop-menu">
+                    <li class="navegation-icons"><a id="home-icon-desktop" class="fa-solid fa-house"></a></li>
+                    <li class="navegation-icons"><a id="js-botton-desktop" class="">Js</a></li>
+                    <li class="navegation-icons"><a id="web-botton-desktop"  class="">Web</a></li>
+                    <li class="navegation-icons"><a id="aboutme-botton-desktop"  class="">About me</a></li>
+                    <li class="navegation-icons"><a id="contact-botton-desktop"  class="">Contact</a></li>
                 </ul>
             </nav>
             <ul class="menu" id="menu">
@@ -75,7 +82,7 @@
         </section>
         <section class="main-content" id="first-content">
             <p class="show-title">Java Script</p>
-            <div class="js-content">
+            <div class="important-content">
                 <div id="bank" class="color">
                     <p class="title">El banco</p>
                     <p class="text">Este es un simulador de transaciones bancarias</p>
@@ -88,7 +95,7 @@
                     <a href="" class="links">Ver Codigo</a>
                 </div>
             </div>
-            <div class="js-content">
+            <div class="important-content">
                 <div id="atm" class="color">
                     <p class="title">Cajero ATM</p>
                     <p class="text">Este es un simulador de cajero automatico realizado completamente con Java Script</p>
@@ -101,7 +108,7 @@
                     <a href="" class="links">Ver Codigo</a>
                 </div>
             </div>
-            <div class="js-content">
+            <div class="important-content">
                 <div id="fizzbozz" class="color">
                     <p class="title">Fizz & Bozz</p>
                     <p class="text">Fizz and Bozz es un codigo matematico en el cual se puede aprender a escojer entre par impar o multiplos con javascript</p>
@@ -117,7 +124,7 @@
         </section>
         <section class="main-content-web" id="second-content">
             <p class="show-title">Web</p>
-            <div class="web-content">
+            <div class="important-content">
                 <div id="pakiman" class="color">
                     <p class="title">Pakiman</p>
                     <p class="text">Pakiman es un diccionario creado con javascript sobre unos animales extremadamente poderosos</p>
@@ -130,7 +137,7 @@
                     <a href="" class="links">Ver Codigo</a>
                 </div>
             </div>
-            <div class="web-content">
+            <div class="important-content">
                 <div id="villa-platzi" class="color">
                     <p class="title">Villa Platzi</p>
                     <p class="text">Villa Platzi es un proyecto creado en una de las clases de platzi con el fin de crear un personaje completamente movible y dar paso a un gran juego</p>
@@ -143,7 +150,7 @@
                     <a href="" class="links">Ver Codigo</a>
                 </div>
             </div>
-            <div class="web-content" >
+            <div class="important-content" >
                 <div id="restaurant" class="color">
                     <p class="title">Steam Burger</p>
                     <p class="text">Steam Burger es un proyecto de la interfaz de una pagina para pedir hamburgesas</p>
