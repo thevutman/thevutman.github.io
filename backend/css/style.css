@@ -145,3 +145,20 @@ h2:hover {
     color: red;
 }
 
+@media screen and (max-width:720px){
+    .buttons p {
+        padding: 8px 0px;
+    }
+}
+
+/*
+.buttons p {
+    background: var(--primary_color);
+    margin-top: 30px;
+    padding: 8px 0px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: var(--primary_color) solid 1px;
+}
+*/
+
