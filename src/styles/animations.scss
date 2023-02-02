@@ -1,0 +1,75 @@
+@import './vars.scss';
+
+@keyframes left {
+    0%{
+        opacity: 0;
+        transform: translateX(-100px) scale(0.8);
+        // transform: scale(0.8);
+    }
+    50%{
+        transform: translateX(20px) scale(1);
+        // transform: scale(1);
+    }
+    80%{
+        transform: translateX(-10px) scale(0.9);
+        // transform: scale(0.8);
+    }
+    100%{
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        // transform: scale(1);
+    }
+}
+
+@keyframes blink {
+    50% {
+      border-color: transparent;
+    }
+}
+@keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+}
+
+@keyframes delete {
+    from {
+        border-color:black;
+    }
+    to {
+        border-color: transparent;
+    }
+}
+
+@keyframes back {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    60% {
+        transform: translateX(-20px) 
+    }
+    70%{
+        transform: translateX(15px) 
+    }
+    80%{
+        transform: translateX(-10px)
+    }
+    90% {
+        transform: translateX(5)
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) 
+    }
+    
+}
+

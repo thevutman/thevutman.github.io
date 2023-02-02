@@ -1,0 +1,20 @@
+@import './vars.scss';
+
+.main{
+    scroll-snap-type: y mandatory;
+    &-landing {
+        // scroll-snap-align: center;
+        margin-top: 0;
+        div{
+            width: 100%;
+            background-color: black;
+            height: 100vh;
+        }
+    }
+    &-container{
+        // scroll-snap-align: center;
+    }
+    section {
+        scroll-snap-align: start;
+    }
+}

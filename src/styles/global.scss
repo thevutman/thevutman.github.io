@@ -1,0 +1,40 @@
+@import './styles.css';
+@import './vars.scss';
+
+/* 
+    --FONTS--
+font-family: 'Raleway', sans-serif;
+font-family: 'Roboto', sans-serif;
+font-family: 'Roboto Mono', monospace; 
+
+*/
+html{
+    font-size: 62.5%;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+    background: $background-light;
+}
+
+body.dark{
+    background-color: $background-dark;
+}
+
+section {
+    margin-top: 16px;
+
+    h2{
+        color: $black;
+        font-size: 3rem;
+        font-family: 'Raleway', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-align: center;
+    }
+}
+
+body.dark section h2{
+    color: $white;
+}
+

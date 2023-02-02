@@ -1,0 +1,54 @@
+@import '../../styles/vars.scss';
+
+.skills{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin: 16px 0;
+    color: $text-light;
+
+    span{
+        i{
+            font-size: 5rem;
+        }
+
+        &:nth-child(1):hover i{
+            color: #d84924;
+        }
+        &:nth-child(2):hover i{
+            color: #2449d8;
+        }
+        &:nth-child(3):hover i{
+            color: #ead41c;
+        }
+    }
+}
+
+.frameworks{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin: 16px 0;
+    color: $text-light;
+
+    span{
+        i{
+            font-size: 5rem;
+        }
+
+        &:nth-child(1):hover i{
+            color: #c36291;
+        }
+        &:nth-child(2):hover i{
+            color: #5ccfee;
+        }
+    }
+}
+
+body.dark .skills{
+    color: $text-dark;
+}
+
+body.dark .frameworks{
+    color: $text-dark;
+}

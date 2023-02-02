@@ -1,0 +1,63 @@
+// VARS
+
+$black: #2a3b47;
+$white: #eff3f5;
+
+$background-light: #FBFBFE;
+$background-dark: #192229;
+
+$secondary-color-light: rgb(255, 255, 255);
+$secondary-color-dark: rgb(33, 46, 54);
+
+$gray: #a0a7ac;
+
+$text-light: #697477;
+$text-dark: #C8CDD0;
+
+$border-light: #eff3f5;
+$border-dark: #2a3b47;
+
+$x-large: 2.5rem;
+$large: 2rem; 
+$medium: 1.8rem; 
+$small: 1.6rem; 
+
+$shadow-dark :rgb(0 0 0 / 20%);
+
+// MIXINS 
+
+@mixin btn-light(){
+    background-color: #1083D6;
+    padding: 8px;
+    font-size: 1.8rem;
+    color: $white;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+
+    &:hover{
+        background-color: #52A5E0;
+    }
+}
+
+@mixin btn-dark(){
+    background-color: #52A5E0;
+    padding: 8px;
+    font-size: 1.8rem;
+    color: $white;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+
+    &:hover{
+        background-color: #1083D6;
+    }
+}
+
+@mixin shadow-light(){
+    box-shadow: 4px 6px 6px rgb(42 59 71 / 30%);
+}
+
+@mixin shadow-dark(){
+    box-shadow: 4px 6px 6px rgb(0 0 0 / 30%);
+}
