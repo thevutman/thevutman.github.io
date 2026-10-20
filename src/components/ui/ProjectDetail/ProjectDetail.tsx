@@ -5,28 +5,26 @@ import "./ProjectDetail.css";
 
 type ProjectDetailProps = {
   project: Project;
-  id: string;
-  labelledBy: string;
 };
 
 const PENDING = "Información pendiente";
 
 /**
- * Expanded case study. Sections without content are omitted for real projects;
+ * Case study shown in the project dialog. Sections without content are omitted for real projects;
  * placeholders list every section as pending so the structure is visible.
  */
-export function ProjectDetail({ project, id, labelledBy }: ProjectDetailProps) {
+export function ProjectDetail({ project }: ProjectDetailProps) {
   const sections = caseStudySections
     .map(({ key, title }) => ({ key, title, content: project.caseStudy?.[key] }))
     .filter(({ content }) => project.isPlaceholder || content);
 
   return (
-    <div className="project-detail" id={id} role="region" aria-labelledby={labelledBy}>
+    <div className="project-detail">
       {sections.length > 0 && (
         <div className="detail-grid">
           {sections.map(({ key, title, content }) => (
             <div key={key}>
-              <h4>{title}</h4>
+              <h3>{title}</h3>
               <p>{content ?? PENDING}</p>
             </div>
           ))}

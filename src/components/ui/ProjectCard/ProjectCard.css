@@ -1,16 +1,6 @@
 @layer components {
   .project-card {
     min-width: 0;
-    transition: opacity var(--duration-base);
-  }
-
-  .project-muted {
-    opacity: 0.6;
-  }
-
-  .project-muted:hover,
-  .project-muted:focus-within {
-    opacity: 1;
   }
 
   /* ---------- Media ---------- */
@@ -146,14 +136,6 @@
   }
 
   @media (min-width: 641px) {
-    .project-selected {
-      grid-column: 1 / -1;
-    }
-
-    .project-selected .project-media {
-      aspect-ratio: 2.4;
-    }
-
     .project-placeholder {
       padding: 50px 40px;
     }

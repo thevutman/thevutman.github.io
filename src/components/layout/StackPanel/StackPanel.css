@@ -1,0 +1,82 @@
+@layer components {
+  .stack-snap {
+    display: none;
+  }
+
+  /* Same query as `media.stack` in src/lib/motion.ts. */
+  @media (prefers-reduced-motion: no-preference) and (min-height: 560px) {
+    /*
+     * A track is (1 + steps) screens for its own panel, plus one more during
+     * which the next track overlaps it (negative margin) and covers the panel.
+     * The last track ends the page together with the footer.
+     */
+    .stack-track {
+      --steps: var(--steps-desktop, 0);
+      position: relative;
+      height: calc((var(--steps) + 2) * 100svh);
+    }
+
+    .stack-track + .stack-track {
+      margin-top: -100svh;
+    }
+
+    .stack-track:last-child {
+      height: calc((var(--steps) + 1) * 100svh - var(--footer-height));
+    }
+
+    .stack-panel {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      overflow: hidden;
+      background: var(--stack-shade);
+    }
+
+    .stack-track:last-child .stack-panel {
+      height: calc(100svh - var(--footer-height));
+    }
+
+    /* The incoming panel casts a soft shadow on the one it covers. */
+    .stack-track + .stack-track .stack-panel {
+      box-shadow: 0 -30px 60px oklch(0 0 0 / 35%);
+    }
+
+    .stack-content {
+      position: relative;
+      height: 100%;
+      background: var(--background);
+      transform-origin: 50% 0;
+    }
+
+    .stack-content > section {
+      height: 100%;
+    }
+
+    /* Resting points read by the snapping in useStackPanels. */
+    .stack-snap {
+      display: block;
+      position: absolute;
+      top: calc(var(--i) * 100svh);
+      left: 0;
+      width: 1px;
+      height: 1px;
+      pointer-events: none;
+    }
+
+    @media (max-width: 640px) {
+      .stack-track {
+        --steps: var(--steps-mobile, var(--steps-desktop, 0));
+      }
+
+      .stack-snap[data-only="desktop"] {
+        display: none;
+      }
+    }
+
+    @media (min-width: 641px) {
+      .stack-snap[data-only="mobile"] {
+        display: none;
+      }
+    }
+  }
+}

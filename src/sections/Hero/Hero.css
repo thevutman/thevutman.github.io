@@ -243,44 +243,6 @@
     color: var(--muted-foreground);
   }
 
-  /* ---------- Transition reveal ---------- */
-  .cinematic-reveal {
-    position: absolute;
-    z-index: var(--z-reveal);
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    pointer-events: none;
-  }
-
-  .cinematic-reveal > * {
-    opacity: 0;
-  }
-
-  /* Overrides the full-width mobile index so the label stays centred. */
-  .cinematic-reveal .section-number {
-    width: auto;
-  }
-
-  .cinematic-title {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: 52px;
-    font-weight: 400;
-  }
-
-  .cinematic-title span {
-    color: var(--muted-foreground);
-  }
-
-  .cinematic-reveal p:not(.cinematic-title) {
-    font-size: 14px;
-    color: var(--muted-foreground);
-  }
-
   /* ---------- Breakpoints ---------- */
   @media (max-width: 360px) {
     .hero-name {
@@ -372,10 +334,6 @@
     .bottom-caption {
       display: block;
     }
-
-    .cinematic-title {
-      font-size: 96px;
-    }
   }
 
   @media (min-width: 1001px) {
@@ -419,9 +377,14 @@
     .parallax-plane {
       will-change: auto;
     }
+  }
 
-    .cinematic-reveal {
-      display: none;
+  /* Inside its stacked panel the hero fills the screen exactly. */
+  @media (prefers-reduced-motion: no-preference) and (min-height: 560px) {
+    .night-hero {
+      height: 100%;
+      min-height: 0;
+      max-height: none;
     }
   }
 }

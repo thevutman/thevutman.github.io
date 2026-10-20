@@ -157,6 +157,23 @@
     }
   }
 
+  /* Stacked: the section and the footer share one screen. */
+  @media (prefers-reduced-motion: no-preference) and (min-height: 560px) {
+    .contact-section {
+      padding-block: calc(var(--header-height) + 16px) 24px;
+    }
+
+    @media (max-height: 820px) {
+      .contact-intro {
+        margin-bottom: 28px;
+      }
+
+      .contact-link {
+        padding-block: 16px;
+      }
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .contact-link::after,
     .contact-arrow {

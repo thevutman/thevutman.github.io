@@ -4,6 +4,12 @@ export const media = {
   reducedMotion: "(prefers-reduced-motion: reduce)",
   mobile: "(max-width: 640px)",
   finePointer: "(hover: hover) and (pointer: fine)",
+  /**
+   * Full-screen stacked panels. Kept in sync with the same query in
+   * StackPanel.css: with reduced motion or a very short viewport the page falls
+   * back to ordinary flowing sections.
+   */
+  stack: "(prefers-reduced-motion: no-preference) and (min-height: 560px)",
 } as const;
 
 export const ease = {
@@ -12,9 +18,10 @@ export const ease = {
   scrub: "power1.inOut",
 } as const;
 
-/** ScrollTrigger id of the pinned hero transition, read by the section snapping. */
-export const HERO_TRANSITION_ID = "hero-transition";
-
 export function prefersReducedMotion() {
   return window.matchMedia(media.reducedMotion).matches;
+}
+
+export function isStacked() {
+  return window.matchMedia(media.stack).matches;
 }

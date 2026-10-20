@@ -21,6 +21,8 @@
   --project-neutral: oklch(0.3 0.012 115);
   --project-silver: oklch(0.36 0.018 230);
   --project-deep: oklch(0.26 0.026 265);
+  /* Behind a stacked panel as it recedes under the next one. */
+  --stack-shade: oklch(0.1 0.02 258);
 
   /* Effects */
   --moon-glow: 0 0 95px 20px oklch(0.81 0.04 90 / 9%);
@@ -32,6 +34,8 @@
   --content-gutter: 7%;
   --header-height: 76px;
   --section-scroll-margin: 100px;
+  /* Fixed so the last panel and the footer fill exactly one screen. */
+  --footer-height: 84px;
 
   /* Depth */
   --z-reveal: 2;
@@ -49,6 +53,7 @@
   :root {
     --content-gutter: 8%;
     --header-height: 90px;
+    --footer-height: 72px;
   }
 }
 

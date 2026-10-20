@@ -101,4 +101,16 @@
       padding-block: 90px;
     }
   }
+
+  /* Inside a stacked panel a band fills the screen below the fixed header. */
+  @media (prefers-reduced-motion: no-preference) and (min-height: 560px) {
+    .content-band {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-sizing: border-box;
+      padding-block: calc(var(--header-height) + 24px) 32px;
+      border-bottom: 0;
+    }
+  }
 }

@@ -1,8 +1,10 @@
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { ArrowUpRight, BriefcaseBusiness, FolderGit2, Mail, type LucideIcon } from "lucide-react";
 import { SectionTitle } from "@/components/ui/SectionTitle/SectionTitle";
 import { contact, contactChannels, type ContactChannel } from "@/data/profile";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { gsap } from "@/lib/gsap";
+import { ease, media } from "@/lib/motion";
+import { closestTrack, entranceRange, hideUntilRevealed } from "@/lib/stack";
 import "./Contact.css";
 
 // Lucide no longer ships brand logos, so each channel uses a neutral glyph.
@@ -14,7 +16,25 @@ const icons: Record<ContactChannel["id"], LucideIcon> = {
 
 export function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
-  useScrollReveal(sectionRef, ".section-heading, .contact-intro, .contact-row");
+  // Rises into place while the panel slides over the previous one.
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const track = section && closestTrack(section);
+    if (!section || !track) return;
+
+    const mm = gsap.matchMedia(section);
+    mm.add(media.stack, () => {
+      hideUntilRevealed(".section-heading, .contact-intro, .contact-row", 70);
+      gsap.to(".section-heading, .contact-intro, .contact-row", {
+        y: 0,
+        opacity: 1,
+        stagger: 0.07,
+        ease: ease.out,
+        scrollTrigger: { ...entranceRange(track), scrub: 0.5 },
+      });
+    });
+    return () => mm.revert();
+  }, []);
 
   return (
     <section

@@ -20,7 +20,10 @@ export type ContactChannel = {
   display: string;
 };
 
-export const presentation: { summary?: string } = {};
+export const presentation = {
+  summary:
+    "Construyo productos web completos: interfaces cuidadas, lógica sólida y los servicios que las sostienen. Mi formación en diseño de entretenimiento digital hace que la interacción y el detalle visual siempre formen parte del código.",
+};
 
 export type AboutBlock = ProfileField & {
   /** Short opening phrase shown with more weight than the rest of the text. */
@@ -89,4 +92,4 @@ export const contactChannels: ContactChannel[] = [
   },
 ];
 
-export const signature = "Santiago Velasco Mosquera · Full Stack Developer";
+export const signature = "Santiago Velasco Mosquera · Desarrollador Full Stack";

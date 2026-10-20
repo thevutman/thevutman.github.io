@@ -24,7 +24,7 @@ export function Navbar() {
         >
           sv<span aria-hidden="true">.</span>
         </a>
-        <span className="header-label">PORTAFOLIO — UX/UI</span>
+        <span className="header-label">PORTAFOLIO — FULL STACK</span>
         <nav aria-label="Navegación principal">
           <ul className="nav-list">
             {navigation.map(({ id, label }) => (

@@ -21,7 +21,7 @@ export function Hero() {
 
       <div className="hero-identity" id="identidad" tabIndex={-1} data-focus-target>
         <p className="hero-eyebrow hero-detail">
-          <span className="small-line" aria-hidden="true" /> DISEÑO CON IDENTIDAD PROPIA
+          <span className="small-line" aria-hidden="true" /> DESARROLLO CON IDENTIDAD PROPIA
         </p>
         <h1 id="nombre" className="hero-name">
           <span className="name-line">Santiago</span>
@@ -34,7 +34,7 @@ export function Hero() {
             ✳
           </span>
           <p>
-            Diseñador UX/UI<span>Experiencias digitales.</span>
+            Desarrollador Full Stack<span>Interfaces, lógica y experiencias digitales.</span>
           </p>
         </div>
       </div>
@@ -50,21 +50,10 @@ export function Hero() {
           </span>
           <span>EXPLORAR</span>
         </a>
-        <p className="bottom-caption hero-detail">Entre diseño e interacción.</p>
+        <p className="bottom-caption hero-detail">Entre código y diseño.</p>
         <span className="scene-index hero-detail">
           01 <span aria-hidden="true">/</span> INICIO
         </span>
-      </div>
-
-      {/* Decorative title revealed by the scroll transition; the real heading
-          lives in the projects section. */}
-      <div className="cinematic-reveal" aria-hidden="true">
-        <span className="section-number">02 / PORTAFOLIO</span>
-        <p className="cinematic-title">
-          Proyectos<span>.</span>
-        </p>
-        <p>Diseño e interacción.</p>
-        <ArrowDown />
       </div>
     </section>
   );

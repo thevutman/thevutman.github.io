@@ -39,8 +39,8 @@ export type Project = {
 export const caseStudySections: { key: keyof CaseStudy; title: string }[] = [
   { key: "context", title: "Contexto y problema" },
   { key: "goals", title: "Objetivos" },
-  { key: "process", title: "Proceso de investigación y diseño" },
-  { key: "decisions", title: "Decisiones de UX/UI" },
+  { key: "process", title: "Proceso" },
+  { key: "decisions", title: "Decisiones técnicas y de diseño" },
   { key: "solution", title: "Solución final" },
 ];
 
@@ -64,11 +64,16 @@ export const projects: Project[] = [placeholder(1), placeholder(2), placeholder(
  *   id: "mi-proyecto",
  *   name: "Mi proyecto",
  *   summary: "Una frase que explique el proyecto.",
- *   disciplines: ["UX Research", "UI Design"],
- *   technologies: ["Figma", "React"],
+ *   disciplines: ["Frontend", "Backend"],
+ *   technologies: ["React", "Node.js", "PostgreSQL"],
  *   cover: { src: cover, alt: "Pantalla principal de Mi proyecto", width: 1600, height: 1100 },
  *   caseStudy: { context: "…", solution: "…" },
  *   liveUrl: "https://…",
  *   repositoryUrl: "https://github.com/…",
  * }
  */
+
+/** Two-digit position shown on cards and in the case study, e.g. "01". */
+export function projectNumber(index: number) {
+  return String(index + 1).padStart(2, "0");
+}

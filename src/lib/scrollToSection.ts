@@ -1,4 +1,6 @@
 import type { MouseEvent } from "react";
+import { isStacked } from "@/lib/motion";
+import { closestTrack, trackMetrics } from "@/lib/stack";
 
 /** Breathing room kept between the fixed navigation bar and a section. */
 const HEADER_GAP = 10;
@@ -8,13 +10,17 @@ function headerHeight() {
 }
 
 /**
- * Resting scroll position for a section, shared by the navigation and the
- * snapping so both land in exactly the same place: sections that fit below the
- * header are centred in that space, taller ones align their top under it.
- * Anything inside the hero resolves to the top of the page.
+ * Resting scroll position for a section. With stacked panels it is the point
+ * where the section's panel has fully covered the previous one, which is also
+ * a snap point. Otherwise sections that fit below the header are centred in
+ * that space and taller ones align their top under it. Anything inside the
+ * hero resolves to the top of the page.
  */
 export function sectionScrollTarget(element: HTMLElement) {
   if (element.closest("#inicio")) return 0;
+
+  const track = closestTrack(element);
+  if (track && isStacked()) return trackMetrics(track).start;
 
   const header = headerHeight();
   const available = window.innerHeight - header;
@@ -25,7 +31,7 @@ export function sectionScrollTarget(element: HTMLElement) {
   return Math.min(Math.max(window.scrollY + top - offset, 0), max);
 }
 
-/** Jumps straight to a section without playing the pinned hero transition. */
+/** Jumps straight to a section without playing the scenes in between. */
 export function scrollToSection(id: string) {
   const target = document.getElementById(id);
   if (!target) return;
@@ -33,7 +39,7 @@ export function scrollToSection(id: string) {
   const top = sectionScrollTarget(target);
   target.focus({ preventScroll: true });
   window.scrollTo({ top, behavior: "instant" });
-  // Focusing an element inside a pinned container can schedule a native
+  // Focusing an element inside a sticky panel can schedule a native
   // scroll; re-applying the position on the next frame keeps the jump exact.
   requestAnimationFrame(() => window.scrollTo({ top, behavior: "instant" }));
 }

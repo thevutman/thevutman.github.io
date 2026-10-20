@@ -1,13 +1,14 @@
 import { useLayoutEffect, type RefObject } from "react";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { ease, HERO_TRANSITION_ID, media } from "@/lib/motion";
+import { gsap } from "@/lib/gsap";
+import { ease, media } from "@/lib/motion";
+import { closestTrack, hideUntilRevealed, holdRange } from "@/lib/stack";
 
 /**
  * All hero motion, scoped to the hero element:
  *  1. entrance — layers and name fade in once on load;
  *  2. parallax — inner planes follow a fine pointer, scaled by `data-depth`;
- *  3. transition — the hero pins while the scene breaks apart and the
- *     "Proyectos" title is revealed, scrubbed by scroll.
+ *  3. transition — while the hero's panel rests, the scene breaks apart and
+ *     the introduction sharing the panel is revealed, scrubbed by scroll.
  *
  * Each concern lives in its own matchMedia block so crossing a breakpoint
  * rebuilds only the parts that depend on it. With reduced motion none of them
@@ -66,24 +67,19 @@ export function useCinematicHero(heroRef: RefObject<HTMLElement | null>) {
       };
     });
 
-    mm.add({ motionOk: media.motionOk, mobile: media.mobile }, (context) => {
-      const { motionOk, mobile } = context.conditions ?? {};
-      if (!motionOk) return;
+    mm.add(media.stack, () => {
+      const track = closestTrack(hero);
+      if (!track) return;
+      // The introduction shares the hero's panel and is revealed as it clears.
+      const introduction = track.querySelectorAll(
+        ".presentation-body > *, .presentation > .section-number",
+      );
+      hideUntilRevealed(introduction, 36);
 
       gsap
         .timeline({
           defaults: { ease: ease.scrub },
-          scrollTrigger: {
-            id: HERO_TRANSITION_ID,
-            trigger: hero,
-            start: "top top",
-            // Shorter on phones so the transition never feels like a scroll trap.
-            end: mobile ? "+=60%" : "+=85%",
-            pin: true,
-            scrub: 0.65,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
+          scrollTrigger: { ...holdRange(track), scrub: 0.65 },
         })
         .to(".hero-identity, .hero-bottom", { y: -45, opacity: 0, duration: 0.35 }, 0)
         .to(".star-layer", { yPercent: -55, opacity: 0, duration: 0.8 }, 0.05)
@@ -95,26 +91,9 @@ export function useCinematicHero(heroRef: RefObject<HTMLElement | null>) {
         .to(".wolf-layer", { xPercent: 35, yPercent: 30, opacity: 0, duration: 0.65 }, 0.2)
         .to(".foreground-layer", { yPercent: 110, opacity: 0, duration: 0.6 }, 0.2)
         .to(".landscape", { opacity: 0, duration: 0.35 }, 0.65)
-        .fromTo(
-          ".cinematic-reveal > *",
-          { opacity: 0, y: 28 },
-          { opacity: 1, y: 0, duration: 0.4, stagger: 0.1 },
-          0.55,
-        );
+        .to(introduction, { opacity: 1, y: 0, duration: 0.35, stagger: 0.08 }, 0.5);
     });
 
-    // Pin distances depend on final font metrics and image layout.
-    let cancelled = false;
-    const refresh = () => {
-      if (!cancelled) ScrollTrigger.refresh();
-    };
-    void document.fonts.ready.then(refresh);
-    window.addEventListener("load", refresh);
-
-    return () => {
-      cancelled = true;
-      window.removeEventListener("load", refresh);
-      mm.revert();
-    };
+    return () => mm.revert();
   }, [heroRef]);
 }

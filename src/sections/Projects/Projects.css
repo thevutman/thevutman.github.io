@@ -7,11 +7,29 @@
     stroke-width: 1;
   }
 
-  .project-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 38px;
-    align-items: start;
+  /* ---------- Rail ---------- */
+  /* Bleeds to the right edge so upcoming cards peek in from the side. */
+  .project-rail-viewport {
+    margin-right: calc(var(--content-gutter) * -1);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .project-rail {
+    --card-width: min(80vw, 640px);
+    display: flex;
+    gap: 24px;
+    width: max-content;
+    margin: 0;
+    padding: 0 var(--content-gutter) 0 0;
+    list-style: none;
+  }
+
+  .project-slide {
+    width: var(--card-width);
+    flex-shrink: 0;
+    scroll-snap-align: start;
   }
 
   @media (min-width: 641px) {
@@ -20,9 +38,29 @@
       height: 38px;
     }
 
-    .project-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 54px 30px;
+    .project-rail {
+      gap: 40px;
+    }
+  }
+
+  /*
+   * Stacked: the page scroll moves the rail (see Projects.tsx). Cards are
+   * sized from the screen height so a whole card always fits, and the rail
+   * ends with room for the last card to reach the left edge.
+   */
+  @media (prefers-reduced-motion: no-preference) and (min-height: 560px) {
+    .project-rail-viewport {
+      overflow: visible;
+    }
+
+    .project-rail {
+      --card-width: min(80vw, 760px, (100svh - var(--header-height) - 320px) * 1.45);
+      padding-right: calc(100vw - var(--content-gutter) - var(--card-width));
+      will-change: transform;
+    }
+
+    .portfolio-section .section-heading {
+      margin-bottom: clamp(20px, 4svh, 48px);
     }
   }
 }
