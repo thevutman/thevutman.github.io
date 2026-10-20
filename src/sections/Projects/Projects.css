@@ -1,0 +1,28 @@
+@layer components {
+  .projects-arrow {
+    flex-shrink: 0;
+    width: 25px;
+    height: 25px;
+    margin-left: auto;
+    stroke-width: 1;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 38px;
+    align-items: start;
+  }
+
+  @media (min-width: 641px) {
+    .projects-arrow {
+      width: 38px;
+      height: 38px;
+    }
+
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 54px 30px;
+    }
+  }
+}

@@ -1,0 +1,104 @@
+@import "tailwindcss" source(none);
+@source "..";
+@import "./tokens.css";
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  /* No `scroll-behavior: smooth` here: it would also smooth every position GSAP
+     writes while snapping and cut the snap short. */
+  body {
+    margin: 0;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    letter-spacing: 0;
+    overflow-x: clip;
+  }
+
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    background: var(--moon);
+    color: var(--background);
+  }
+
+  :where(a, button):focus-visible {
+    outline: 2px solid var(--moon);
+    outline-offset: 5px;
+  }
+
+  /* Sections receive programmatic focus when reached from the navigation. */
+  :where(section, main, [data-focus-target]):focus {
+    outline: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0s !important;
+    }
+  }
+}
+
+@layer components {
+  /* Shared reset for the text-style controls used across the site. */
+  .ui-control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    border-radius: var(--radius-control);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--foreground);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      color var(--duration-fast),
+      background-color var(--duration-fast);
+  }
+
+  .ui-control svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+
+  .section-number {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--muted-foreground);
+  }
+
+  .detail-label {
+    margin: 0 0 10px;
+    font-size: 9px;
+    color: var(--muted-foreground);
+  }
+
+  .content-band {
+    padding: 58px var(--content-gutter);
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: var(--section-scroll-margin);
+  }
+
+  @media (max-width: 640px) {
+    .section-number {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 641px) {
+    .content-band {
+      padding-block: 90px;
+    }
+  }
+}

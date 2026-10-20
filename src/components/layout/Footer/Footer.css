@@ -1,0 +1,28 @@
+@layer components {
+  .portfolio-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 20px;
+    padding: 22px 7%;
+    font-size: 10px;
+    color: var(--muted-foreground);
+  }
+
+  .footer-signature {
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-top-link {
+    font-size: 10px;
+  }
+
+  @media (min-width: 641px) {
+    .portfolio-footer {
+      flex-wrap: nowrap;
+      padding: 25px 8%;
+    }
+  }
+}
