@@ -1,0 +1,75 @@
+/*
+ * Design tokens.
+ *
+ * Values come from the original nocturnal design. Raw values live on :root so
+ * they can be read by plain CSS; the @theme block exposes them to Tailwind
+ * (bg-sky, text-moon, font-display, …) without duplicating them.
+ */
+
+:root {
+  /* Palette */
+  --background: oklch(0.165 0.027 258);
+  --foreground: oklch(0.946 0.022 92);
+  --muted-foreground: oklch(0.68 0.021 245);
+  --accent: oklch(0.3 0.04 255);
+  --border: oklch(0.946 0.022 92 / 18%);
+  --sky: oklch(0.23 0.044 255);
+  --moon: oklch(0.942 0.039 91);
+  --forest-far: oklch(0.29 0.043 250);
+  --forest-near: oklch(0.193 0.032 253);
+  --project-cool: oklch(0.31 0.036 248);
+  --project-neutral: oklch(0.3 0.012 115);
+  --project-silver: oklch(0.36 0.018 230);
+  --project-deep: oklch(0.26 0.026 265);
+
+  /* Effects */
+  --moon-glow: 0 0 95px 20px oklch(0.81 0.04 90 / 9%);
+  --header-blur: blur(16px);
+  --radius-media: 4px;
+  --radius-control: 0.375rem;
+
+  /* Layout */
+  --content-gutter: 7%;
+  --header-height: 76px;
+  --section-scroll-margin: 100px;
+
+  /* Depth */
+  --z-reveal: 2;
+  --z-hero-content: 3;
+  --z-hero-controls: 5;
+  --z-header: 15;
+  --z-skip-link: 20;
+
+  /* Motion (CSS transitions; GSAP timings live in src/lib/motion.ts) */
+  --duration-fast: 0.25s;
+  --duration-base: 0.3s;
+}
+
+@media (min-width: 641px) {
+  :root {
+    --content-gutter: 8%;
+    --header-height: 90px;
+  }
+}
+
+@theme {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+
+  /* Breakpoints shared with src/lib/motion.ts (mobile-first). */
+  --breakpoint-md: 641px;
+  --breakpoint-lg: 1001px;
+  --breakpoint-2xl: 1600px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-sky: var(--sky);
+  --color-moon: var(--moon);
+  --color-forest-far: var(--forest-far);
+  --color-forest-near: var(--forest-near);
+}

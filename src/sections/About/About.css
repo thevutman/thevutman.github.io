@@ -1,0 +1,131 @@
+@layer components {
+  .about-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 44px;
+  }
+
+  /* ---------- Personal presentation ---------- */
+  .about-highlight {
+    margin: 18px 0 22px;
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--foreground);
+    text-wrap: balance;
+  }
+
+  .about-description {
+    display: grid;
+    gap: 14px;
+    max-width: 52ch;
+  }
+
+  .about-description p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--muted-foreground);
+  }
+
+  /* ---------- Information blocks ---------- */
+  .about-blocks {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .about-block {
+    position: relative;
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 12px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .about-block:first-child {
+    padding-top: 0;
+  }
+
+  /* Hover accent: a moonlit line drawn over the divider. */
+  .about-block::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: var(--moon);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .about-block-number {
+    padding-top: 3px;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--muted-foreground);
+    transition: color var(--duration-base);
+  }
+
+  .about-block h3 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .about-block p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--muted-foreground);
+  }
+
+  .about-block-lead {
+    color: var(--foreground);
+  }
+
+  @media (hover: hover) {
+    .about-block:hover::after {
+      transform: scaleX(1);
+    }
+
+    .about-block:hover .about-block-number {
+      color: var(--moon);
+    }
+  }
+
+  @media (min-width: 641px) {
+    .about-layout {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+    }
+
+    .about-highlight {
+      font-size: 30px;
+    }
+
+    .about-description p {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 1001px) {
+    .about-layout {
+      gap: 80px;
+    }
+
+    .about-highlight {
+      font-size: 36px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-block::after {
+      transition: none;
+    }
+  }
+}

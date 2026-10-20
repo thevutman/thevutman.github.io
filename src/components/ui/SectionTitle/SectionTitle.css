@@ -1,0 +1,59 @@
+@layer components {
+  .section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 32px;
+  }
+
+  .section-heading h2 {
+    margin: 22px 0 0;
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.15;
+  }
+
+  .section-heading--display {
+    display: block;
+    margin-bottom: 0;
+  }
+
+  .section-heading--display h2 {
+    margin-bottom: 24px;
+    font-size: 40px;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  @media (min-width: 641px) {
+    .section-heading {
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .section-heading h2 {
+      font-size: 40px;
+    }
+
+    .section-heading--display {
+      margin-bottom: 0;
+    }
+
+    .section-heading--display h2 {
+      margin-bottom: 28px;
+      font-size: 56px;
+    }
+  }
+
+  @media (min-width: 1001px) {
+    .section-heading h2 {
+      font-size: 48px;
+    }
+
+    .section-heading--display h2 {
+      font-size: 72px;
+    }
+  }
+}

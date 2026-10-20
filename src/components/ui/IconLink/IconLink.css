@@ -1,0 +1,11 @@
+@layer components {
+  .icon-link {
+    height: 2.25rem;
+    padding: 0.5rem 1rem;
+    text-underline-offset: 4px;
+  }
+
+  .icon-link:hover {
+    text-decoration: underline;
+  }
+}
