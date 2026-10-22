@@ -1,5 +1,5 @@
 /**
- * Personal content for the presentation, about and contact sections.
+ * Personal content for the about and contact sections.
  * Every field is optional: while it is empty the site shows a clear
  * "pendiente" placeholder instead of invented information.
  */
@@ -18,11 +18,6 @@ export type ContactChannel = {
   href: string;
   /** Visible address or profile path. */
   display: string;
-};
-
-export const presentation = {
-  summary:
-    "Construyo productos web completos: interfaces cuidadas, lógica sólida y los servicios que las sostienen. Mi formación en diseño de entretenimiento digital hace que la interacción y el detalle visual siempre formen parte del código.",
 };
 
 export type AboutBlock = ProfileField & {

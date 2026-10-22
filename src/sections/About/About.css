@@ -130,42 +130,9 @@
   }
 
   /* ---------- Stacked scenes (see About.tsx) ---------- */
-  .about-statement {
-    display: none;
-  }
-
   @media (prefers-reduced-motion: no-preference) and (min-height: 560px) {
-    .about-section {
-      position: relative;
-    }
-
-    .about-statement {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0;
-      padding: var(--header-height) var(--content-gutter) 0;
-      font-family: var(--font-display);
-      font-size: clamp(40px, 7.4vw, 120px);
-      line-height: 1.02;
-      text-align: center;
-      text-wrap: balance;
-      pointer-events: none;
-    }
-
-    .about-statement-text {
-      max-width: 14ch;
-    }
-
-    .about-statement-word {
-      display: inline-block;
-      white-space: pre;
-    }
-
     /* Phones show the presentation and the blocks one after the other in the
-       same place; the big statement already said the highlight. */
+       same place. */
     @media (max-width: 640px) {
       .about-layout {
         display: grid;
@@ -177,7 +144,8 @@
       }
 
       .about-highlight {
-        display: none;
+        margin-block: 12px 16px;
+        font-size: 22px;
       }
     }
 

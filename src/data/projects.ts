@@ -25,6 +25,12 @@ export type Project = {
   id: string;
   name: string;
   summary: string;
+  /** Kind of project shown in the meta line, e.g. "Aplicación web". */
+  type?: string;
+  /** When it was finished, e.g. "Abril 2025". */
+  date?: string;
+  /** What you did, e.g. "Full Stack". */
+  role?: string;
   disciplines: string[];
   technologies: string[];
   cover?: ProjectImage;
@@ -48,6 +54,7 @@ const placeholder = (index: number): Project => ({
   id: `proyecto-${index}`,
   name: "Nombre del proyecto",
   summary: "Descripción pendiente",
+  role: "Full Stack",
   disciplines: [],
   technologies: [],
   isPlaceholder: true,
@@ -64,6 +71,9 @@ export const projects: Project[] = [placeholder(1), placeholder(2), placeholder(
  *   id: "mi-proyecto",
  *   name: "Mi proyecto",
  *   summary: "Una frase que explique el proyecto.",
+ *   type: "Aplicación web",
+ *   date: "Abril 2025",
+ *   role: "Full Stack",
  *   disciplines: ["Frontend", "Backend"],
  *   technologies: ["React", "Node.js", "PostgreSQL"],
  *   cover: { src: cover, alt: "Pantalla principal de Mi proyecto", width: 1600, height: 1100 },
@@ -73,7 +83,16 @@ export const projects: Project[] = [placeholder(1), placeholder(2), placeholder(
  * }
  */
 
-/** Two-digit position shown on cards and in the case study, e.g. "01". */
+/** Two-digit position shown in the showcase and the case study, e.g. "01". */
 export function projectNumber(index: number) {
   return String(index + 1).padStart(2, "0");
+}
+
+/** Type, date and role for the meta line; missing values show as pending. */
+export function projectMeta(project: Project) {
+  return [
+    project.type ?? "Tipo por definir",
+    project.date ?? "Fecha por definir",
+    project.role ?? "Rol por definir",
+  ];
 }

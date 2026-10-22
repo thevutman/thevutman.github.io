@@ -1,5 +1,3 @@
-import { ExternalLink } from "lucide-react";
-import { IconLink } from "@/components/ui/IconLink/IconLink";
 import { caseStudySections, type Project } from "@/data/projects";
 import "./ProjectDetail.css";
 
@@ -10,8 +8,9 @@ type ProjectDetailProps = {
 const PENDING = "Información pendiente";
 
 /**
- * Case study shown in the project dialog. Sections without content are omitted for real projects;
- * placeholders list every section as pending so the structure is visible.
+ * Case study sections and gallery shown in the project dialog. Sections
+ * without content are omitted for real projects; placeholders list every
+ * section as pending so the structure is visible.
  */
 export function ProjectDetail({ project }: ProjectDetailProps) {
   const sections = caseStudySections
@@ -46,33 +45,6 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           ))}
         </div>
       )}
-
-      <div className="detail-footer">
-        <div>
-          <span className="detail-label">TECNOLOGÍAS</span>
-          <p>
-            {project.technologies.length
-              ? project.technologies.join(" · ")
-              : "Tecnologías por añadir"}
-          </p>
-        </div>
-        <div className="project-destinations">
-          {project.liveUrl ? (
-            <IconLink href={project.liveUrl} icon={ExternalLink}>
-              Ver proyecto
-            </IconLink>
-          ) : (
-            <span>Proyecto · Enlace por añadir</span>
-          )}
-          {project.repositoryUrl ? (
-            <IconLink href={project.repositoryUrl} icon={ExternalLink}>
-              GitHub
-            </IconLink>
-          ) : (
-            <span>GitHub · Enlace por añadir</span>
-          )}
-        </div>
-      </div>
     </div>
   );
 }

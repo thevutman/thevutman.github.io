@@ -8,7 +8,6 @@ import { scrollToSection } from "@/lib/scrollToSection";
 import { About } from "@/sections/About/About";
 import { Contact } from "@/sections/Contact/Contact";
 import { Hero } from "@/sections/Hero/Hero";
-import { Introduction } from "@/sections/Introduction/Introduction";
 import { Projects } from "@/sections/Projects/Projects";
 
 export function App() {
@@ -27,23 +26,24 @@ export function App() {
     <>
       <Navbar />
       <main>
-        {/* The hero breaks apart to reveal the introduction in the same panel. */}
-        <StackPanel steps={1}>
+        {/* The hero breaks apart while the projects panel slides over it. */}
+        <StackPanel>
           <Hero />
-          <Introduction />
         </StackPanel>
-        {/* One resting point per project as the gallery slides sideways. */}
-        <StackPanel steps={Math.max(projects.length - 1, 0)}>
+        {/* Sections open with a title card (one step), then their content.
+            Projects add one step per extra project in the showcase. */}
+        <StackPanel steps={Math.max(projects.length, 1)}>
           <Projects />
         </StackPanel>
         <StackPanel steps={1} mobileSteps={2}>
           <About />
         </StackPanel>
-        <StackPanel>
+        {/* The footer closes the last screen inside its panel. */}
+        <StackPanel steps={1}>
           <Contact />
+          <Footer />
         </StackPanel>
       </main>
-      <Footer />
     </>
   );
 }

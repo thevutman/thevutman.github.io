@@ -104,7 +104,9 @@
 
   /* Inside a stacked panel a band fills the screen below the fixed header. */
   @media (prefers-reduced-motion: no-preference) and (min-height: 560px) {
+    /* Positioned so the title card can cover the band. */
     .content-band {
+      position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;

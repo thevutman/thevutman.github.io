@@ -1,66 +1,254 @@
 @layer components {
-  .projects-arrow {
-    flex-shrink: 0;
-    width: 25px;
-    height: 25px;
-    margin-left: auto;
-    stroke-width: 1;
+  /* ---------- Showcase: flowing layout (reduced motion, short screens) ---------- */
+  .showcase-index {
+    display: none;
   }
 
-  /* ---------- Rail ---------- */
-  /* Bleeds to the right edge so upcoming cards peek in from the side. */
-  .project-rail-viewport {
-    margin-right: calc(var(--content-gutter) * -1);
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
-
-  .project-rail {
-    --card-width: min(80vw, 640px);
-    display: flex;
-    gap: 24px;
-    width: max-content;
+  .showcase-list {
+    display: grid;
+    gap: 72px;
     margin: 0;
-    padding: 0 var(--content-gutter) 0 0;
+    padding: 0;
     list-style: none;
   }
 
-  .project-slide {
-    width: var(--card-width);
-    flex-shrink: 0;
-    scroll-snap-align: start;
+  .showcase-backdrop {
+    display: none;
   }
 
-  @media (min-width: 641px) {
-    .projects-arrow {
-      width: 38px;
-      height: 38px;
+  .showcase-article {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+
+  .showcase-title {
+    margin: 0;
+    padding-bottom: 0.06em;
+    overflow: hidden;
+    font-family: var(--font-display);
+    font-size: clamp(36px, 7vw, 80px);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .showcase-meta {
+    margin: 0;
+    overflow: hidden;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    color: var(--muted-foreground);
+    text-transform: uppercase;
+  }
+
+  .showcase-mask-inner {
+    display: block;
+  }
+
+  .showcase-number {
+    color: var(--moon);
+  }
+
+  .showcase-meta-item::before {
+    content: "•";
+    margin: 0 12px;
+  }
+
+  .showcase-media {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    margin-top: 10px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 18px;
+    background: var(--project-cool);
+    color: var(--foreground);
+    cursor: pointer;
+  }
+
+  .showcase-tone-1 .showcase-media {
+    background: var(--project-neutral);
+  }
+
+  .showcase-tone-2 .showcase-media {
+    background: var(--project-silver);
+  }
+
+  .showcase-tone-3 .showcase-media {
+    background: var(--project-deep);
+  }
+
+  .showcase-media-inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .showcase-badge,
+  .showcase-cta {
+    position: absolute;
+    bottom: 18px;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+
+  .showcase-badge {
+    left: 20px;
+    opacity: 0.7;
+  }
+
+  .showcase-cta {
+    right: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: 999px;
+    background: var(--foreground);
+    color: var(--background);
+    font-weight: 600;
+    transition: transform var(--duration-base);
+  }
+
+  .showcase-cta svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .showcase-media:focus-visible {
+    outline-offset: 6px;
+  }
+
+  @media (hover: hover) {
+    .showcase-media:hover .showcase-media-inner {
+      transform: scale(1.04);
     }
 
-    .project-rail {
-      gap: 40px;
+    .showcase-media:hover .showcase-cta {
+      transform: translateY(-3px);
     }
   }
 
-  /*
-   * Stacked: the page scroll moves the rail (see Projects.tsx). Cards are
-   * sized from the screen height so a whole card always fits, and the rail
-   * ends with room for the last card to reach the left edge.
-   */
+  /* ---------- Showcase: stacked panel (see Projects.tsx) ---------- */
+  /* Same query as `media.stack` in src/lib/motion.ts. */
   @media (prefers-reduced-motion: no-preference) and (min-height: 560px) {
-    .project-rail-viewport {
-      overflow: visible;
+    /* The title card names the section; the heading stays for screen readers. */
+    .portfolio-section > .section-heading {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
 
-    .project-rail {
-      --card-width: min(80vw, 760px, (100svh - var(--header-height) - 320px) * 1.45);
-      padding-right: calc(100vw - var(--content-gutter) - var(--card-width));
-      will-change: transform;
+    .showcase-list,
+    .showcase-item,
+    .showcase-backdrop,
+    .showcase-article {
+      position: absolute;
+      inset: 0;
     }
 
-    .portfolio-section .section-heading {
-      margin-bottom: clamp(20px, 4svh, 48px);
+    .showcase-list {
+      display: block;
+    }
+
+    /* Items share the screen; only their cover takes clicks, and a hidden
+       cover is clipped away, so it never catches them. */
+    .showcase-item {
+      pointer-events: none;
+    }
+
+    .showcase-backdrop {
+      display: block;
+      background: var(--project-cool);
+    }
+
+    .showcase-tone-1 .showcase-backdrop {
+      background: var(--project-neutral);
+    }
+
+    .showcase-tone-2 .showcase-backdrop {
+      background: var(--project-silver);
+    }
+
+    .showcase-tone-3 .showcase-backdrop {
+      background: var(--project-deep);
+    }
+
+    .showcase-article {
+      grid-template-rows: auto auto minmax(0, 1fr);
+      gap: 12px;
+      padding: calc(var(--header-height) + 3svh) var(--content-gutter) 5svh;
+    }
+
+    .showcase-title {
+      font-size: clamp(44px, 8.4vw, 136px);
+    }
+
+    /* Darker than any tone so the cover stands out from its backdrop. */
+    .showcase-item .showcase-media {
+      width: min(100%, 1040px);
+      height: 100%;
+      aspect-ratio: auto;
+      margin-top: 2svh;
+      background: oklch(0.13 0.02 258 / 55%);
+      box-shadow: 0 40px 80px oklch(0 0 0 / 35%);
+      pointer-events: auto;
+    }
+
+    .showcase-index {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: max(16px, calc(var(--content-gutter) / 2 - 11px));
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      transform: translateY(-50%);
+    }
+
+    .showcase-tick {
+      width: 22px;
+      height: 1px;
+      background: var(--foreground);
+      transform-origin: left;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) and (min-height: 560px) and (max-width: 640px) {
+    .showcase-article {
+      padding-inline: 24px;
+    }
+
+    .showcase-meta {
+      font-size: 8px;
+      letter-spacing: 1.2px;
+    }
+
+    .showcase-meta-item::before {
+      margin: 0 7px;
+    }
+
+    .showcase-index {
+      left: 8px;
+      gap: 9px;
+    }
+
+    .showcase-tick {
+      width: 10px;
     }
   }
 }

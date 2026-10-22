@@ -12,7 +12,7 @@ type StackPanelProps = {
 /**
  * One full-screen chapter of the page. The panel sticks to the viewport for
  * `steps` extra screens, then the next panel slides up and covers it. Every
- * resting point gets an invisible marker that the snapping reads.
+ * resting point gets an invisible marker that the step scrolling reads.
  *
  * Layout lives in StackPanel.css; motion in useStackPanels and each section.
  * Outside stack mode (reduced motion, short screens) it is a plain wrapper.

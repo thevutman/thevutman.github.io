@@ -8,7 +8,7 @@
     /*
      * A track is (1 + steps) screens for its own panel, plus one more during
      * which the next track overlaps it (negative margin) and covers the panel.
-     * The last track ends the page together with the footer.
+     * The last track has nothing after it, so it needs no covering screen.
      */
     .stack-track {
       --steps: var(--steps-desktop, 0);
@@ -21,7 +21,7 @@
     }
 
     .stack-track:last-child {
-      height: calc((var(--steps) + 1) * 100svh - var(--footer-height));
+      height: calc((var(--steps) + 1) * 100svh);
     }
 
     .stack-panel {
@@ -30,10 +30,6 @@
       height: 100svh;
       overflow: hidden;
       background: var(--stack-shade);
-    }
-
-    .stack-track:last-child .stack-panel {
-      height: calc(100svh - var(--footer-height));
     }
 
     /* The incoming panel casts a soft shadow on the one it covers. */
@@ -52,7 +48,19 @@
       height: 100%;
     }
 
-    /* Resting points read by the snapping in useStackPanels. */
+    /* A panel that ends with the footer gives the section the rest. */
+    .stack-content:has(> .portfolio-footer) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stack-content:has(> .portfolio-footer) > section {
+      flex: 1;
+      height: auto;
+      min-height: 0;
+    }
+
+    /* Resting points read by enableStepScroll (src/lib/stepScroll.ts). */
     .stack-snap {
       display: block;
       position: absolute;

@@ -1,14 +1,14 @@
 import { useLayoutEffect, type RefObject } from "react";
 import { gsap } from "@/lib/gsap";
 import { ease, media } from "@/lib/motion";
-import { closestTrack, hideUntilRevealed, holdRange } from "@/lib/stack";
+import { closestTrack, exitRange } from "@/lib/stack";
 
 /**
  * All hero motion, scoped to the hero element:
  *  1. entrance — layers and name fade in once on load;
  *  2. parallax — inner planes follow a fine pointer, scaled by `data-depth`;
- *  3. transition — while the hero's panel rests, the scene breaks apart and
- *     the introduction sharing the panel is revealed, scrubbed by scroll.
+ *  3. transition — while the projects panel slides over the hero, the scene
+ *     breaks apart layer by layer, scrubbed by scroll.
  *
  * Each concern lives in its own matchMedia block so crossing a breakpoint
  * rebuilds only the parts that depend on it. With reduced motion none of them
@@ -70,16 +70,11 @@ export function useCinematicHero(heroRef: RefObject<HTMLElement | null>) {
     mm.add(media.stack, () => {
       const track = closestTrack(hero);
       if (!track) return;
-      // The introduction shares the hero's panel and is revealed as it clears.
-      const introduction = track.querySelectorAll(
-        ".presentation-body > *, .presentation > .section-number",
-      );
-      hideUntilRevealed(introduction, 36);
 
       gsap
         .timeline({
           defaults: { ease: ease.scrub },
-          scrollTrigger: { ...holdRange(track), scrub: 0.65 },
+          scrollTrigger: { ...exitRange(track), scrub: true },
         })
         .to(".hero-identity, .hero-bottom", { y: -45, opacity: 0, duration: 0.35 }, 0)
         .to(".star-layer", { yPercent: -55, opacity: 0, duration: 0.8 }, 0.05)
@@ -90,8 +85,7 @@ export function useCinematicHero(heroRef: RefObject<HTMLElement | null>) {
         .to(".near-forest-layer", { xPercent: 30, yPercent: 25, opacity: 0, duration: 0.7 }, 0.15)
         .to(".wolf-layer", { xPercent: 35, yPercent: 30, opacity: 0, duration: 0.65 }, 0.2)
         .to(".foreground-layer", { yPercent: 110, opacity: 0, duration: 0.6 }, 0.2)
-        .to(".landscape", { opacity: 0, duration: 0.35 }, 0.65)
-        .to(introduction, { opacity: 1, y: 0, duration: 0.35, stagger: 0.08 }, 0.5);
+        .to(".landscape", { opacity: 0, duration: 0.35 }, 0.65);
     });
 
     return () => mm.revert();

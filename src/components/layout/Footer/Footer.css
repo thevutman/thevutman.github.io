@@ -26,12 +26,10 @@
     }
   }
 
-  /* With stacked panels the footer closes the last screen at a fixed height,
-     above the panel that sticks behind it. */
+  /* With stacked panels the footer closes the last screen at a fixed height. */
   @media (prefers-reduced-motion: no-preference) and (min-height: 560px) {
     .portfolio-footer {
-      position: relative;
-      z-index: 1;
+      flex-shrink: 0;
       box-sizing: border-box;
       height: var(--footer-height);
       padding-block: 0;

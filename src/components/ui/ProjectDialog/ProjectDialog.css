@@ -1,5 +1,4 @@
 @layer components {
-  /* The dialog box is the full-screen backdrop area; the sheet is the card. */
   .project-dialog {
     width: 100%;
     max-width: none;
@@ -10,13 +9,12 @@
     border: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
-    background: transparent;
+    background: var(--background);
     color: var(--foreground);
   }
 
   .project-dialog::backdrop {
-    background: oklch(0.1 0.02 258 / 82%);
-    backdrop-filter: blur(6px);
+    background: var(--background);
   }
 
   /* The page behind keeps its position while a case study is open. */
@@ -24,84 +22,177 @@
     overflow: hidden;
   }
 
-  .project-sheet {
-    box-sizing: border-box;
-    width: min(100% - 24px, 980px);
-    margin: 12px auto;
-    padding: 28px 22px 32px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-media);
-    background: var(--background);
-  }
-
-  .project-sheet-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 28px;
-  }
-
-  .project-sheet-header h2 {
-    margin: 16px 0 10px;
-    font-family: var(--font-display);
-    font-size: 32px;
-    font-weight: 400;
-    line-height: 1.1;
-  }
-
-  .project-sheet-header p {
-    margin: 0;
-    font-size: 14px;
-    color: var(--muted-foreground);
-  }
-
-  .project-sheet-close {
-    flex-shrink: 0;
-    width: 44px;
+  .case-close {
+    position: fixed;
+    z-index: 2;
+    top: 18px;
+    right: 18px;
+    gap: 8px;
     height: 44px;
+    padding: 0 18px;
     border: 1px solid var(--border);
-    border-radius: 50%;
-    background: transparent;
+    border-radius: 999px;
+    background: color-mix(in oklch, var(--background) 70%, transparent);
+    backdrop-filter: var(--header-blur);
+    font-size: 10px;
+    letter-spacing: 1.5px;
   }
 
-  .project-sheet-close:hover {
+  .case-close:hover {
     border-color: var(--foreground);
   }
 
-  .project-sheet-media {
-    aspect-ratio: 2.2;
+  /* ---------- Hero: the cover, full bleed, with the name over it ---------- */
+  .case-hero {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 72svh;
+    overflow: hidden;
+    background: var(--project-cool);
+  }
+
+  .case-hero.showcase-tone-1 {
+    background: var(--project-neutral);
+  }
+
+  .case-hero.showcase-tone-2 {
+    background: var(--project-silver);
+  }
+
+  .case-hero.showcase-tone-3 {
+    background: var(--project-deep);
+  }
+
+  .case-cover {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Fades the cover into the page so the name stays readable. */
+  .case-cover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 30%, var(--background) 100%);
+  }
+
+  .case-hero-text {
+    position: relative;
+    display: grid;
+    gap: 16px;
+    padding: 0 var(--content-gutter) 36px;
+  }
+
+  .case-hero-text h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(48px, 10vw, 160px);
+    font-weight: 500;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  /* ---------- Body ---------- */
+  .case-body {
+    padding: 40px var(--content-gutter) 80px;
+  }
+
+  .case-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 24px;
+    margin: 0;
+  }
+
+  .case-meta dt {
+    margin-bottom: 8px;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--muted-foreground);
+    text-transform: uppercase;
+  }
+
+  .case-meta dd {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .case-links {
+    display: grid;
+    justify-items: start;
+    gap: 6px;
+    color: var(--muted-foreground);
+  }
+
+  .case-summary {
+    max-width: 62ch;
+    margin: 48px 0 0;
+    font-family: var(--font-display);
+    font-size: 22px;
+    line-height: 1.45;
   }
 
   @media (min-width: 641px) {
-    .project-sheet {
-      margin-block: 6svh;
-      padding: 44px 48px 48px;
+    .case-close {
+      top: 28px;
+      right: 5%;
     }
 
-    .project-sheet-header h2 {
-      font-size: 48px;
+    .case-hero-text {
+      padding-bottom: 56px;
+    }
+
+    .case-body {
+      padding-top: 56px;
+    }
+
+    .case-meta {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .case-summary {
+      font-size: 30px;
     }
   }
 
+  /* The cover opens up from roughly the size it had in the showcase. */
   @media (prefers-reduced-motion: no-preference) {
-    .project-dialog[open] .project-sheet {
-      animation: project-sheet-in 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    .project-dialog[open] .case-cover {
+      animation: case-cover-open 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    .project-dialog[open] .case-hero-text,
+    .project-dialog[open] .case-body {
+      animation: case-rise 0.7s 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
     }
 
     .project-dialog[open]::backdrop {
-      animation: project-backdrop-in 0.3s ease-out;
+      animation: case-fade 0.4s ease-out;
     }
   }
 
-  @keyframes project-sheet-in {
+  @keyframes case-cover-open {
+    from {
+      clip-path: inset(18% 14% 10% 14% round 18px);
+    }
+
+    to {
+      clip-path: inset(0 round 0);
+    }
+  }
+
+  @keyframes case-rise {
     from {
       opacity: 0;
       transform: translateY(40px);
     }
   }
 
-  @keyframes project-backdrop-in {
+  @keyframes case-fade {
     from {
       opacity: 0;
     }
