@@ -46,14 +46,19 @@ export function ProjectCase({ origin, onClose }: { origin: CaseOrigin; onClose: 
     lockScroll(true);
     closeRef.current?.focus({ preventScroll: true });
     if (prefersReducedMotion()) return () => lockScroll(false);
-    const tween = gsap.fromTo(
-      root,
-      { clipPath: `circle(0px at ${at})` },
-      { clipPath: `circle(150% at ${at})`, duration: 1.1, ease: "expo.inOut", clearProps: "clipPath" },
-    );
-    gsap.from(".case-close", { scale: 0, duration: 0.6, ease: "back.out(2)", delay: 0.8 });
+    // In a context so a second run (React StrictMode in dev) starts clean: two overlapping
+    // `from` tweens would leave the buttons frozen at their starting point.
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        root,
+        { clipPath: `circle(0px at ${at})` },
+        { clipPath: `circle(150% at ${at})`, duration: 1.1, ease: "expo.inOut", clearProps: "clipPath" },
+      );
+      gsap.from(".case-close", { scale: 0, duration: 0.6, ease: "back.out(2)", delay: 0.8 });
+      gsap.from(".case-visit", { yPercent: 160, duration: 0.9, ease: "back.out(1.6)", delay: 1.1 });
+    }, root);
     return () => {
-      tween.kill();
+      ctx.revert();
       lockScroll(false);
     };
   }, [at]);
@@ -154,6 +159,7 @@ export function ProjectCase({ origin, onClose }: { origin: CaseOrigin; onClose: 
       return;
     }
     gsap.to(".case-close", { scale: 0, duration: 0.3 });
+    gsap.to(".case-visit", { yPercent: 160, duration: 0.3, ease: "power2.in" });
     gsap.fromTo(
       root,
       { clipPath: `circle(150% at ${at})` },
@@ -220,6 +226,12 @@ export function ProjectCase({ origin, onClose }: { origin: CaseOrigin; onClose: 
       <button ref={closeRef} type="button" className="case-close" data-cursor="Cerrar" onClick={close}>
         Cerrar ✕
       </button>
+      {/* Always on screen while reading the case study, in the project's own colours. */}
+      {project.liveUrl ? (
+        <a className="case-visit" href={project.liveUrl} target="_blank" rel="noreferrer" data-cursor="Abrir">
+          Ver sitio <span aria-hidden="true">↗</span>
+        </a>
+      ) : null}
       <div className="case-inner" key={project.id}>
         <div>
           <span className="mono case-reveal">Proyecto {projectNumber(index)}</span>
