@@ -30,9 +30,7 @@ más adelante.
 
 ## Sobre mí
 
-- [ ] **SENA, Técnico en Sistemas.** Falta la fecha para agregarlo a "Experiencia y estudios"
-      (`experience` en `src/data/profile.ts`). Está en LinkedIn.
-- [ ] Revisar con LinkedIn los demás estudios y certificados, y sus fechas exactas.
+- [ ] Confirmar que el técnico laboral de la UNAB fue el de Misión TIC 2022 (así quedó escrito).
 - [ ] Opcional: mostrar el inglés (B1) en algún lugar de la sección.
 
 ## General
