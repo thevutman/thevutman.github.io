@@ -154,6 +154,8 @@
 
   .case-inner {
     display: grid;
+    /* minmax(0, 1fr): the gallery's long track must not widen the column. */
+    grid-template-columns: minmax(0, 1fr);
     align-content: space-between;
     gap: 60px;
     min-height: 100%;
@@ -185,9 +187,283 @@
   }
 
   .case-cover {
+    overflow: hidden;
+    border-radius: 22px;
+    transform-origin: 50% 0;
+    will-change: transform;
+  }
+
+  .case-cover img {
+    display: block;
     width: 100%;
     height: auto;
-    border-radius: 22px;
+  }
+
+  /* ---------- Gallery: desktop screens in browser frames ---------- */
+  .gallery-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .gallery-wrap {
+    margin: 0 calc(var(--gutter) * -1);
+    padding: 10px var(--gutter) 30px;
+    overflow: hidden;
+  }
+
+  .gallery-wrap.is-native {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .gallery-track {
+    display: flex;
+    gap: 28px;
+    width: max-content;
+  }
+
+  .gallery-item {
+    flex: none;
+    width: min(62vw, 880px);
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--p-fg) 12%, var(--p-bg));
+    box-shadow: 0 30px 60px -30px rgb(0 0 0 / 55%);
+    scroll-snap-align: start;
+    cursor: inherit;
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+
+  .gallery-item:hover {
+    transform: translateY(-8px);
+  }
+
+  .gallery-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    user-select: none;
+  }
+
+  .frame-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 34px;
+    padding: 0 14px;
+    color: var(--p-fg);
+  }
+
+  .frame-bar i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.35;
+  }
+
+  .frame-bar span {
+    margin: 0 auto;
+    padding: 3px 14px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--p-fg) 10%, transparent);
+    font-family: var(--mono);
+    font-size: 11px;
+    opacity: 0.8;
+  }
+
+  .gallery-progress {
+    display: block;
+    height: 2px;
+    background: color-mix(in srgb, var(--p-fg) 18%, transparent);
+  }
+
+  .gallery-progress span {
+    display: block;
+    height: 100%;
+    background: var(--p-fg);
+    transform: scaleX(0.25);
+    transform-origin: 0 50%;
+  }
+
+  /* ---------- Phones ---------- */
+  .phones-row {
+    display: flex;
+    justify-content: center;
+    gap: clamp(20px, 6vw, 90px);
+    padding: 40px 0 80px;
+    perspective: 1200px;
+  }
+
+  .phone {
+    flex: none;
+    width: clamp(180px, 22vw, 290px);
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: inherit;
+  }
+
+  .phone-body {
+    display: block;
+    overflow: hidden;
+    padding: 10px;
+    border-radius: 42px;
+    background: #111;
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--p-fg) 25%, transparent),
+      0 40px 80px -30px rgb(0 0 0 / 60%);
+    transform-style: preserve-3d;
+  }
+
+  .phone-body img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 32px;
+  }
+
+  /* ---------- Stack chips ---------- */
+  .case-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .case-chip {
+    padding: 10px 18px;
+    border: 1px solid color-mix(in srgb, var(--p-fg) 35%, transparent);
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 500;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
+  }
+
+  .case-chip:hover {
+    background: var(--p-fg);
+    color: var(--p-bg);
+  }
+
+  /* ---------- Next project ---------- */
+  .case-next {
+    position: relative;
+    display: grid;
+    gap: 14px;
+    width: 100%;
+    padding: 50px 40px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 28px;
+    background: var(--p-bg);
+    color: var(--p-fg);
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--p-fg) 15%, transparent);
+  }
+
+  .case-next-name {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(44px, 8vw, 130px);
+    font-weight: 700;
+    letter-spacing: -0.06em;
+    line-height: 0.9;
+  }
+
+  .case-next-name .word {
+    overflow: hidden;
+    padding-bottom: 0.1em;
+  }
+
+  .case-next-peek {
+    position: absolute;
+    right: 40px;
+    bottom: -40%;
+    width: min(34vw, 420px);
+    border-radius: 16px;
+    transform: rotate(-6deg) translateY(30%);
+    transition: transform 0.8s var(--ease-out-expo);
+  }
+
+  .case-next:hover .case-next-peek {
+    transform: rotate(-2deg) translateY(-20%);
+  }
+
+  /* ---------- Zoom ---------- */
+  .zoom {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    padding: 70px 80px;
+    background: rgb(10 10 10 / 92%);
+    color: #fff;
+  }
+
+  .zoom img {
+    max-width: 100%;
+    max-height: calc(100vh - 160px);
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 40px 100px rgb(0 0 0 / 60%);
+  }
+
+  .zoom img.is-mobile {
+    border-radius: 28px;
+  }
+
+  .zoom-caption {
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    opacity: 0.75;
+  }
+
+  .zoom-close,
+  .zoom-nav {
+    position: absolute;
+    border: 0;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 12%);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .zoom-close {
+    top: 22px;
+    right: var(--gutter);
+    padding: 12px 20px;
+  }
+
+  .zoom-nav {
+    top: 50%;
+    width: 52px;
+    height: 52px;
+    font-size: 20px;
+    transform: translateY(-50%);
+  }
+
+  .zoom-nav.is-prev {
+    left: 16px;
+  }
+
+  .zoom-nav.is-next {
+    right: 16px;
+  }
+
+  .zoom-close:hover,
+  .zoom-nav:hover {
+    background: rgb(255 255 255 / 24%);
   }
 
   .case-sections {
@@ -249,6 +525,43 @@
     .case-meta,
     .case-sections {
       grid-template-columns: 1fr;
+    }
+
+    .gallery-item {
+      width: 84vw;
+    }
+
+    .phones-row {
+      justify-content: flex-start;
+      overflow-x: auto;
+      padding: 30px var(--gutter) 50px;
+      margin: 0 calc(var(--gutter) * -1);
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .phone {
+      width: 62vw;
+      scroll-snap-align: center;
+    }
+
+    .case-next {
+      padding: 36px 24px 120px;
+    }
+
+    .case-next-peek {
+      right: 20px;
+      width: 60vw;
+    }
+
+    .zoom {
+      padding: 70px 12px 60px;
+    }
+
+    .zoom-nav {
+      top: auto;
+      bottom: 14px;
+      transform: none;
     }
   }
 }

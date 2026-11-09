@@ -3,6 +3,7 @@ import notflixCover from "@/assets/projects/notflix.webp";
 import steamBurgerCover from "@/assets/projects/steam-burger.webp";
 import valeriaCover from "@/assets/projects/valeria-velasco.webp";
 import type { Tone } from "@/data/profile";
+import { screens, type Screen } from "@/data/screens";
 
 /**
  * Portfolio projects.
@@ -39,6 +40,8 @@ export type Project = {
   summary?: string;
   technologies?: string[];
   cover?: ProjectImage;
+  /** More captures of the live site for the case study: desktop ones go in the gallery, phone ones in the phones. */
+  screens?: Screen[];
   caseStudy?: CaseStudy;
   liveUrl?: string;
   repositoryUrl?: string;
@@ -76,6 +79,13 @@ export const projects: Project[] = [
       solution:
         "Hoy está publicado con la API en Render y la base en MongoDB Atlas. Tiene 13 películas y 3 series de cortos de dominio público, Mi lista, búsqueda, conteo real de reproducciones y un botón de invitado para recorrerlo sin registrarse.",
     },
+    screens: screens([
+      ["notflix-login", "Inicio de sesión de Notflix con el botón para entrar como invitado"],
+      ["notflix-home", "Inicio de Notflix con las filas de películas y series"],
+      ["notflix-detail", "Detalle de Viaje a la Luna con el botón Play y el corazón de Mi lista"],
+      ["notflix-m-home", "Inicio de Notflix en el celular"],
+      ["notflix-m-detail", "Detalle de una película en el celular"],
+    ]),
     liveUrl: "https://notflix-v2.vercel.app",
     repositoryUrl: "https://github.com/thevutman/NotflixV2",
   },
@@ -104,6 +114,14 @@ export const projects: Project[] = [
       solution:
         "Un sitio editorial y rápido, con SEO por página y sitemap, que Valeria administra sin ayuda. Cada historia nueva aparece en el sitio con solo publicarla en el CMS.",
     },
+    screens: screens([
+      ["valeria-home", "Portada del sitio de Valeria Velasco con una pareja en Zúrich"],
+      ["valeria-portfolio", "Sección de historias en la página de inicio"],
+      ["valeria-stories", "Página de historias con cada boda"],
+      ["valeria-story", "Galería de fotos dentro de una historia"],
+      ["valeria-m-home", "Portada del sitio en el celular"],
+      ["valeria-m-story", "Una historia de boda en el celular"],
+    ]),
     liveUrl: "https://weddingportfolio-pi.vercel.app",
     repositoryUrl: "https://github.com/valevelasco/weddingportfolio",
   },
@@ -132,6 +150,14 @@ export const projects: Project[] = [
       solution:
         "Hoy tiene menú completo, carrito, pedido a domicilio o para recoger y una página de seguimiento que avanza sola. La cocina tiene su panel con contraseña y un modo demo para que cualquiera pruebe los dos lados: pide en una pestaña y mueve el pedido en la otra.",
     },
+    screens: screens([
+      ["steam-menu", "Menú completo de Steam Burger con los precios en botones rojos"],
+      ["steam-cart", "Carrito abierto con una Premium Burger y unas papas"],
+      ["steam-tracking", "Seguimiento en vivo de un pedido, en el paso En la plancha"],
+      ["steam-kitchen", "Panel de la cocina con las columnas de pedidos en vivo"],
+      ["steam-m-home", "Inicio de Steam Burger en el celular"],
+      ["steam-m-menu", "Menú en el celular"],
+    ]),
     liveUrl: "https://steam-burger.vercel.app",
     repositoryUrl: "https://github.com/thevutman/SteamBurger",
   },
@@ -168,6 +194,13 @@ export const projects: Project[] = [
       solution:
         "Ahora el huésped elige cabaña, fechas y personas; el sitio no deja fechas pasadas ni más personas de las que caben, calcula las noches y el valor, y abre WhatsApp con la reserva escrita, que es como el hospedaje trabaja de verdad. Tiene página de contacto, visor de fotos, título por página y datos estructurados para Google.",
     },
+    screens: screens([
+      ["cabanas-detail", "Mosaico de fotos de la Cabaña Duquesa"],
+      ["cabanas-chalets", "Lista de cabañas con capacidad, servicios y precio por noche"],
+      ["cabanas-contact", "Formulario de reserva que abre WhatsApp"],
+      ["cabanas-m-home", "Inicio de Cabañas La Marquesa en el celular"],
+      ["cabanas-m-booking", "Precio y formulario de reserva en el celular"],
+    ]),
     liveUrl: "https://cabanaslamarquesa.vercel.app",
     repositoryUrl: "https://github.com/thevutman/cabanaslamarquesa",
   },

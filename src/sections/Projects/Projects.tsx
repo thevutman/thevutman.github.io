@@ -218,8 +218,9 @@ export function Projects() {
       {open ? (
         <ProjectCase
           origin={open}
-          onClose={() => {
-            const row = rowRefs.current[open.index];
+          onClose={(shown) => {
+            // Focus goes back to the row of the project on screen, which may be a later one.
+            const row = rowRefs.current[shown];
             setOpen(null);
             row?.focus({ preventScroll: true });
           }}
