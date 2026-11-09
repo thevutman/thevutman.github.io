@@ -1,4 +1,5 @@
 import notflixCover from "@/assets/projects/notflix.webp";
+import valeriaCover from "@/assets/projects/valeria-velasco.webp";
 import type { Tone } from "@/data/profile";
 
 /**
@@ -73,7 +74,33 @@ export const projects: Project[] = [
     liveUrl: "https://notflix-v2.vercel.app",
     repositoryUrl: "https://github.com/thevutman/NotflixV2",
   },
-  { id: "proyecto-dos", name: "Proyecto Dos", type: "E-commerce", year: "2025", tone: "sage" },
+  {
+    id: "valeria-velasco-photography",
+    name: "Valeria Velasco",
+    type: "Sitio para cliente",
+    year: "2026",
+    tone: "peach",
+    role: "Diseño y desarrollo",
+    summary:
+      "El portafolio de una fotógrafa de bodas en Suiza: editorial, en tres idiomas y con un CMS para que ella misma publique cada boda sin tocar código.",
+    technologies: ["React", "TypeScript", "Vite", "Tailwind", "Sanity CMS", "GSAP", "i18n EN · FR · DE"],
+    cover: {
+      src: valeriaCover,
+      alt: "Portada del sitio de Valeria Velasco Photography con una novia en una escalera de Zúrich",
+      width: 1600,
+      height: 1100,
+    },
+    caseStudy: {
+      context:
+        "Valeria, mi hermana, es fotógrafa de bodas en Suiza y necesitaba un sitio que vendiera su trabajo a parejas que hablan inglés, francés o alemán, y que pudiera actualizar sola cada vez que entrega una boda.",
+      process:
+        "Diseñé las cinco páginas (inicio, sobre mí, enfoque, historias y cada historia) y las construí con Atomic Design, rutas del lado del cliente y una capa de traducción propia para los tres idiomas. Cada boda vive en Sanity: ella sube las fotos y el texto, y la página se arma sola. Le dejé una guía en español para el día a día.",
+      solution:
+        "Un sitio editorial y rápido, con SEO por página y sitemap, que Valeria administra sin ayuda. Cada historia nueva aparece en el sitio con solo publicarla en el CMS.",
+    },
+    liveUrl: "https://weddingportfolio-pi.vercel.app",
+    repositoryUrl: "https://github.com/valevelasco/weddingportfolio",
+  },
   { id: "proyecto-tres", name: "Proyecto Tres", type: "API y panel", year: "2025", tone: "taupe" },
   { id: "proyecto-cuatro", name: "Proyecto Cuatro", type: "Juego web", year: "2024", tone: "clay" },
   {
