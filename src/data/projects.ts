@@ -1,3 +1,4 @@
+import cabanasCover from "@/assets/projects/cabanas-la-marquesa.webp";
 import notflixCover from "@/assets/projects/notflix.webp";
 import steamBurgerCover from "@/assets/projects/steam-burger.webp";
 import valeriaCover from "@/assets/projects/valeria-velasco.webp";
@@ -136,6 +137,33 @@ export const projects: Project[] = [
     type: "Herramienta",
     year: "2024",
     tone: "olive",
+  },
+  {
+    id: "cabanas-la-marquesa",
+    name: "Cabañas La Marquesa",
+    type: "Sitio para cliente",
+    year: "2022 · 2026",
+    tone: "sage",
+    role: "Diseño y desarrollo",
+    summary:
+      "El sitio de un hospedaje con bar en Coconuco, Cauca: sus cabañas con precios y fotos reales, y una reserva que valida las fechas y abre WhatsApp con la solicitud ya escrita.",
+    technologies: ["React", "TypeScript", "Vite", "Tailwind", "React Router", "SEO local"],
+    cover: {
+      src: cabanasCover,
+      alt: "Inicio de Cabañas La Marquesa: el logo, el menú y una cabaña de ladrillo con balcón frente a la montaña",
+      width: 1600,
+      height: 1100,
+    },
+    caseStudy: {
+      context:
+        "Fue uno de mis primeros clientes: lo hice en 2022 en HTML y en 2023 lo pasé a React con webpack, pero quedó en beta. Tenía Lorem ipsum, precios que no cuadraban, fotos de villas sacadas de internet, un botón de reserva que no hacía nada y un enlace a una página de contacto que no existía. El sitio publicado se veía en blanco.",
+      process:
+        "Lo terminé sin cambiarle la cara: el mismo logo, el verde lima, Raleway, las fotos con sombra, el slider, el mosaico de cada cabaña y el footer negro, con las mismas rutas. Lo pasé a Vite, React 19 y TypeScript, dejé solo las fotos reales del lugar en WebP, ordené los datos de las cinco cabañas y quité las librerías que se cargaban desde CDN.",
+      solution:
+        "Ahora el huésped elige cabaña, fechas y personas; el sitio no deja fechas pasadas ni más personas de las que caben, calcula las noches y el valor, y abre WhatsApp con la reserva escrita, que es como el hospedaje trabaja de verdad. Tiene página de contacto, visor de fotos, título por página y datos estructurados para Google.",
+    },
+    liveUrl: "https://cabanaslamarquesa.vercel.app",
+    repositoryUrl: "https://github.com/thevutman/cabanaslamarquesa",
   },
 ];
 
