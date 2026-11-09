@@ -1,0 +1,50 @@
+@layer components {
+  .nav {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: var(--z-nav);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px var(--gutter);
+    color: #fff;
+    mix-blend-mode: difference;
+  }
+
+  .nav-brand b {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-brand span {
+    font-size: 13px;
+    opacity: 0.7;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .nav-cta {
+    display: inline-flex;
+    padding: 12px 20px;
+    border: 1px solid rgb(255 255 255 / 55%);
+    border-radius: 999px;
+  }
+
+  @media (max-width: 760px) {
+    .nav {
+      padding-block: 16px;
+    }
+
+    .nav-links .roll {
+      display: none;
+    }
+  }
+}

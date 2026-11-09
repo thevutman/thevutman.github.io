@@ -1,9 +1,11 @@
+import type { Tone } from "@/data/profile";
+
 /**
  * Portfolio projects.
  *
- * The four entries below are placeholders that mirror the original design.
- * Replace each one with a real project: fill in the fields you have and leave
- * the rest out — empty case-study sections are simply not rendered.
+ * The five entries below are placeholders. Replace each one with a real
+ * project: fill in what you have and leave the rest out — empty case-study
+ * sections and links are simply not rendered.
  */
 
 export type ProjectImage = {
@@ -15,52 +17,46 @@ export type ProjectImage = {
 
 export type CaseStudy = {
   context?: string;
-  goals?: string;
   process?: string;
-  decisions?: string;
   solution?: string;
 };
 
 export type Project = {
   id: string;
   name: string;
-  summary: string;
-  /** Kind of project shown in the meta line, e.g. "Aplicación web". */
-  type?: string;
-  /** When it was finished, e.g. "Abril 2025". */
-  date?: string;
-  /** What you did, e.g. "Full Stack". */
+  /** Kind of project, e.g. "Aplicación web". */
+  type: string;
+  year: string;
+  /** Background of the hover preview and the case study. */
+  tone: Exclude<Tone, "ink">;
   role?: string;
-  disciplines: string[];
-  technologies: string[];
+  summary?: string;
+  technologies?: string[];
   cover?: ProjectImage;
-  gallery?: ProjectImage[];
   caseStudy?: CaseStudy;
   liveUrl?: string;
   repositoryUrl?: string;
-  /** Marks example content so the UI labels it as pending. */
-  isPlaceholder?: boolean;
 };
 
 export const caseStudySections: { key: keyof CaseStudy; title: string }[] = [
-  { key: "context", title: "Contexto y problema" },
-  { key: "goals", title: "Objetivos" },
+  { key: "context", title: "Contexto" },
   { key: "process", title: "Proceso" },
-  { key: "decisions", title: "Decisiones técnicas y de diseño" },
-  { key: "solution", title: "Solución final" },
+  { key: "solution", title: "Resultado" },
 ];
 
-const placeholder = (index: number): Project => ({
-  id: `proyecto-${index}`,
-  name: "Nombre del proyecto",
-  summary: "Descripción pendiente",
-  role: "Full Stack",
-  disciplines: [],
-  technologies: [],
-  isPlaceholder: true,
-});
-
-export const projects: Project[] = [placeholder(1), placeholder(2), placeholder(3), placeholder(4)];
+export const projects: Project[] = [
+  { id: "proyecto-uno", name: "Proyecto Uno", type: "Aplicación web", year: "2026", tone: "peach" },
+  { id: "proyecto-dos", name: "Proyecto Dos", type: "E-commerce", year: "2025", tone: "sage" },
+  { id: "proyecto-tres", name: "Proyecto Tres", type: "API y panel", year: "2025", tone: "taupe" },
+  { id: "proyecto-cuatro", name: "Proyecto Cuatro", type: "Juego web", year: "2024", tone: "clay" },
+  {
+    id: "proyecto-cinco",
+    name: "Proyecto Cinco",
+    type: "Herramienta",
+    year: "2024",
+    tone: "olive",
+  },
+];
 
 /*
  * Example of a real entry (put the images in src/assets/projects/):
@@ -70,29 +66,20 @@ export const projects: Project[] = [placeholder(1), placeholder(2), placeholder(
  * {
  *   id: "mi-proyecto",
  *   name: "Mi proyecto",
- *   summary: "Una frase que explique el proyecto.",
  *   type: "Aplicación web",
- *   date: "Abril 2025",
+ *   year: "2025",
+ *   tone: "peach",
  *   role: "Full Stack",
- *   disciplines: ["Frontend", "Backend"],
+ *   summary: "Una frase que explique el proyecto.",
  *   technologies: ["React", "Node.js", "PostgreSQL"],
  *   cover: { src: cover, alt: "Pantalla principal de Mi proyecto", width: 1600, height: 1100 },
- *   caseStudy: { context: "…", solution: "…" },
+ *   caseStudy: { context: "…", process: "…", solution: "…" },
  *   liveUrl: "https://…",
  *   repositoryUrl: "https://github.com/…",
  * }
  */
 
-/** Two-digit position shown in the showcase and the case study, e.g. "01". */
+/** Two-digit position, e.g. "01". */
 export function projectNumber(index: number) {
   return String(index + 1).padStart(2, "0");
-}
-
-/** Type, date and role for the meta line; missing values show as pending. */
-export function projectMeta(project: Project) {
-  return [
-    project.type ?? "Tipo por definir",
-    project.date ?? "Fecha por definir",
-    project.role ?? "Rol por definir",
-  ];
 }

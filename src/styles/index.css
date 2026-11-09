@@ -3,38 +3,52 @@
 @import "./tokens.css";
 
 @layer base {
-  * {
-    border-color: var(--color-border);
+  html.lenis,
+  html.lenis body {
+    height: auto;
   }
 
-  /* No `scroll-behavior: smooth` here: it would also smooth every position GSAP
-     writes while snapping and cut the snap short. */
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+
   body {
     margin: 0;
-    background-color: var(--background);
-    color: var(--foreground);
-    font-family: var(--font-sans);
-    letter-spacing: 0;
+    background: var(--paper-2);
+    color: var(--fg);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
     overflow-x: clip;
   }
 
+  /* Main slides off the fixed footer, which waits underneath (see Footer). */
+  main {
+    position: relative;
+    z-index: var(--z-main);
+    margin-bottom: var(--footer-h, 0px);
+    background: var(--bg);
+    color: var(--fg);
+  }
+
   a {
+    color: inherit;
+    text-decoration: none;
     -webkit-tap-highlight-color: transparent;
   }
 
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
   ::selection {
-    background: var(--moon);
-    color: var(--background);
+    background: var(--accent);
+    color: var(--ink);
   }
 
   :where(a, button):focus-visible {
-    outline: 2px solid var(--moon);
-    outline-offset: 5px;
-  }
-
-  /* Sections receive programmatic focus when reached from the navigation. */
-  :where(section, main, [data-focus-target]):focus {
-    outline: none;
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -42,77 +56,61 @@
     *::before,
     *::after {
       transition-duration: 0s !important;
+      animation-duration: 0s !important;
     }
   }
 }
 
 @layer components {
-  /* Shared reset for the text-style controls used across the site. */
-  .ui-control {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+  .mono {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .muted {
+    color: var(--muted);
+  }
+
+  /* Clips text that rises into place; the padding keeps descenders visible. */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
     white-space: nowrap;
-    border-radius: var(--radius-control);
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--foreground);
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-      color var(--duration-fast),
-      background-color var(--duration-fast);
   }
 
-  .ui-control svg {
-    width: 1rem;
-    height: 1rem;
-    flex-shrink: 0;
-    pointer-events: none;
+  /* Rolling link: the label slides up and an identical copy follows it. */
+  .roll {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    height: 1.2em;
+    line-height: 1.2em;
   }
 
-  .section-number {
-    font-size: 9px;
-    letter-spacing: 1.5px;
-    color: var(--muted-foreground);
+  .roll span {
+    display: block;
+    transition: transform 0.6s var(--ease-in-out);
   }
 
-  .detail-label {
-    margin: 0 0 10px;
-    font-size: 9px;
-    color: var(--muted-foreground);
+  .roll span + span {
+    position: absolute;
+    top: 100%;
+    left: 0;
   }
 
-  .content-band {
-    padding: 58px var(--content-gutter);
-    border-bottom: 1px solid var(--border);
-    scroll-margin-top: var(--section-scroll-margin);
-  }
-
-  @media (max-width: 640px) {
-    .section-number {
-      width: 100%;
-    }
-  }
-
-  @media (min-width: 641px) {
-    .content-band {
-      padding-block: 90px;
-    }
-  }
-
-  /* Inside a stacked panel a band fills the screen below the fixed header. */
-  @media (prefers-reduced-motion: no-preference) and (min-height: 560px) {
-    /* Positioned so the title card can cover the band. */
-    .content-band {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      box-sizing: border-box;
-      padding-block: calc(var(--header-height) + 24px) 32px;
-      border-bottom: 0;
-    }
+  .roll:hover span {
+    transform: translateY(-100%);
   }
 }

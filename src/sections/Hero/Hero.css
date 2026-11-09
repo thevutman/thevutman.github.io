@@ -1,390 +1,166 @@
 @layer components {
-  /* ---------- Frame ---------- */
-  .night-hero {
+  .hero {
     position: relative;
-    height: 94svh;
-    min-height: 650px;
-    max-height: 850px;
+    height: 100vh;
+    height: 100svh;
+    min-height: 640px;
     overflow: hidden;
-    isolation: isolate;
-    background: var(--background);
-  }
-
-  /* ---------- Landscape layers ---------- */
-  .landscape {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: var(--sky);
-  }
-
-  .scene-layer {
-    position: absolute;
-    inset: -30px;
-    will-change: transform;
-  }
-
-  .parallax-plane {
-    position: absolute;
-    inset: 0;
-    will-change: transform;
-  }
-
-  .stars {
-    width: 100%;
-    height: 100%;
-    fill: var(--moon);
-    stroke: var(--moon);
-    stroke-width: 0.6;
-  }
-
-  .moon {
-    position: absolute;
-    left: 66%;
-    top: 15%;
-    width: 103px;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: var(--moon);
-    box-shadow: var(--moon-glow);
-  }
-
-  /* On phones the wide planes overflow the viewport so the composition keeps
-     its proportions in portrait. */
-  .mountain-layer {
-    inset: 24% -70% -30px;
-  }
-
-  .distant-forest-layer {
-    inset: 37% -50% -30px;
-  }
-
-  .river-layer {
-    inset: 42% -52% -30px;
-  }
-
-  .near-forest-layer {
-    inset: 40% -46% -30px;
-  }
-
-  .landscape-image {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-  }
-
-  .mountain-image {
-    opacity: 0.69;
-  }
-
-  .river-image {
-    opacity: 0.58;
-  }
-
-  .forest {
-    width: 100%;
-    height: 100%;
-  }
-
-  .forest-far {
-    fill: var(--forest-far);
-  }
-
-  .forest-near {
-    fill: var(--forest-near);
-  }
-
-  .wolf-image {
-    position: absolute;
-    right: 13%;
-    bottom: 13%;
-    width: 135px;
-    height: auto;
-    filter: brightness(0.67);
-  }
-
-  .foreground-layer {
-    top: auto;
-    bottom: -45px;
-    height: 130px;
-  }
-
-  .foreground-layer svg {
-    width: 100%;
-    height: 100%;
-    fill: var(--background);
-  }
-
-  /* ---------- Identity ---------- */
-  .hero-identity {
-    position: absolute;
-    z-index: var(--z-hero-content);
-    top: 28%;
-    left: 7%;
-    right: 4%;
-  }
-
-  .hero-eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    margin: 0 0 24px 4px;
-    font-size: 8px;
-    font-weight: 500;
-    letter-spacing: 1.2px;
-    color: var(--foreground);
-  }
-
-  .small-line {
-    width: 26px;
-    height: 1px;
-    background: var(--foreground);
   }
 
   .hero-name {
+    --lh: 0.82;
+    --ls: -0.065em;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    z-index: 2;
     margin: 0;
-    font-family: var(--font-display);
-    font-size: 64px;
-    font-weight: 500;
-    line-height: 1.06;
-    letter-spacing: 0;
+    transform: translateY(-50%);
+    text-align: center;
+    pointer-events: none;
+    font-size: clamp(70px, 16vw, 280px);
+    font-weight: 700;
+    line-height: 0.82;
+    letter-spacing: -0.065em;
   }
 
-  .name-line {
-    display: block;
-    width: fit-content;
+  /* Head-room so the dot can hop above the letters without being clipped. */
+  .hero-name .line-mask {
+    padding-top: 0.35em;
+    margin-top: -0.35em;
   }
 
-  .last-name {
-    margin-top: 4px;
-    margin-left: 12%;
+  .hero-sub {
+    position: absolute;
+    left: 50%;
+    bottom: 20vh;
+    z-index: 2;
+    margin: 0;
+    transform: translateX(-50%);
+    width: max-content;
+    text-align: center;
+    font-size: 15px;
+    color: var(--muted);
   }
 
-  .name-period {
-    color: var(--moon);
+  .drag-hint {
+    position: absolute;
+    left: var(--gutter);
+    bottom: 96px;
+    z-index: 2;
   }
 
-  .specialty {
-    display: flex;
+  .skills {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chip-wrap {
+    position: absolute;
+    z-index: 3;
+  }
+
+  /* On narrow screens a chip shifts left by its own x%, so it never crosses the right edge. */
+  @media (max-width: 760px) {
+    .chip-wrap {
+      translate: calc(var(--x) * -1%) 0;
+    }
+  }
+
+  .chip {
+    display: inline-flex;
     align-items: center;
     gap: 10px;
-    margin-top: 24px;
-    margin-left: 13%;
+    padding: 14px 22px;
+    border-radius: 999px;
+    white-space: nowrap;
+    background: var(--tone);
+    color: var(--ink);
+    font-size: clamp(14px, 1.3vw, 19px);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    box-shadow: 0 24px 40px -22px rgb(27 26 24 / 45%);
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
   }
 
-  .specialty-mark {
-    font-size: 28px;
-    font-weight: 400;
-    color: var(--moon);
+  .chip:active {
+    cursor: grabbing;
   }
 
-  .specialty p {
-    margin: 0;
-    font-size: 12px;
-    line-height: 1.7;
-  }
-
-  .specialty p span {
-    display: block;
-    font-size: 11px;
-    color: var(--foreground);
-    opacity: 0.65;
-  }
-
-  /* ---------- Bottom bar ---------- */
-  .hero-bottom {
-    position: absolute;
-    z-index: var(--z-hero-controls);
-    left: 7%;
-    right: 7%;
-    bottom: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .explore-link {
-    height: 44px;
-    padding: 0;
-    gap: 13px;
-    border-radius: 0;
-    font-size: 9px;
-    letter-spacing: 1.7px;
-  }
-
-  .explore-circle {
-    display: grid;
-    place-items: center;
-    width: 41px;
-    height: 41px;
-    border: 1px solid var(--border);
+  .chip i {
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
-    transition: transform var(--duration-base);
+    background: currentColor;
+    opacity: 0.5;
   }
 
-  .explore-link:hover .explore-circle {
-    transform: translateY(4px);
-    border-color: var(--foreground);
+  .chip.big {
+    padding: 22px 32px;
+    border-radius: 28px;
+    font-size: clamp(18px, 2vw, 30px);
   }
 
-  .bottom-caption {
-    display: none;
-    font-size: 11px;
-    color: var(--muted-foreground);
+  .chip.tone-ink {
+    color: var(--paper);
   }
 
-  .scene-index {
-    font-size: 9px;
-    letter-spacing: 1.5px;
+  .chip.is-outline {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--fg);
+    box-shadow: none;
   }
 
-  .scene-index span {
-    margin: 0 10px;
-    color: var(--muted-foreground);
+  .marquee {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    overflow: hidden;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
   }
 
-  /* ---------- Breakpoints ---------- */
-  @media (max-width: 360px) {
-    .hero-name {
-      font-size: 56px;
-    }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
   }
 
-  @media (min-width: 641px) {
-    .night-hero {
-      height: min(960px, 94svh);
-      min-height: 690px;
-      max-height: none;
-    }
+  .marquee-group {
+    display: flex;
+    white-space: nowrap;
+  }
 
-    .mountain-layer {
-      inset: 12% -30px -30px;
-    }
+  .marquee-group > span {
+    padding-right: 40px;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
 
-    .distant-forest-layer {
-      inset: 31% -30px -30px;
-    }
+  .marquee b {
+    color: var(--accent);
+    font-weight: 500;
+  }
 
-    .river-layer {
-      inset: 27% -30px -30px;
-    }
-
-    .near-forest-layer {
-      inset: 30% -30px -30px;
-    }
-
-    .moon {
-      left: 70%;
-      top: 16%;
-      width: 154px;
-    }
-
-    .wolf-image {
-      right: 15%;
-      bottom: 10%;
-      width: 175px;
-    }
-
-    .hero-identity {
-      top: 24%;
-      left: 7%;
-      right: 7%;
-    }
-
-    .hero-eyebrow {
-      gap: 14px;
-      margin-bottom: 25px;
-      font-size: 10px;
-      letter-spacing: 2px;
-    }
-
-    .hero-name {
-      font-size: 100px;
-      line-height: 0.98;
-    }
-
-    .last-name {
-      margin-left: 15%;
-    }
-
-    .specialty {
-      gap: 15px;
-      margin-top: 28px;
-      margin-left: 16%;
-    }
-
-    .specialty-mark {
-      font-size: 32px;
-    }
-
-    .specialty p {
+  @media (max-width: 760px) {
+    .chip,
+    .chip.big {
+      padding: 10px 16px;
       font-size: 14px;
     }
 
-    .specialty p span {
-      font-size: 12px;
-    }
-
-    .hero-bottom {
-      left: 5%;
-      right: 5%;
-      bottom: 32px;
-    }
-
-    .bottom-caption {
-      display: block;
-    }
-  }
-
-  @media (min-width: 1001px) {
-    .moon {
-      left: 67%;
-      top: 14%;
-      width: 194px;
-    }
-
-    .wolf-image {
-      right: 18%;
-      width: 200px;
-    }
-
-    .hero-identity {
-      top: 22%;
-      left: 10%;
-    }
-
-    .hero-name {
-      font-size: 128px;
-    }
-  }
-
-  @media (min-width: 1600px) {
-    .moon {
-      width: 230px;
-    }
-
-    .wolf-image {
-      width: 230px;
-    }
-
-    .hero-name {
-      font-size: 156px;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .scene-layer,
-    .parallax-plane {
-      will-change: auto;
-    }
-  }
-
-  /* Inside its stacked panel the hero fills the screen exactly. */
-  @media (prefers-reduced-motion: no-preference) and (min-height: 560px) {
-    .night-hero {
-      height: 100%;
-      min-height: 0;
-      max-height: none;
+    .hero-sub {
+      bottom: 24vh;
     }
   }
 }

@@ -1,0 +1,56 @@
+@layer components {
+  .cursor,
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--z-cursor);
+    pointer-events: none;
+    border-radius: 50%;
+  }
+
+  .cursor {
+    width: 8px;
+    height: 8px;
+    margin: -4px 0 0 -4px;
+    background: #fff;
+    mix-blend-mode: difference;
+  }
+
+  .cursor-ring {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin: -22px 0 0 -22px;
+    border: 1px solid var(--ink);
+    color: var(--paper);
+    font: 500 10px var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .cursor-ring span {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  /* Hidden until the pointer first moves. */
+  .cursor,
+  .cursor-ring {
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .cursor.is-visible,
+  .cursor-ring.is-visible {
+    opacity: 1;
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    .cursor,
+    .cursor-ring {
+      display: none;
+    }
+  }
+}

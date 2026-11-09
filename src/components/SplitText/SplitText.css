@@ -1,0 +1,66 @@
+@layer components {
+  .split .word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .ch {
+    display: inline-block;
+    transform-origin: 50% 100%;
+    will-change: transform;
+  }
+
+  /*
+   * The dot of the i. Its parent sets --lh (line-height) and --ls
+   * (letter-spacing) so the dot lands where the font's own dot would be.
+   * Three layers, each animated by a different thing: the wrap counter-scales
+   * while the letter stretches on scroll, .tittle-pop springs when tapped and
+   * .tittle hops on its own.
+   */
+  .ch-i {
+    position: relative;
+  }
+
+  .tittle-wrap {
+    position: absolute;
+    left: calc(50% - var(--ls, 0em) / 2);
+    top: calc(var(--lh, 1) * 0.5em - 0.43em);
+    width: 0.19em;
+    height: 0.19em;
+    margin-left: -0.095em;
+  }
+
+  .tittle-wrap.is-interactive {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  /* A bigger, invisible hit area so the dot is easy to tap. */
+  .tittle-wrap.is-interactive::before {
+    content: "";
+    position: absolute;
+    inset: -60%;
+    border-radius: 50%;
+  }
+
+  .tittle-pop,
+  .tittle {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .tittle {
+    border-radius: 50%;
+    background: var(--accent);
+    transform-origin: 50% 100%;
+  }
+
+  .ripple {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 0.03em solid var(--c);
+    pointer-events: none;
+  }
+}

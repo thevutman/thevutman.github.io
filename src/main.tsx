@@ -3,13 +3,16 @@
 import "./styles/index.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { ScrollTrigger } from "@/lib/gsap";
 import { App } from "./App";
 
 const root = document.getElementById("root");
 if (!root) throw new Error("No se encontró el elemento #root");
 
-// Restoring the previous scroll position fights the pinned hero on reload.
-history.scrollRestoration = "manual";
+// The page always opens at the top, behind the loader. ScrollTrigger keeps its
+// own scroll memory, so it is told to forget it too.
+ScrollTrigger.clearScrollMemory("manual");
+window.scrollTo(0, 0);
 
 createRoot(root).render(
   <StrictMode>

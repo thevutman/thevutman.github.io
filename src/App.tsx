@@ -1,49 +1,48 @@
-import { useEffect } from "react";
-import { Footer } from "@/components/layout/Footer/Footer";
-import { Navbar } from "@/components/layout/Navbar/Navbar";
-import { StackPanel } from "@/components/layout/StackPanel/StackPanel";
-import { projects } from "@/data/projects";
-import { useStackPanels } from "@/hooks/useStackPanels";
-import { scrollToSection } from "@/lib/scrollToSection";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Cursor } from "@/components/Cursor/Cursor";
+import { Footer } from "@/components/Footer/Footer";
+import { Loader } from "@/components/Loader/Loader";
+import { Navbar } from "@/components/Navbar/Navbar";
+import { lockScroll, scrollToSection, startSmoothScroll } from "@/lib/smoothScroll";
 import { About } from "@/sections/About/About";
-import { Contact } from "@/sections/Contact/Contact";
 import { Hero } from "@/sections/Hero/Hero";
 import { Projects } from "@/sections/Projects/Projects";
 
 export function App() {
-  useStackPanels();
+  const [ready, setReady] = useState(false);
+  // With reduced motion the loader finishes before this effect runs.
+  const loaded = useRef(false);
 
-  // A shared link such as /#contacto is resolved once the panels are laid out,
-  // otherwise the browser's early jump lands at the wrong offset.
   useEffect(() => {
+    const stop = startSmoothScroll();
+    lockScroll(!loaded.current);
+    return () => {
+      stop();
+      lockScroll(false);
+    };
+  }, []);
+
+  // The loader is done: scrolling unlocks and a shared link such as
+  // /#contacto is honoured now that the page is laid out.
+  const onLoaded = useCallback(() => {
+    loaded.current = true;
+    lockScroll(false);
+    setReady(true);
     const id = decodeURIComponent(window.location.hash.slice(1));
-    if (!id) return;
-    const frame = requestAnimationFrame(() => scrollToSection(id));
-    return () => cancelAnimationFrame(frame);
+    if (id) requestAnimationFrame(() => scrollToSection(id));
   }, []);
 
   return (
     <>
+      <Cursor />
+      <Loader onDone={onLoaded} />
       <Navbar />
       <main>
-        {/* The hero breaks apart while the projects panel slides over it. */}
-        <StackPanel>
-          <Hero />
-        </StackPanel>
-        {/* Sections open with a title card (one step), then their content.
-            Projects add one step per extra project in the showcase. */}
-        <StackPanel steps={Math.max(projects.length, 1)}>
-          <Projects />
-        </StackPanel>
-        <StackPanel steps={1} mobileSteps={2}>
-          <About />
-        </StackPanel>
-        {/* The footer closes the last screen inside its panel. */}
-        <StackPanel steps={1}>
-          <Contact />
-          <Footer />
-        </StackPanel>
+        <Hero ready={ready} />
+        <Projects />
+        <About />
       </main>
+      <Footer />
     </>
   );
 }

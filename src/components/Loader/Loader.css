@@ -1,0 +1,62 @@
+@layer components {
+  .loader {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-loader);
+    pointer-events: none;
+  }
+
+  .loader-half {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50.5%;
+    background: var(--ink);
+  }
+
+  .loader-half.top {
+    top: 0;
+    transform-origin: 50% 0%;
+  }
+
+  .loader-half.bottom {
+    bottom: 0;
+    transform-origin: 50% 100%;
+  }
+
+  .loader-inner {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--paper);
+  }
+
+  .loader-name {
+    --lh: 1;
+    --ls: -0.045em;
+    margin: 0;
+    font-size: clamp(28px, 4.5vw, 64px);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.045em;
+  }
+
+  .loader-count {
+    position: absolute;
+    right: 32px;
+    bottom: 18px;
+    font-size: clamp(64px, 12vw, 180px);
+    font-weight: 600;
+    letter-spacing: -0.06em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .loader-line {
+    position: absolute;
+    left: 32px;
+    bottom: 32px;
+    color: rgb(239 235 228 / 60%);
+  }
+}

@@ -1,162 +1,260 @@
 @layer components {
-  .about-layout {
+  .about {
+    padding: 160px var(--gutter);
+  }
+
+  .statement {
+    max-width: 22ch;
+    margin: 30px 0 100px;
+    font-size: clamp(34px, 5.2vw, 84px);
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    line-height: 1.02;
+  }
+
+  .stats {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 44px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 120px;
   }
 
-  /* ---------- Personal presentation ---------- */
-  .about-highlight {
-    margin: 18px 0 22px;
-    font-family: var(--font-display);
-    font-size: 26px;
-    font-weight: 400;
-    line-height: 1.25;
-    color: var(--foreground);
-    text-wrap: balance;
+  .stat {
+    padding: 28px;
+    overflow: hidden;
+    border-radius: 26px;
+    background: var(--paper-2);
   }
 
-  .about-description {
+  .stat strong {
+    display: block;
+    font-size: clamp(64px, 9vw, 150px);
+    font-weight: 700;
+    letter-spacing: -0.07em;
+    line-height: 0.9;
+  }
+
+  .stat span {
+    display: block;
+    margin-top: 14px;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .about-block {
     display: grid;
-    gap: 14px;
-    max-width: 52ch;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+    padding: 50px 0;
+    border-top: 1px solid var(--line);
   }
 
-  .about-description p {
+  .block-label {
     margin: 0;
-    font-size: 13px;
-    line-height: 1.8;
-    color: var(--muted-foreground);
+    font-weight: 400;
   }
 
-  /* ---------- Information blocks ---------- */
-  .about-blocks {
+  /* ---------- Experience timeline ---------- */
+  .timeline {
+    --gut: 150px;
+    position: relative;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .about-block {
+  .tl-track {
+    position: absolute;
+    left: var(--gut);
+    top: 40px;
+    bottom: 40px;
+    width: 1px;
+    background: var(--line);
+  }
+
+  .tl-fill {
+    position: absolute;
+    left: -0.5px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    transform-origin: top;
+    transform: scaleY(0);
+  }
+
+  .tl-head {
+    position: absolute;
+    left: 0.5px;
+    top: 0;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+
+  .tl-item {
     position: relative;
     display: grid;
-    grid-template-columns: 28px minmax(0, 1fr);
-    gap: 12px;
-    padding: 22px 0;
-    border-bottom: 1px solid var(--border);
+    grid-template-columns: var(--gut) 1fr auto;
+    padding: 30px 0 56px;
   }
 
-  .about-block:first-child {
-    padding-top: 0;
+  .tl-year {
+    padding-right: 28px;
   }
 
-  /* Hover accent: a moonlit line drawn over the divider. */
-  .about-block::after {
+  .tl-yr {
+    display: block;
+    font-size: clamp(34px, 3.4vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.06em;
+    line-height: 0.9;
+  }
+
+  .tl-range {
+    display: block;
+    margin-top: 8px;
+  }
+
+  .tl-node {
+    position: absolute;
+    left: var(--gut);
+    top: 44px;
+    width: 13px;
+    height: 13px;
+    margin-left: -6px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1px solid var(--muted);
+    transition:
+      background 0.4s,
+      border-color 0.4s;
+  }
+
+  .tl-node.is-on {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* The current job keeps pulsing. */
+  .tl-item.is-current .tl-node.is-on::after {
     content: "";
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    height: 1px;
-    background: var(--moon);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    inset: -1px;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    animation: tl-pulse 1.8s ease-out infinite;
   }
 
-  .about-block-number {
-    padding-top: 3px;
-    font-size: 9px;
-    letter-spacing: 1.5px;
-    color: var(--muted-foreground);
-    transition: color var(--duration-base);
+  @keyframes tl-pulse {
+    to {
+      transform: scale(3.4);
+      opacity: 0;
+    }
   }
 
-  .about-block h3 {
-    margin: 0 0 10px;
+  .tl-body {
+    padding-left: 52px;
+  }
+
+  .tl-role {
+    margin: 0;
+    font-size: clamp(28px, 3.6vw, 54px);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+
+  .tl-body p {
+    max-width: 50ch;
+    margin: 14px 0 18px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .tl-tags,
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tl-tags {
+    gap: 8px;
+  }
+
+  .tl-tags li {
+    padding: 7px 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .tl-place {
+    padding-top: 10px;
+  }
+
+  .stack {
+    gap: 10px;
+  }
+
+  .stack li {
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: var(--paper-2);
     font-size: 15px;
     font-weight: 500;
   }
 
-  .about-block p {
-    margin: 0;
-    font-size: 12px;
-    line-height: 1.8;
-    color: var(--muted-foreground);
-  }
-
-  .about-block-lead {
-    color: var(--foreground);
-  }
-
-  @media (hover: hover) {
-    .about-block:hover::after {
-      transform: scaleX(1);
-    }
-
-    .about-block:hover .about-block-number {
-      color: var(--moon);
-    }
-  }
-
-  @media (min-width: 641px) {
-    .about-layout {
-      grid-template-columns: 1.2fr 1fr;
-      gap: 40px;
-    }
-
-    .about-highlight {
-      font-size: 30px;
-    }
-
-    .about-description p {
-      font-size: 14px;
-    }
-  }
-
-  @media (min-width: 1001px) {
-    .about-layout {
-      gap: 80px;
-    }
-
-    .about-highlight {
-      font-size: 36px;
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .about-block::after {
-      transition: none;
+    .tl-fill {
+      transform: none;
+    }
+
+    .tl-node {
+      background: var(--accent);
+      border-color: var(--accent);
     }
   }
 
-  /* ---------- Stacked scenes (see About.tsx) ---------- */
-  @media (prefers-reduced-motion: no-preference) and (min-height: 560px) {
-    /* Phones show the presentation and the blocks one after the other in the
-       same place. */
-    @media (max-width: 640px) {
-      .about-layout {
-        display: grid;
-      }
-
-      .about-main,
-      .about-blocks {
-        grid-area: 1 / 1;
-      }
-
-      .about-highlight {
-        margin-block: 12px 16px;
-        font-size: 22px;
-      }
+  @media (max-width: 760px) {
+    .about {
+      padding-block: 120px;
     }
 
-    @media (max-height: 820px) and (min-width: 641px) {
-      .about-block {
-        padding-block: 14px;
-      }
+    .stats {
+      grid-template-columns: 1fr;
+    }
 
-      .about-description p {
-        line-height: 1.65;
-      }
+    .about-block {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .timeline {
+      --gut: 0px;
+    }
+
+    .tl-item {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding-left: 30px;
+    }
+
+    .tl-body {
+      padding-left: 0;
+    }
+
+    .tl-place {
+      padding-top: 0;
     }
   }
 }

@@ -1,129 +1,227 @@
-import { useLayoutEffect, useRef, type RefObject } from "react";
-import { SectionTitle } from "@/components/ui/SectionTitle/SectionTitle";
-import { TitleCard } from "@/components/ui/TitleCard/TitleCard";
-import { projects } from "@/data/projects";
-import { gsap } from "@/lib/gsap";
-import { media } from "@/lib/motion";
-import { closestTrack, trackMetrics } from "@/lib/stack";
-import { titleCardScenes } from "@/lib/titleCard";
-import { ProjectShowcase } from "./ProjectShowcase";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { SplitText } from "@/components/SplitText/SplitText";
+import { projectNumber, projects } from "@/data/projects";
+import { gsap, hasFinePointer, prefersReducedMotion, ScrollTrigger } from "@/lib/gsap";
+import { ProjectCase, type CaseOrigin } from "./ProjectCase";
 import "./Projects.css";
 
-/** Rounded clip of a cover: hidden below its box, or fully shown. */
-const CLIP_HIDDEN = "inset(100% 0% 0% 0% round 18px)";
-const CLIP_SHOWN = "inset(0% 0% 0% 0% round 18px)";
+const darkTheme = {
+  "--bg": "#1b1a18",
+  "--fg": "#efebe4",
+  "--muted": "#8f8a80",
+  "--line": "rgba(239,235,228,.16)",
+};
+const lightTheme = {
+  "--bg": "#efebe4",
+  "--fg": "#1b1a18",
+  "--muted": "#7b766d",
+  "--line": "rgba(27,26,24,.14)",
+};
 
 /**
- * Scenes of the projects panel: the title card gives way to the first project,
- * then every resting step swaps in the next one. Its cover rises from below
- * over the previous one, the name and meta roll up and the backdrop takes the
- * new project's tone. Project k rests at time k + 1 of the timeline.
+ * Interactive list. The page turns ink-dark while it is on screen; a card in
+ * the project's colour follows the cursor and rolls to the hovered project
+ * like a slot machine; clicking opens the case study out of the click point.
  */
-function useShowcaseScenes(sectionRef: RefObject<HTMLElement | null>) {
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-    const track = section && closestTrack(section);
-    if (!section || !track) return;
-
-    const mm = gsap.matchMedia(section);
-    mm.add(media.stack, () => {
-      const items = gsap.utils.toArray<HTMLElement>(".showcase-item");
-      const ticks = gsap.utils.toArray<HTMLElement>(".showcase-tick");
-      const part = (item: HTMLElement | undefined, selector: string) =>
-        item ? gsap.utils.toArray<HTMLElement>(selector, item) : [];
-
-      const first = items[0];
-      gsap.set(part(first, ".showcase-backdrop"), { opacity: 0 });
-      gsap.set(ticks, { scaleX: 0.45, opacity: 0.35 });
-      gsap.set(ticks.slice(0, 1), { scaleX: 1, opacity: 1 });
-
-      const scenes = titleCardScenes(
-        track,
-        section,
-        ".showcase-index, .showcase-item:first-child .showcase-article > *",
-      ).to(part(first, ".showcase-backdrop"), { opacity: 1, duration: 0.5 }, 0.3);
-
-      items.slice(1).forEach((item, offset) => {
-        const previous = items[offset];
-        const at = offset + 1;
-
-        gsap.set(part(item, ".showcase-media"), { clipPath: CLIP_HIDDEN });
-        gsap.set(part(item, ".showcase-media-inner"), { scale: 1.3 });
-        gsap.set(part(item, ".showcase-mask-inner"), { yPercent: 110 });
-        gsap.set(part(item, ".showcase-backdrop"), { opacity: 0 });
-
-        scenes
-          .to(
-            part(previous, ".showcase-mask-inner"),
-            { yPercent: -110, duration: 0.4, stagger: 0.04, ease: "power3.in" },
-            at + 0.05,
-          )
-          .to(
-            part(previous, ".showcase-media"),
-            { scale: 0.9, opacity: 0.35, duration: 0.8, ease: "power2.inOut" },
-            at + 0.1,
-          )
-          .to(
-            part(item, ".showcase-media"),
-            { clipPath: CLIP_SHOWN, duration: 0.8, ease: "power3.inOut" },
-            at + 0.1,
-          )
-          .to(
-            part(item, ".showcase-media-inner"),
-            { scale: 1, duration: 0.8, ease: "power2.out" },
-            at + 0.1,
-          )
-          .to(
-            part(item, ".showcase-backdrop"),
-            { opacity: 1, duration: 0.6, ease: "none" },
-            at + 0.2,
-          )
-          .to(
-            part(item, ".showcase-mask-inner"),
-            { yPercent: 0, duration: 0.45, stagger: 0.05, ease: "power3.out" },
-            at + 0.45,
-          )
-          .to(
-            ticks.slice(offset, offset + 1),
-            { scaleX: 0.45, opacity: 0.35, duration: 0.3 },
-            at + 0.2,
-          )
-          .to(ticks.slice(at, at + 1), { scaleX: 1, opacity: 1, duration: 0.3 }, at + 0.4);
-      });
-      // Keep one full unit per project so resting points land on whole times.
-      scenes.to({}, { duration: 0.05 }, items.length - 0.05);
-
-      // Keyboard users tab through covers that may be hidden: scroll to the
-      // resting point that shows the focused project.
-      const showFocused = (event: FocusEvent) => {
-        const item = (event.target as Element).closest(".showcase-item");
-        const index = items.indexOf(item as HTMLElement);
-        if (index < 0) return;
-        const { start, height } = trackMetrics(track);
-        window.scrollTo({ top: start + (index + 1) * height, behavior: "instant" });
-      };
-      section.addEventListener("focusin", showFocused);
-      return () => section.removeEventListener("focusin", showFocused);
-    });
-    return () => mm.revert();
-  }, [sectionRef]);
-}
-
 export function Projects() {
-  const sectionRef = useRef<HTMLElement>(null);
-  useShowcaseScenes(sectionRef);
+  const rootRef = useRef<HTMLElement>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
+  const rowRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [open, setOpen] = useState<CaseOrigin | null>(null);
+
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const still = prefersReducedMotion();
+    let resetSkew: (() => void) | null = null;
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: root,
+        start: "top 55%",
+        end: "bottom 45%",
+        onToggle: (self) =>
+          gsap.to(document.documentElement, {
+            ...(self.isActive ? darkTheme : lightTheme),
+            duration: still ? 0 : 0.8,
+            ease: "power2.inOut",
+          }),
+      });
+      if (still) return;
+
+      gsap.from(".work-title .ch", {
+        yPercent: 120,
+        scaleY: 3,
+        duration: 1.3,
+        ease: "expo.out",
+        stagger: 0.04,
+        scrollTrigger: {
+          trigger: ".work-title",
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
+      });
+      gsap.utils.toArray<HTMLElement>(".row").forEach((row) => {
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: row,
+              start: "top 90%",
+              toggleActions: "play none none reverse",
+            },
+          })
+          .from(row.querySelector(".row-line"), { scaleX: 0, duration: 1.2, ease: "expo.inOut" })
+          .from(
+            row.querySelector(".row-name"),
+            { yPercent: 110, duration: 1, ease: "expo.out" },
+            0.25,
+          )
+          .from(
+            row.querySelectorAll(".mono, .row-arrow"),
+            { opacity: 0, x: -20, duration: 0.8, stagger: 0.1 },
+            0.4,
+          );
+      });
+
+      // Names lean with scroll velocity.
+      const skew = gsap.quickTo(".row-name", "skewY", { duration: 0.5 });
+      ScrollTrigger.create({
+        trigger: root,
+        start: "top bottom",
+        end: "bottom top",
+        onUpdate: (self) => skew(gsap.utils.clamp(-6, 6, self.getVelocity() / -250)),
+      });
+      resetSkew = () => skew(0);
+      ScrollTrigger.addEventListener("scrollEnd", resetSkew);
+    }, root);
+    return () => {
+      if (resetSkew) ScrollTrigger.removeEventListener("scrollEnd", resetSkew);
+      ctx.revert();
+      gsap.set(document.documentElement, lightTheme);
+    };
+  }, []);
+
+  // Preview card that follows the cursor.
+  useEffect(() => {
+    const preview = previewRef.current;
+    const list = rootRef.current?.querySelector<HTMLElement>(".rows");
+    if (!preview || !list || !hasFinePointer()) return;
+    const strip = preview.querySelector(".preview-strip");
+    const px = gsap.quickTo(preview, "x", { duration: 0.7, ease: "power3" });
+    const py = gsap.quickTo(preview, "y", { duration: 0.7, ease: "power3" });
+    const pr = gsap.quickTo(preview, "rotation", { duration: 0.6, ease: "power3" });
+    let lastX = 0;
+    const onMove = (event: PointerEvent) => {
+      px(event.clientX);
+      py(event.clientY);
+      pr(gsap.utils.clamp(-18, 18, (event.clientX - lastX) * 0.6));
+      lastX = event.clientX;
+    };
+    const onEnter = (event: PointerEvent) => {
+      gsap.set(preview, { x: event.clientX, y: event.clientY });
+      gsap.to(preview, { scale: 1, duration: 0.6, ease: "expo.out" });
+    };
+    const onLeave = () =>
+      gsap.to(preview, { scale: 0, rotation: 0, duration: 0.5, ease: "expo.in" });
+    const onOver = (event: PointerEvent) => {
+      const row = (event.target as Element).closest<HTMLElement>(".row");
+      if (row)
+        gsap.to(strip, {
+          yPercent: (-100 / projects.length) * Number(row.dataset.index),
+          duration: 0.8,
+          ease: "expo.out",
+        });
+    };
+    list.addEventListener("pointermove", onMove);
+    list.addEventListener("pointerenter", onEnter);
+    list.addEventListener("pointerleave", onLeave);
+    list.addEventListener("pointerover", onOver);
+    return () => {
+      list.removeEventListener("pointermove", onMove);
+      list.removeEventListener("pointerenter", onEnter);
+      list.removeEventListener("pointerleave", onLeave);
+      list.removeEventListener("pointerover", onOver);
+    };
+  }, []);
+
+  const openCase = (index: number, x: number, y: number) => {
+    gsap.to(previewRef.current, { scale: 0, duration: 0.3 });
+    setOpen({ index, x, y });
+  };
 
   return (
-    <section
-      ref={sectionRef}
-      className="portfolio-section content-band"
-      id="proyectos"
-      tabIndex={-1}
-      aria-labelledby="projects-title"
-    >
-      <TitleCard eyebrow="02 / PORTAFOLIO" title="Proyectos" />
-      <SectionTitle eyebrow="02 / PORTAFOLIO" title="Proyectos seleccionados" id="projects-title" />
-      <ProjectShowcase projects={projects} />
+    <section ref={rootRef} className="work" id="proyectos" aria-labelledby="work-title">
+      <div className="work-head">
+        <h2 className="work-title" id="work-title">
+          <span className="line-mask">
+            <SplitText text="Proyectos" />
+          </span>
+        </h2>
+        <span className="mono muted">({projectNumber(projects.length - 1)}) Selección</span>
+      </div>
+      <ul className="rows">
+        {projects.map((project, i) => (
+          <li key={project.id}>
+            <button
+              ref={(el) => {
+                rowRefs.current[i] = el;
+              }}
+              type="button"
+              className="row"
+              data-index={i}
+              data-cursor="Ver"
+              onClick={(event) => {
+                // Keyboard clicks have no pointer position: open from the row's centre.
+                const r = event.currentTarget.getBoundingClientRect();
+                const fromPointer = event.detail > 0;
+                openCase(
+                  i,
+                  fromPointer ? event.clientX : r.left + r.width / 2,
+                  fromPointer ? event.clientY : r.top + r.height / 2,
+                );
+              }}
+            >
+              <span className="row-line" />
+              <span className="row-inner">
+                <span className="mono muted">{projectNumber(i)}</span>
+                <span className="line-mask">
+                  <span className="row-name">{project.name}</span>
+                </span>
+                <span className="mono muted row-meta">
+                  {project.type} · {project.year}
+                </span>
+                <span className="row-arrow" aria-hidden="true">
+                  →
+                </span>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <div ref={previewRef} className="preview" aria-hidden="true">
+        <div className="preview-strip">
+          {projects.map((project, i) => (
+            <div key={project.id} style={{ background: `var(--${project.tone})` }}>
+              <span className="mono">
+                {projectNumber(i)} — {project.type}
+              </span>
+              {project.cover ? <img src={project.cover.src} alt="" /> : null}
+              <b>{project.name}</b>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {open ? (
+        <ProjectCase
+          origin={open}
+          onClose={() => {
+            const row = rowRefs.current[open.index];
+            setOpen(null);
+            row?.focus({ preventScroll: true });
+          }}
+        />
+      ) : null}
     </section>
   );
 }

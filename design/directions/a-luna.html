@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dirección A — Luna</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0b0d12;
+        --sky-top: #0c111b;
+        --sky-low: #1b2232;
+        --cream: #efe9dd;
+        --muted: #8b909b;
+        --line: rgb(239 233 221 / 14%);
+        --moon: #ece2cc;
+        --serif: "Fraunces", Georgia, serif;
+        --sans: "Inter", system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; }
+      body { background: var(--ink); color: var(--cream); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+      a { color: inherit; text-decoration: none; }
+
+      /* ---------- Navbar: floating glass pill with a sliding indicator ---------- */
+      .nav {
+        position: fixed; inset: 20px 24px auto; z-index: 10;
+        display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+        pointer-events: none;
+      }
+      .nav > * { pointer-events: auto; }
+      .mark { font-family: var(--serif); font-size: 22px; font-style: italic; letter-spacing: -0.02em; }
+      .mark span { color: var(--muted); }
+      .pill {
+        position: relative; display: flex; gap: 4px; padding: 6px;
+        border: 1px solid var(--line); border-radius: 999px;
+        background: rgb(12 17 27 / 78%); backdrop-filter: blur(14px) saturate(140%);
+      }
+      .pill a {
+        position: relative; z-index: 1; padding: 9px 16px; border-radius: 999px;
+        font-size: 13px; color: var(--muted); transition: color .3s;
+      }
+      .pill a.on { color: var(--ink); }
+      .indicator {
+        position: absolute; top: 6px; bottom: 6px; left: 0; border-radius: 999px;
+        background: var(--cream); transition: transform .45s cubic-bezier(.65,0,.35,1), width .45s cubic-bezier(.65,0,.35,1);
+      }
+      .status { justify-self: end; display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }
+      .status i { width: 7px; height: 7px; border-radius: 50%; background: #9fd6a8; box-shadow: 0 0 0 4px rgb(159 214 168 / 15%); }
+
+      /* ---------- Hero ---------- */
+      .hero { position: relative; height: 100vh; min-height: 640px; overflow: hidden; background: linear-gradient(var(--sky-top), var(--sky-low) 85%); }
+      .layer { position: absolute; inset: 0; will-change: transform; }
+      .stars circle { fill: var(--cream); }
+      .moon {
+        position: absolute; left: 50%; top: 18%; width: min(46vw, 520px); aspect-ratio: 1; margin-left: calc(min(46vw, 520px) / -2);
+        border-radius: 50%;
+        background: radial-gradient(circle at 38% 34%, #f6efdf, var(--moon) 45%, #cfc3a8 100%);
+        box-shadow: 0 0 120px 30px rgb(236 226 204 / 10%), 0 0 300px 80px rgb(236 226 204 / 5%);
+      }
+      .title {
+        position: absolute; inset: 0; display: grid; place-content: center; text-align: center;
+        mix-blend-mode: difference; color: var(--cream);
+      }
+      .title h1 {
+        margin: 0; font-family: var(--serif); font-weight: 300; line-height: .88; letter-spacing: -0.04em;
+        font-size: clamp(64px, 13vw, 210px);
+      }
+      .title h1 em { font-style: italic; }
+      .horizon { top: auto; height: 30%; }
+      .horizon svg { width: 100%; height: 100%; display: block; }
+      .meta {
+        position: absolute; left: 32px; right: 32px; bottom: 28px; display: flex; justify-content: space-between; align-items: end;
+        font-size: 12px; color: var(--muted); letter-spacing: .02em;
+      }
+      .meta strong { display: block; color: var(--cream); font-weight: 500; font-size: 14px; margin-bottom: 4px; }
+      .scroll-cue { display: flex; align-items: center; gap: 12px; }
+      .scroll-cue span { width: 1px; height: 40px; background: linear-gradient(var(--cream), transparent); animation: cue 2s infinite; transform-origin: top; }
+      @keyframes cue { 0% { transform: scaleY(0) } 50% { transform: scaleY(1) } 100% { transform: scaleY(1); opacity: 0 } }
+
+      /* ---------- Sample section ---------- */
+      .section { padding: 140px 8vw; border-top: 1px solid var(--line); }
+      .eyebrow { font-size: 12px; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; }
+      .section h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(40px, 6vw, 88px); letter-spacing: -0.03em; margin: 24px 0 64px; line-height: 1; }
+      .section h2 em { color: var(--muted); }
+      .row { display: grid; grid-template-columns: 60px 1fr auto; gap: 24px; align-items: baseline; padding: 28px 0; border-top: 1px solid var(--line); transition: padding .4s; }
+      .row:last-child { border-bottom: 1px solid var(--line); }
+      .row:hover { padding-left: 16px; }
+      .row b { font-family: var(--serif); font-weight: 400; font-size: clamp(24px, 3vw, 40px); }
+      .row small { color: var(--muted); font-size: 13px; }
+      .note { position: fixed; right: 20px; bottom: 20px; z-index: 20; padding: 10px 14px; border-radius: 10px; background: var(--cream); color: var(--ink); font-size: 12px; }
+
+      @media (max-width: 720px) {
+        .nav { grid-template-columns: auto 1fr; inset: 14px 14px auto; }
+        .pill { justify-self: end; }
+        .pill a { padding: 8px 10px; font-size: 12px; }
+        .status { display: none; }
+        .meta { left: 18px; right: 18px; }
+        .scroll-cue { display: none; }
+      }
+      @media (prefers-reduced-motion: reduce) { .layer { will-change: auto; } .scroll-cue span { animation: none; } }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <a class="mark" href="#">Santiago<span>.</span></a>
+      <nav class="pill" aria-label="Principal">
+        <span class="indicator" aria-hidden="true"></span>
+        <a href="#" class="active">Inicio</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#">Sobre mí</a>
+        <a href="#">Contacto</a>
+      </nav>
+      <span class="status"><i></i>Disponible para proyectos</span>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="layer" data-speed="0.15" data-depth="6"><svg class="stars" id="stars" width="100%" height="100%"></svg></div>
+        <div class="layer" data-speed="0.45" data-depth="14"><div class="moon"></div></div>
+        <div class="layer title" data-speed="0.25" data-depth="-8">
+          <h1>Santiago<br /><em>Velasco</em></h1>
+        </div>
+        <div class="layer horizon" data-speed="0.05" data-depth="22"><svg viewBox="0 0 1600 300" preserveAspectRatio="none"><path id="ridge-far" fill="#141a27" /></svg></div>
+        <div class="layer horizon" data-speed="0" data-depth="34"><svg viewBox="0 0 1600 300" preserveAspectRatio="none"><path id="ridge-near" fill="#0b0d12" /></svg></div>
+        <div class="meta">
+          <div><strong>Desarrollador Full Stack</strong>Interfaces cuidadas, lógica sólida.</div>
+          <div class="scroll-cue">Desliza <span></span></div>
+          <div style="text-align: right"><strong>Portafolio</strong>2026</div>
+        </div>
+      </section>
+
+      <section class="section" id="proyectos">
+        <span class="eyebrow">Proyectos seleccionados</span>
+        <h2>Trabajo reciente, <em>hecho con cuidado.</em></h2>
+        <a class="row" href="#"><small>01</small><b>Nombre del proyecto</b><small>Aplicación web · 2026</small></a>
+        <a class="row" href="#"><small>02</small><b>Nombre del proyecto</b><small>E-commerce · 2025</small></a>
+        <a class="row" href="#"><small>03</small><b>Nombre del proyecto</b><small>API & panel · 2025</small></a>
+      </section>
+    </main>
+
+    <div class="note">Dirección A — Luna · oscuro, serif, calma</div>
+
+    <script>
+      // Stars and ridges are generated once from fixed seeds.
+      const rand = (seed) => () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
+      const r = rand(7);
+      document.getElementById("stars").innerHTML = Array.from({ length: 140 }, () =>
+        `<circle cx="${(r() * 100).toFixed(2)}%" cy="${(r() * 70).toFixed(2)}%" r="${(r() * 1.1 + 0.3).toFixed(2)}" opacity="${(r() * 0.6 + 0.15).toFixed(2)}"/>`
+      ).join("");
+      function ridge(seed, base, amp) {
+        const n = rand(seed);
+        let d = `M0 300 L0 ${base}`;
+        for (let i = 0; i <= 64; i++) {
+          const x = (i / 64) * 1600;
+          const y = base - amp * (0.55 * Math.sin(i * 0.21 + seed) + 0.3 * Math.sin(i * 0.53 + seed * 2) + 0.15 * n());
+          d += ` L${x.toFixed(1)} ${y.toFixed(1)}`;
+        }
+        return d + " L1600 300 Z";
+      }
+      document.getElementById("ridge-far").setAttribute("d", ridge(3, 170, 70));
+      document.getElementById("ridge-near").setAttribute("d", ridge(11, 240, 50));
+
+      // Parallax: each layer moves with scroll (data-speed) and pointer (data-depth).
+      const layers = [...document.querySelectorAll("[data-speed]")];
+      const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let px = 0, py = 0, tx = 0, ty = 0;
+      addEventListener("pointermove", (e) => { px = e.clientX / innerWidth - 0.5; py = e.clientY / innerHeight - 0.5; });
+      (function frame() {
+        tx += (px - tx) * 0.06; ty += (py - ty) * 0.06;
+        const s = scrollY;
+        layers.forEach((l) => {
+          const sp = +l.dataset.speed, d = +(l.dataset.depth || 0);
+          l.style.transform = still ? "" : `translate3d(${tx * d}px, ${s * sp + ty * d * 0.5}px, 0)`;
+        });
+        document.querySelector(".title").style.opacity = Math.max(0, 1 - s / (innerHeight * 0.6));
+        requestAnimationFrame(frame);
+      })();
+
+      // Sliding indicator under the hovered or active link.
+      const pill = document.querySelector(".pill"), ind = pill.querySelector(".indicator");
+      const place = (a) => {
+        ind.style.width = a.offsetWidth + "px";
+        ind.style.transform = `translateX(${a.offsetLeft}px)`;
+        pill.querySelectorAll("a").forEach((link) => link.classList.toggle("on", link === a));
+      };
+      const active = pill.querySelector(".active");
+      document.fonts.ready.then(() => place(active));
+      pill.querySelectorAll("a").forEach((a) => a.addEventListener("pointerenter", () => place(a)));
+      pill.addEventListener("pointerleave", () => place(active));
+    </script>
+  </body>
+</html>

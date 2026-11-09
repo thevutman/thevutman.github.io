@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dirección C — Valle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Manrope:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --night: #0f1512;
+        --cream: #ece6d8;
+        --sage: #a9b8a0;
+        --muted: #87918a;
+        --line: rgb(236 230 216 / 14%);
+        --serif: "Cormorant Garamond", Georgia, serif;
+        --sans: "Manrope", system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; }
+      body { background: var(--night); color: var(--cream); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+      body.locked { overflow: hidden; }
+      a { color: inherit; text-decoration: none; }
+
+      /* ---------- Navbar: wordmark, tagline and a full-screen menu ---------- */
+      .nav {
+        position: fixed; inset: 0 0 auto; z-index: 30; height: 84px; padding: 0 36px;
+        display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+      }
+      .word { font-family: var(--serif); font-size: 24px; font-weight: 400; letter-spacing: .01em; }
+      .tag { font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--sage); }
+      .menu-btn {
+        justify-self: end; display: flex; align-items: center; gap: 14px; padding: 0; border: 0; background: none;
+        color: inherit; font: 500 12px var(--sans); letter-spacing: .18em; text-transform: uppercase; cursor: pointer;
+      }
+      .burger { position: relative; width: 28px; height: 10px; }
+      .burger::before, .burger::after {
+        content: ""; position: absolute; left: 0; right: 0; height: 1px; background: currentColor;
+        transition: transform .5s cubic-bezier(.65,0,.35,1), top .5s cubic-bezier(.65,0,.35,1);
+      }
+      .burger::before { top: 0; } .burger::after { top: 9px; }
+      .open .burger::before { top: 5px; transform: rotate(45deg); }
+      .open .burger::after { top: 5px; transform: rotate(-45deg); }
+      /* Above the open menu, so the close button stays visible. */
+      .word, .tag, .menu-btn { position: relative; z-index: 26; }
+      .progress { position: absolute; left: 0; bottom: 0; height: 1px; width: 100%; background: var(--sage); transform-origin: left; transform: scaleX(0); }
+
+      .overlay {
+        position: fixed; inset: 0; z-index: 25; display: grid; grid-template-rows: 1fr auto; padding: 120px 36px 36px;
+        background: #121a16; clip-path: inset(0 0 100% 0); transition: clip-path .8s cubic-bezier(.76,0,.24,1);
+      }
+      .open .overlay { clip-path: inset(0 0 0 0); }
+      .overlay ol { list-style: none; margin: 0; padding: 0; align-self: center; }
+      .overlay li { overflow: hidden; border-top: 1px solid var(--line); }
+      .overlay li:last-child { border-bottom: 1px solid var(--line); }
+      .overlay a {
+        display: flex; align-items: baseline; gap: 28px; padding: 14px 0;
+        font-family: var(--serif); font-weight: 300; font-size: clamp(44px, 8vw, 110px); line-height: 1;
+        transform: translateY(105%); transition: transform .8s cubic-bezier(.22,1,.36,1), color .3s, padding .5s;
+      }
+      .overlay a small { font: 400 12px var(--sans); color: var(--muted); letter-spacing: .1em; }
+      .overlay a:hover { color: var(--sage); padding-left: 20px; }
+      .open .overlay a { transform: translateY(0); }
+      .open .overlay li:nth-child(2) a { transition-delay: .06s; }
+      .open .overlay li:nth-child(3) a { transition-delay: .12s; }
+      .open .overlay li:nth-child(4) a { transition-delay: .18s; }
+      .overlay footer { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
+
+      /* ---------- Hero: the name sits between mountain layers ---------- */
+      .hero { position: relative; height: 112vh; min-height: 720px; overflow: hidden;
+        background: linear-gradient(#18221d 0%, #2b3a30 45%, #b8a888 78%, #d9c9a8 88%); }
+      .layer { position: absolute; left: 0; right: 0; bottom: 0; will-change: transform; }
+      .layer svg { display: block; width: 100%; height: 100%; }
+      .glow { inset: auto 0 18% 0; height: 50%; background: radial-gradient(ellipse at 50% 100%, rgb(255 236 200 / 55%), transparent 60%); }
+      .name {
+        top: 38%; bottom: auto; margin: 0; text-align: center; font-family: var(--serif); font-weight: 300; line-height: .85;
+        font-size: clamp(76px, 16vw, 270px); letter-spacing: -0.02em; color: var(--cream);
+      }
+      .name em { font-style: italic; color: #f4ead6; }
+      .fog { height: 40%; background: linear-gradient(transparent, rgb(200 200 185 / 22%) 55%, transparent); }
+      .intro {
+        position: absolute; left: 36px; right: 36px; bottom: 7vh; z-index: 5;
+        display: flex; justify-content: space-between; align-items: end; gap: 24px;
+      }
+      .intro p { max-width: 34ch; margin: 0; font-size: 15px; line-height: 1.7; color: var(--sage); }
+      .intro span { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+
+      /* ---------- Sample section ---------- */
+      .section { position: relative; padding: 120px 36px 160px; background: var(--night); }
+      .section .eyebrow { font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--sage); }
+      .section h2 { margin: 10px 0 70px; font-family: var(--serif); font-weight: 300; font-size: clamp(44px, 7vw, 110px); line-height: .95; }
+      .cards { display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; align-items: end; }
+      .cards a div { border-radius: 4px; background: linear-gradient(160deg, #26332b, #18201b); aspect-ratio: 4 / 3; transition: transform 1s cubic-bezier(.22,1,.36,1); }
+      .cards a:last-child div { aspect-ratio: 3 / 4; }
+      .cards a:hover div { transform: scale(.97); }
+      .cards p { display: flex; justify-content: space-between; margin: 16px 0 0; font-family: var(--serif); font-size: 26px; }
+      .cards p small { font: 400 12px var(--sans); color: var(--muted); letter-spacing: .08em; }
+      .note { position: fixed; right: 20px; bottom: 20px; z-index: 40; padding: 10px 14px; border-radius: 10px; background: var(--cream); color: var(--night); font-size: 12px; }
+
+      @media (max-width: 760px) {
+        .nav { padding: 0 18px; grid-template-columns: 1fr auto; }
+        .tag { display: none; }
+        .intro { left: 18px; right: 18px; flex-direction: column; align-items: start; }
+        .cards { grid-template-columns: 1fr; }
+        .overlay { padding: 110px 18px 24px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .layer { will-change: auto; }
+        .overlay, .overlay a { transition: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <a class="word" href="#">Santiago Velasco</a>
+      <span class="tag">Desarrollador Full Stack</span>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="overlay"><span class="label">Menú</span><span class="burger" aria-hidden="true"></span></button>
+      <span class="progress" aria-hidden="true"></span>
+      <div class="overlay" id="overlay">
+        <ol>
+          <li><a href="#">Inicio <small>01</small></a></li>
+          <li><a href="#proyectos">Proyectos <small>02</small></a></li>
+          <li><a href="#">Sobre mí <small>03</small></a></li>
+          <li><a href="#">Contacto <small>04</small></a></li>
+        </ol>
+        <footer><span>santiagovelascomosquera@hotmail.com</span><span>LinkedIn · GitHub</span></footer>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="layer glow" data-speed="0.55"></div>
+        <div class="layer" style="height: 62%" data-speed="0.5" data-depth="6"><svg viewBox="0 0 1600 400" preserveAspectRatio="none"><path id="r1" fill="#7e8a78" opacity=".55" /></svg></div>
+        <div class="layer" style="height: 55%" data-speed="0.42" data-depth="10"><svg viewBox="0 0 1600 400" preserveAspectRatio="none"><path id="r2" fill="#5b6a5c" opacity=".8" /></svg></div>
+        <h1 class="layer name" data-speed="0.38" data-depth="-6">Santiago<br /><em>Velasco</em></h1>
+        <div class="layer" style="height: 56%" data-speed="0.26" data-depth="16"><svg viewBox="0 0 1600 400" preserveAspectRatio="none"><path id="r3" fill="#38463b" /></svg></div>
+        <div class="layer fog" data-speed="0.2" data-depth="22"></div>
+        <div class="layer" style="height: 42%" data-speed="0.12" data-depth="26"><svg viewBox="0 0 1600 400" preserveAspectRatio="none"><path id="r4" fill="#1d2620" /></svg></div>
+        <div class="layer" style="height: 30%" data-speed="0" data-depth="34"><svg viewBox="0 0 1600 400" preserveAspectRatio="none"><path id="r5" fill="#0f1512" /></svg></div>
+        <div class="intro">
+          <p>Construyo productos web completos: interfaces cuidadas, lógica sólida y los servicios que las sostienen.</p>
+          <span>Desliza para explorar</span>
+        </div>
+      </section>
+
+      <section class="section" id="proyectos">
+        <span class="eyebrow">Proyectos seleccionados</span>
+        <h2>Lo que he<br />construido</h2>
+        <div class="cards">
+          <a href="#"><div></div><p>Nombre del proyecto <small>WEB · 2026</small></p></a>
+          <a href="#"><div></div><p>Nombre del proyecto <small>API · 2025</small></p></a>
+        </div>
+      </section>
+    </main>
+
+    <div class="note">Dirección C — Valle · verde profundo, serif clásica, capas</div>
+
+    <script>
+      // Mountain ridges from fixed seeds: softer and lower in the distance.
+      const rand = (seed) => () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
+      function ridge(seed, amp, rough) {
+        const n = rand(seed);
+        let d = `M0 400 L0 ${200}`;
+        for (let i = 0; i <= 80; i++) {
+          const x = (i / 80) * 1600;
+          const y = 200 - amp * (0.5 * Math.sin(i * 0.13 + seed) + 0.3 * Math.sin(i * 0.37 + seed * 1.7) + rough * (n() - 0.5));
+          d += ` L${x.toFixed(1)} ${y.toFixed(1)}`;
+        }
+        return d + " L1600 400 Z";
+      }
+      [["r1", 2, 120, 0.1], ["r2", 5, 110, 0.2], ["r3", 9, 95, 0.3], ["r4", 13, 80, 0.4], ["r5", 17, 60, 0.5]].forEach(
+        ([id, seed, amp, rough]) => document.getElementById(id).setAttribute("d", ridge(seed, amp, rough)),
+      );
+
+      // Parallax: distant layers lag behind the scroll more than near ones,
+      // so the nearer ridges rise over the name as the page moves.
+      const layers = [...document.querySelectorAll("[data-speed]")];
+      const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const progress = document.querySelector(".progress");
+      let px = 0, tx = 0;
+      addEventListener("pointermove", (e) => { px = e.clientX / innerWidth - 0.5; });
+      (function frame() {
+        tx += (px - tx) * 0.05;
+        const s = scrollY;
+        layers.forEach((l) => {
+          const sp = +l.dataset.speed, d = +(l.dataset.depth || 0);
+          l.style.transform = still ? "" : `translate3d(${tx * d}px, ${s * sp}px, 0)`;
+        });
+        progress.style.transform = `scaleX(${s / (document.documentElement.scrollHeight - innerHeight || 1)})`;
+        requestAnimationFrame(frame);
+      })();
+
+      // Full-screen menu.
+      const nav = document.getElementById("nav"), btn = nav.querySelector(".menu-btn");
+      const toggle = (open) => {
+        nav.classList.toggle("open", open);
+        document.body.classList.toggle("locked", open);
+        btn.setAttribute("aria-expanded", String(open));
+        btn.querySelector(".label").textContent = open ? "Cerrar" : "Menú";
+      };
+      btn.addEventListener("click", () => toggle(!nav.classList.contains("open")));
+      nav.querySelectorAll(".overlay a").forEach((a) => a.addEventListener("click", () => toggle(false)));
+      addEventListener("keydown", (e) => e.key === "Escape" && toggle(false));
+    </script>
+  </body>
+</html>

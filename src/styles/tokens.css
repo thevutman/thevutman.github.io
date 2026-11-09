@@ -1,80 +1,58 @@
 /*
  * Design tokens.
  *
- * Values come from the original nocturnal design. Raw values live on :root so
- * they can be read by plain CSS; the @theme block exposes them to Tailwind
- * (bg-sky, text-moon, font-display, …) without duplicating them.
+ * Light "paper" palette with earthy tones and one loud accent. --bg, --fg,
+ * --muted, --line and --accent are tweened by GSAP at runtime (the projects
+ * section turns the page ink-dark; tapping the dot of the i swaps the accent),
+ * so components must read them instead of hard-coding colours.
  */
 
 :root {
-  /* Palette */
-  --background: oklch(0.165 0.027 258);
-  --foreground: oklch(0.946 0.022 92);
-  --muted-foreground: oklch(0.68 0.021 245);
-  --accent: oklch(0.3 0.04 255);
-  --border: oklch(0.946 0.022 92 / 18%);
-  --sky: oklch(0.23 0.044 255);
-  --moon: oklch(0.942 0.039 91);
-  --forest-far: oklch(0.29 0.043 250);
-  --forest-near: oklch(0.193 0.032 253);
-  --project-cool: oklch(0.31 0.036 248);
-  --project-neutral: oklch(0.3 0.012 115);
-  --project-silver: oklch(0.36 0.018 230);
-  --project-deep: oklch(0.26 0.026 265);
-  /* Behind a stacked panel as it recedes under the next one. */
-  --stack-shade: oklch(0.1 0.02 258);
+  /* Theme (animated) */
+  --bg: #efebe4;
+  --fg: #1b1a18;
+  --muted: #7b766d;
+  --line: rgb(27 26 24 / 14%);
+  --accent: #ff4a1c;
 
-  /* Effects */
-  --moon-glow: 0 0 95px 20px oklch(0.81 0.04 90 / 9%);
-  --header-blur: blur(16px);
-  --radius-media: 4px;
-  --radius-control: 0.375rem;
+  /* Palette */
+  --paper: #efebe4;
+  --paper-2: #e3ddd2;
+  --ink: #1b1a18;
+  --taupe: #b9a890;
+  --sage: #a4afab;
+  --peach: #e6c8ae;
+  --clay: #c49f8a;
+  --olive: #8f9479;
+
+  /* Type */
+  --sans: "Inter Tight", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* Layout */
-  --content-gutter: 7%;
-  --header-height: 76px;
-  --section-scroll-margin: 100px;
-  /* Fixed so the last panel and the footer fill exactly one screen. */
-  --footer-height: 84px;
+  --gutter: 28px;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
 
   /* Depth */
-  --z-reveal: 2;
-  --z-hero-content: 3;
-  --z-hero-controls: 5;
-  --z-header: 15;
-  --z-skip-link: 20;
-
-  /* Motion (CSS transitions; GSAP timings live in src/lib/motion.ts) */
-  --duration-fast: 0.25s;
-  --duration-base: 0.3s;
+  --z-main: 1;
+  --z-preview: 40;
+  --z-nav: 60;
+  --z-case: 70;
+  --z-loader: 80;
+  --z-cursor: 90;
 }
 
-@media (min-width: 641px) {
+@media (max-width: 760px) {
   :root {
-    --content-gutter: 8%;
-    --header-height: 90px;
-    --footer-height: 72px;
+    --gutter: 18px;
   }
 }
 
 @theme {
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-
-  /* Breakpoints shared with src/lib/motion.ts (mobile-first). */
-  --breakpoint-md: 641px;
-  --breakpoint-lg: 1001px;
-  --breakpoint-2xl: 1600px;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted-foreground: var(--muted-foreground);
+  --font-sans: var(--sans);
+  --font-mono: var(--mono);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
   --color-accent: var(--accent);
-  --color-border: var(--border);
-  --color-sky: var(--sky);
-  --color-moon: var(--moon);
-  --color-forest-far: var(--forest-far);
-  --color-forest-near: var(--forest-near);
 }

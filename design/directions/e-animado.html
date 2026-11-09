@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dirección E — Todo animado</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        /* Theme colours are tweened by GSAP as sections change. */
+        --bg: #efebe4;
+        --fg: #1b1a18;
+        --muted: #7b766d;
+        --line: rgb(27 26 24 / 14%);
+        --paper: #efebe4;
+        --paper-2: #e3ddd2;
+        --ink: #1b1a18;
+        --taupe: #b9a890;
+        --sage: #a4afab;
+        --peach: #e6c8ae;
+        --clay: #c49f8a;
+        --olive: #8f9479;
+        /* The one loud colour: dot of the i, timeline, small details. */
+        --accent: #ff4a1c;
+        --sans: "Inter Tight", system-ui, sans-serif;
+        --mono: "JetBrains Mono", ui-monospace, monospace;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; }
+      body { overflow-x: clip; }
+      html.lenis { height: auto; }
+      body { background: var(--paper-2); color: var(--fg); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+      body.loading { overflow: hidden; }
+      a { color: inherit; text-decoration: none; }
+      button { font: inherit; color: inherit; }
+      .mono { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
+      .muted { color: var(--muted); }
+      .line-mask { display: block; overflow: hidden; padding-bottom: 0.14em; margin-bottom: -0.14em; }
+      .ch { display: inline-block; transform-origin: 50% 100%; will-change: transform; }
+      ::selection { background: var(--accent); color: var(--ink); }
+
+      /* The i is drawn dotless; its dot is a separate accent circle that can move on its own. */
+      .ch-i { position: relative; }
+      .tittle-wrap {
+        position: absolute; left: calc(50% - var(--ls, 0em) / 2); top: calc(var(--lh, 1) * 0.5em - var(--dot-lift, 0.43em));
+        width: 0.19em; height: 0.19em; margin-left: -0.095em;
+      }
+      /* Hero and footer dots are tappable: each tap swaps the site's accent colour. */
+      .hero-name .tittle-wrap, .wordmark .tittle-wrap { pointer-events: auto; cursor: pointer; }
+      .hero-name .tittle-wrap::before, .wordmark .tittle-wrap::before { content: ""; position: absolute; inset: -60%; border-radius: 50%; }
+      .tittle-pop { display: block; width: 100%; height: 100%; }
+      .ripple { position: absolute; inset: 0; border-radius: 50%; border: 0.03em solid var(--c); pointer-events: none; }
+      .tittle { display: block; width: 100%; height: 100%; border-radius: 50%; background: var(--accent); transform-origin: 50% 100%; }
+
+      /* ---------- Cursor ---------- */
+      .cursor, .cursor-ring { position: fixed; top: 0; left: 0; z-index: 90; pointer-events: none; border-radius: 50%; }
+      .cursor { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: var(--fg); mix-blend-mode: difference; filter: invert(1); }
+      .cursor-ring {
+        width: 44px; height: 44px; margin: -22px 0 0 -22px; border: 1px solid var(--fg);
+        display: grid; place-items: center; font: 500 10px var(--mono); letter-spacing: .06em; text-transform: uppercase;
+      }
+      .cursor-ring span { opacity: 0; transform: scale(.4); }
+      @media (hover: none) { .cursor, .cursor-ring { display: none; } }
+
+      /* ---------- Loader ---------- */
+      .loader { position: fixed; inset: 0; z-index: 80; pointer-events: none; }
+      .loader-half { position: absolute; left: 0; right: 0; height: 50.5%; background: var(--ink); }
+      .loader-half.top { top: 0; } .loader-half.bottom { bottom: 0; }
+      .loader-inner { position: absolute; inset: 0; display: grid; place-items: center; color: var(--paper); }
+      .loader-name { --lh: 1; --ls: -0.045em; margin: 0; font-size: clamp(28px, 4.5vw, 64px); font-weight: 600; line-height: 1; letter-spacing: -0.045em; }
+      .count { position: absolute; right: 32px; bottom: 18px; font-size: clamp(64px, 12vw, 180px); font-weight: 600; letter-spacing: -0.06em; line-height: 1; }
+      .loader-line { position: absolute; left: 32px; bottom: 32px; color: rgb(239 235 228 / 60%); }
+
+      /* ---------- Navbar ---------- */
+      .nav {
+        position: fixed; inset: 0 0 auto; z-index: 60; padding: 22px 28px;
+        display: flex; justify-content: space-between; align-items: center; mix-blend-mode: difference; color: #fff;
+      }
+      .brand b { display: block; font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
+      .brand span { font-size: 13px; opacity: .7; }
+      .links { display: flex; gap: 28px; align-items: center; font-size: 14px; font-weight: 500; }
+      .roll { position: relative; display: inline-block; overflow: hidden; height: 1.2em; line-height: 1.2em; }
+      .roll span { display: block; transition: transform .6s cubic-bezier(.76,0,.24,1); }
+      .roll span + span { position: absolute; top: 100%; left: 0; }
+      .roll:hover span { transform: translateY(-100%); }
+      .cta { display: inline-flex; padding: 12px 20px; border: 1px solid rgb(255 255 255 / 55%); border-radius: 999px; }
+
+      main { position: relative; z-index: 1; background: var(--bg); color: var(--fg); }
+
+      /* ---------- Hero: name + draggable skills ---------- */
+      .hero { position: relative; height: 100vh; min-height: 720px; overflow: hidden; }
+      .hero-name {
+        --lh: .82; --ls: -0.065em;
+        position: absolute; left: 0; right: 0; top: 50%; z-index: 2; margin: 0; text-align: center; pointer-events: none;
+        transform: translateY(-50%); font-size: clamp(70px, 16vw, 280px); font-weight: 700; line-height: .82; letter-spacing: -0.065em;
+      }
+      /* Head-room so the dot can hop above the letters without being clipped. */
+      .hero-name .line-mask { padding-top: .35em; margin-top: -.35em; }
+      .hero-sub { position: absolute; left: 50%; bottom: 20vh; z-index: 2; transform: translateX(-50%); text-align: center; font-size: 15px; color: var(--muted); }
+      .chip-wrap { position: absolute; z-index: 3; }
+      .chip {
+        display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; white-space: nowrap;
+        background: var(--tone); color: var(--ink); font-size: clamp(14px, 1.3vw, 19px); font-weight: 500; letter-spacing: -0.01em;
+        box-shadow: 0 24px 40px -22px rgb(27 26 24 / 45%); cursor: grab; touch-action: none; user-select: none;
+      }
+      .chip:active { cursor: grabbing; }
+      .chip i { width: 9px; height: 9px; border-radius: 50%; background: currentColor; opacity: .5; }
+      .chip.big { padding: 22px 32px; font-size: clamp(18px, 2vw, 30px); border-radius: 28px; }
+      .chip.dark { background: var(--ink); color: var(--paper); }
+      .chip.outline { background: transparent; border: 1px solid var(--line); color: var(--fg); box-shadow: none; }
+      .drag-hint { position: absolute; left: 28px; bottom: 96px; z-index: 2; }
+      .marquee { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; overflow: hidden; border-top: 1px solid var(--line); padding: 16px 0; }
+      .marquee-track { display: flex; width: max-content; will-change: transform; }
+      .marquee-track span { padding-right: 40px; font-size: 22px; font-weight: 500; letter-spacing: -0.02em; white-space: nowrap; }
+      .marquee-track b { color: var(--accent); font-weight: 500; }
+
+      /* ---------- Projects: interactive list + following preview ---------- */
+      .work { position: relative; padding: 160px 28px 180px; }
+      .work-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 70px; }
+      .big-title { margin: 0; font-size: clamp(56px, 11vw, 190px); font-weight: 700; letter-spacing: -0.065em; line-height: .85; }
+      .rows { list-style: none; margin: 0; padding: 0; }
+      .row { position: relative; cursor: pointer; }
+      .row-line { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--line); transform-origin: left; }
+      .rows .row:last-child::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); }
+      .row-inner { display: grid; grid-template-columns: 70px 1fr auto 40px; gap: 20px; align-items: center; padding: 26px 0; }
+      .row-name { display: block; font-size: clamp(34px, 6.4vw, 108px); font-weight: 600; letter-spacing: -0.055em; line-height: .95; transition: color .4s; }
+      /* The hover shift lives on the mask: GSAP owns the name's own transform. */
+      .row .line-mask { transition: transform .7s cubic-bezier(.76,0,.24,1); }
+      .row:hover .line-mask { transform: translateX(28px); }
+      .rows:hover .row:not(:hover) .row-name { color: var(--muted); }
+      .row-arrow { font-size: 26px; transition: transform .6s cubic-bezier(.76,0,.24,1); }
+      .row:hover .row-arrow { transform: rotate(-45deg); }
+      .preview {
+        position: fixed; top: 0; left: 0; z-index: 40; width: 300px; height: 380px; margin: -190px 0 0 -150px;
+        border-radius: 22px; overflow: hidden; pointer-events: none; transform: scale(0);
+      }
+      .preview-strip { display: flex; flex-direction: column; }
+      .preview-strip div { height: 380px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; color: var(--ink); }
+      .preview-strip b { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; }
+
+      .case { position: fixed; inset: 0; z-index: 70; display: none; overflow-y: auto; color: var(--ink); }
+      .case-inner { min-height: 100%; padding: 110px 28px 60px; display: grid; align-content: space-between; gap: 60px; }
+      .case-title { margin: 0; font-size: clamp(60px, 13vw, 230px); font-weight: 700; letter-spacing: -0.065em; line-height: .84; }
+      .case-meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; border-top: 1px solid rgb(27 26 24 / 20%); padding-top: 24px; }
+      .case-meta b { display: block; margin-top: 8px; font-size: 16px; font-weight: 500; }
+      .case-close {
+        position: fixed; top: 22px; right: 28px; z-index: 71; padding: 12px 20px; border-radius: 999px; border: 0;
+        background: var(--ink); color: var(--paper); cursor: pointer; display: none;
+      }
+
+      /* ---------- About ---------- */
+      .about { padding: 160px 28px; }
+      .statement { margin: 30px 0 100px; max-width: 22ch; font-size: clamp(34px, 5.2vw, 84px); font-weight: 600; letter-spacing: -0.05em; line-height: 1.02; }
+      .statement .w { display: inline-block; margin-right: .22em; }
+      .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 120px; }
+      .stat { padding: 28px; border-radius: 26px; background: var(--paper-2); overflow: hidden; }
+      .stat strong { display: block; font-size: clamp(64px, 9vw, 150px); font-weight: 700; letter-spacing: -0.07em; line-height: .9; }
+      .stat span { display: block; margin-top: 14px; font-size: 15px; color: var(--muted); }
+      .block { display: grid; grid-template-columns: 220px 1fr; gap: 40px; padding: 50px 0; border-top: 1px solid var(--line); }
+      /* ---------- Experience timeline ---------- */
+      .timeline { --gut: 150px; position: relative; }
+      .tl-track { position: absolute; left: var(--gut); top: 40px; bottom: 40px; width: 1px; background: var(--line); }
+      .tl-fill { position: absolute; left: -0.5px; top: 0; bottom: 0; width: 2px; background: var(--accent); transform-origin: top; transform: scaleY(0); }
+      .tl-head {
+        position: absolute; left: 0.5px; top: 0; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%;
+        background: var(--accent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 22%, transparent);
+      }
+      .tl-item { position: relative; display: grid; grid-template-columns: var(--gut) 1fr auto; padding: 30px 0 56px; }
+      .tl-year { padding-right: 28px; }
+      .tl-yr { display: block; font-size: clamp(34px, 3.4vw, 52px); font-weight: 700; letter-spacing: -0.06em; line-height: .9; }
+      .tl-range { display: block; margin-top: 8px; }
+      .tl-node {
+        position: absolute; left: var(--gut); top: 44px; width: 13px; height: 13px; margin-left: -6px; border-radius: 50%;
+        background: var(--bg); border: 1px solid var(--muted); transition: background .4s, border-color .4s;
+      }
+      .tl-node.on { background: var(--accent); border-color: var(--accent); }
+      .tl-item.now .tl-node.on::after {
+        content: ""; position: absolute; inset: -1px; border-radius: 50%; border: 1px solid var(--accent); animation: pulse 1.8s ease-out infinite;
+      }
+      @keyframes pulse { to { transform: scale(3.4); opacity: 0; } }
+      .tl-body { padding-left: 52px; }
+      .tl-role { margin: 0; font-size: clamp(28px, 3.6vw, 54px); font-weight: 600; letter-spacing: -0.045em; line-height: 1; }
+      .tl-body p { margin: 14px 0 18px; max-width: 50ch; font-size: 16px; line-height: 1.5; color: var(--muted); }
+      .tl-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+      .tl-tags li { padding: 7px 13px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; font-weight: 500; }
+      .tl-place { padding-top: 10px; }
+      .stack { display: flex; flex-wrap: wrap; gap: 10px; }
+      .stack span { padding: 12px 18px; border-radius: 999px; background: var(--paper-2); font-size: 15px; font-weight: 500; }
+
+      /* ---------- Footer revealed underneath ---------- */
+      .footer { position: fixed; left: 0; right: 0; bottom: 0; z-index: 0; padding: 80px 28px 0; background: var(--paper-2); color: var(--ink); display: grid; gap: 56px; overflow: hidden; }
+      .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+      .cols .mono { display: block; margin-bottom: 18px; color: var(--muted); }
+      .cols a { display: block; width: fit-content; font-size: clamp(22px, 2.4vw, 34px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.3; }
+      .legal { display: flex; justify-content: space-between; color: var(--muted); }
+      .wordmark { --lh: .76; --ls: -0.07em; margin: 0; width: fit-content; font-weight: 700; letter-spacing: -0.07em; line-height: .76; white-space: nowrap; }
+      .note { position: fixed; left: 50%; bottom: 18px; z-index: 75; transform: translateX(-50%); padding: 10px 14px; border-radius: 10px; background: var(--ink); color: var(--paper); font-size: 12px; mix-blend-mode: normal; display: flex; align-items: center; gap: 12px; white-space: nowrap; }
+
+      @media (max-width: 760px) {
+        .nav { padding: 16px 18px; }
+        .links .roll { display: none; }
+        .row-inner { grid-template-columns: 40px 1fr 24px; }
+        .row-inner .mono:nth-child(3) { display: none; }
+        .stats, .cols, .case-meta { grid-template-columns: 1fr; }
+        .block { grid-template-columns: 1fr; gap: 10px; }
+        .timeline { --gut: 0px; }
+        .tl-item { grid-template-columns: 1fr; gap: 12px; padding-left: 30px; }
+        .tl-body { padding-left: 0; }
+        .tl-place { padding-top: 0; }
+        .work, .about, .footer { padding-left: 18px; padding-right: 18px; }
+        .preview { display: none; }
+      }
+    </style>
+  </head>
+  <body class="loading">
+    <div class="cursor" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"><span></span></div>
+
+    <div class="loader" aria-hidden="true">
+      <div class="loader-half top"></div>
+      <div class="loader-half bottom"></div>
+      <div class="loader-inner">
+        <p class="loader-name"><span class="line-mask"><span class="split dot-i">santiago velasco</span></span></p>
+        <span class="loader-line mono">Compilando ideas…</span>
+        <span class="count">0</span>
+      </div>
+    </div>
+
+    <header class="nav">
+      <a class="brand" href="#" data-cursor="Inicio"><b>Santiago Velasco</b><span>Desarrollador Full Stack</span></a>
+      <nav class="links" aria-label="Principal">
+        <a class="roll" href="#proyectos"><span>Proyectos</span><span aria-hidden="true">Proyectos</span></a>
+        <a class="roll" href="#sobre-mi"><span>Sobre mí</span><span aria-hidden="true">Sobre mí</span></a>
+        <a class="cta magnetic" href="#contacto" data-cursor="Hola">Hablemos ↗</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="inicio">
+        <h1 class="hero-name">
+          <span class="line-mask"><span class="split dot-i">Santiago</span></span>
+          <span class="line-mask"><span class="split">Velasco</span></span>
+        </h1>
+        <p class="hero-sub reveal-up">Construyo productos web completos,<br />de la interfaz al servidor.</p>
+        <span class="drag-hint mono muted reveal-up">↖ Arrastra mis skills</span>
+        <div class="skills"></div>
+        <div class="marquee">
+          <div class="marquee-track"></div>
+        </div>
+      </section>
+
+      <section class="work" id="proyectos">
+        <div class="work-head">
+          <h2 class="big-title"><span class="line-mask"><span class="split stretch-in">Proyectos</span></span></h2>
+          <span class="mono muted">(05) Selección</span>
+        </div>
+        <ul class="rows"></ul>
+      </section>
+
+      <section class="about" id="sobre-mi">
+        <span class="mono muted">(02) Sobre mí</span>
+        <p class="statement">Me interesa entender cómo funciona un producto en todas sus capas, de la interfaz que tocas a la lógica que la sostiene.</p>
+        <div class="stats">
+          <div class="stat"><strong data-count="3">0</strong><span>años programando</span></div>
+          <div class="stat"><strong data-count="12">0</strong><span>proyectos construidos</span></div>
+          <div class="stat"><strong data-count="10">0</strong><span>tecnologías en mi día a día</span></div>
+        </div>
+        <div class="block">
+          <span class="mono muted">Experiencia</span>
+          <div class="timeline">
+            <div class="tl-track"><div class="tl-fill"></div><div class="tl-head"></div></div>
+            <article class="tl-item now">
+              <span class="tl-node"></span>
+              <div class="tl-year"><span class="line-mask"><span class="tl-yr split">Hoy</span></span><span class="line-mask"><span class="tl-range mono muted">2025 — Actual</span></span></div>
+              <div class="tl-body">
+                <h3 class="tl-role"><span class="line-mask"><span class="split">Cargo por completar</span></span></h3>
+                <p>Empresa o proyecto. Qué construiste, para quién y qué cambió gracias a eso.</p>
+                <ul class="tl-tags"><li>React</li><li>Node.js</li><li>PostgreSQL</li></ul>
+              </div>
+              <span class="tl-place mono muted">Remoto</span>
+            </article>
+            <article class="tl-item">
+              <span class="tl-node"></span>
+              <div class="tl-year"><span class="line-mask"><span class="tl-yr split">2024</span></span><span class="line-mask"><span class="tl-range mono muted">2024 — 2025</span></span></div>
+              <div class="tl-body">
+                <h3 class="tl-role"><span class="line-mask"><span class="split">Cargo por completar</span></span></h3>
+                <p>Empresa o proyecto. Un logro concreto, con números si los tienes.</p>
+                <ul class="tl-tags"><li>TypeScript</li><li>APIs REST</li><li>Docker</li></ul>
+              </div>
+              <span class="tl-place mono muted">Ciudad</span>
+            </article>
+            <article class="tl-item">
+              <span class="tl-node"></span>
+              <div class="tl-year"><span class="line-mask"><span class="tl-yr split">2023</span></span><span class="line-mask"><span class="tl-range mono muted">2023 — 2024</span></span></div>
+              <div class="tl-body">
+                <h3 class="tl-role"><span class="line-mask"><span class="split">Proyectos freelance</span></span></h3>
+                <p>Sitios y aplicaciones para clientes, de la idea al despliegue.</p>
+                <ul class="tl-tags"><li>JavaScript</li><li>GSAP</li><li>Figma</li></ul>
+              </div>
+              <span class="tl-place mono muted">—</span>
+            </article>
+          </div>
+        </div>
+        <div class="block">
+          <span class="mono muted">Stack</span>
+          <div class="stack">
+            <span>React</span><span>TypeScript</span><span>JavaScript</span><span>Node.js</span><span>PostgreSQL</span><span>Docker</span><span>Git</span><span>GSAP</span><span>Tailwind</span><span>Figma</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" id="contacto">
+      <div class="cols">
+        <div><span class="mono">Navegación</span><a class="roll" href="#proyectos"><span>Proyectos</span><span aria-hidden="true">Proyectos</span></a><br /><a class="roll" href="#sobre-mi"><span>Sobre mí</span><span aria-hidden="true">Sobre mí</span></a></div>
+        <div><span class="mono">Redes</span><a href="https://www.linkedin.com/in/santiago-velasco-mosquera/" data-cursor="Abrir">LinkedIn ↗</a><a href="https://github.com/thevutman" data-cursor="Abrir">GitHub ↗</a></div>
+        <div><span class="mono">Contacto</span><a href="mailto:santiagovelascomosquera@hotmail.com" data-cursor="Escribir">Escríbeme ↗</a></div>
+      </div>
+      <div class="legal mono"><span>©2026 Santiago Velasco</span><span>Hecho con React + GSAP</span></div>
+      <p class="wordmark"><span class="split dot-i">santiago velasco</span></p>
+    </footer>
+
+    <button class="case-close" type="button" data-cursor="Cerrar">Cerrar ✕</button>
+    <div class="case" role="dialog" aria-modal="true" aria-label="Caso de estudio">
+      <div class="case-inner">
+        <div><span class="mono case-num">Proyecto 01</span><h2 class="case-title"></h2></div>
+        <div class="case-meta">
+          <div><span class="mono">Tipo</span><b class="case-type"></b></div>
+          <div><span class="mono">Rol</span><b>Full Stack</b></div>
+          <div><span class="mono">Año</span><b class="case-year"></b></div>
+          <div><span class="mono">Explorar</span><b>Sitio · GitHub</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">Dirección E · toca el punto de la i</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/InertiaPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script>
+      gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin);
+      const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+      /* ---------- Content ---------- */
+      const skills = [
+        { t: "React", tone: "var(--peach)", size: "big", x: 8, y: 16 },
+        { t: "TypeScript", tone: "var(--sage)", x: 30, y: 12 },
+        { t: "Node.js", tone: "var(--ink)", dark: true, size: "big", x: 70, y: 14 },
+        { t: "PostgreSQL", tone: "var(--taupe)", x: 84, y: 34 },
+        { t: "GSAP", tone: "var(--clay)", x: 6, y: 62 },
+        { t: "Docker", tone: "var(--olive)", x: 74, y: 64 },
+        { t: "Git", outline: true, x: 24, y: 80 },
+        { t: "Tailwind", tone: "var(--sage)", x: 60, y: 84 },
+        { t: "APIs REST", outline: true, x: 50, y: 18 },
+        { t: "Figma", tone: "var(--peach)", x: 88, y: 76 },
+      ];
+      const projects = [
+        { name: "Proyecto Uno", type: "Aplicación web", year: "2026", tone: "var(--peach)" },
+        { name: "Proyecto Dos", type: "E-commerce", year: "2025", tone: "var(--sage)" },
+        { name: "Proyecto Tres", type: "API y panel", year: "2025", tone: "var(--taupe)" },
+        { name: "Proyecto Cuatro", type: "Juego web", year: "2024", tone: "var(--clay)" },
+        { name: "Proyecto Cinco", type: "Herramienta", year: "2024", tone: "var(--olive)" },
+      ];
+
+      document.querySelector(".skills").innerHTML = skills.map((s) => `
+        <div class="chip-wrap" style="left:${s.x}%;top:${s.y}%"><div class="chip-float">
+          <div class="chip ${s.size === "big" ? "big" : ""} ${s.dark ? "dark" : ""} ${s.outline ? "outline" : ""}" style="--tone:${s.tone || "transparent"}" data-cursor="Arrastra"><i></i>${s.t}</div>
+        </div></div>`).join("");
+
+      const marqueeText = skills.map((s) => `${s.t} <b>✦</b> `).join("");
+      document.querySelector(".marquee-track").innerHTML = `<span>${marqueeText}</span><span>${marqueeText}</span>`;
+
+      document.querySelector(".rows").innerHTML = projects.map((p, i) => `
+        <li class="row" data-index="${i}" data-cursor="Ver">
+          <span class="row-line"></span>
+          <div class="row-inner">
+            <span class="mono muted">0${i + 1}</span>
+            <span class="line-mask"><span class="row-name">${p.name}</span></span>
+            <span class="mono muted">${p.type} · ${p.year}</span>
+            <span class="row-arrow">→</span>
+          </div>
+        </li>`).join("");
+
+      const preview = document.createElement("div");
+      preview.className = "preview";
+      preview.innerHTML = `<div class="preview-strip">${projects.map((p, i) => `
+        <div style="background:${p.tone}"><span class="mono">0${i + 1} — ${p.type}</span><b>${p.name}</b></div>`).join("")}</div>`;
+      document.body.append(preview);
+
+      /* Splits text into characters so each one can move and stretch on its own. */
+      document.querySelectorAll(".split").forEach((el) => {
+        const text = el.textContent;
+        const dotI = el.classList.contains("dot-i");
+        el.setAttribute("aria-label", text);
+        el.innerHTML = [...text].map((c) => {
+          if (dotI && c === "i") return `<span class="ch ch-i" aria-hidden="true">ı<span class="tittle-wrap" data-cursor="Toca"><span class="tittle-pop"><span class="tittle"></span></span></span></span>`;
+          return `<span class="ch" aria-hidden="true">${c === " " ? "&nbsp;" : c}</span>`;
+        }).join("");
+      });
+
+      /* Easter egg: tapping the dot of the i cycles the accent colour across the whole site.
+         Orange is home; the pop lives on .tittle-pop so it never fights the idle hop or the scroll stretch. */
+      const accents = ["#ff4a1c", "#2f4bff", "#c6f432", "#ff3d8b", "#14b88a"];
+      let accentIndex = 0;
+      document.querySelectorAll(".hero-name .tittle-wrap, .wordmark .tittle-wrap").forEach((dot) => dot.addEventListener("click", () => {
+        accentIndex = (accentIndex + 1) % accents.length;
+        const next = accents[accentIndex];
+        gsap.to(document.documentElement, { "--accent": next, duration: 0.5, ease: "power2.inOut" });
+        gsap.timeline()
+          .to(".tittle-pop", { scale: 0.55, duration: 0.1, ease: "power2.in" })
+          .to(".tittle-pop", { scale: 1, duration: 0.9, ease: "elastic.out(1.3, .35)" });
+        for (let k = 0; k < 2; k++) {
+          const ring = document.createElement("span");
+          ring.className = "ripple";
+          ring.style.setProperty("--c", next);
+          dot.append(ring);
+          gsap.fromTo(ring, { scale: 1, opacity: 1 }, { scale: 4 + k * 2.5, opacity: 0, duration: 0.9 + k * 0.3, delay: k * 0.08, ease: "expo.out", onComplete: () => ring.remove() });
+        }
+      }));
+      const statement = document.querySelector(".statement");
+      statement.innerHTML = statement.textContent.split(" ").map((w) => `<span class="w">${w}</span>`).join("");
+
+      /* ---------- Smooth scroll ---------- */
+      let lenis = null;
+      if (window.Lenis && !still) {
+        lenis = new Lenis({ lerp: 0.085 });
+        lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((t) => lenis.raf(t * 1000));
+        gsap.ticker.lagSmoothing(0);
+        lenis.stop();
+      }
+      document.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener("click", (e) => {
+        const target = document.querySelector(a.getAttribute("href"));
+        if (!target) return;
+        e.preventDefault();
+        const top = a.getAttribute("href") === "#contacto" ? document.documentElement.scrollHeight : target;
+        lenis ? lenis.scrollTo(top, { duration: 1.6 }) : scrollTo({ top: typeof top === "number" ? top : target.offsetTop, behavior: "smooth" });
+      }));
+
+      /* ---------- Cursor ---------- */
+      const dot = document.querySelector(".cursor"), ring = document.querySelector(".cursor-ring"), label = ring.querySelector("span");
+      if (finePointer) {
+        const dx = gsap.quickTo(dot, "x", { duration: 0.15 }), dy = gsap.quickTo(dot, "y", { duration: 0.15 });
+        const rx = gsap.quickTo(ring, "x", { duration: 0.55, ease: "power3" }), ry = gsap.quickTo(ring, "y", { duration: 0.55, ease: "power3" });
+        addEventListener("pointermove", (e) => { dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY); });
+        document.querySelectorAll("[data-cursor]").forEach((el) => {
+          el.addEventListener("pointerenter", () => {
+            label.textContent = el.dataset.cursor;
+            gsap.to(ring, { scale: 2, backgroundColor: "rgba(27,26,24,1)", color: "#efebe4", borderColor: "transparent", duration: 0.4 });
+            gsap.to(label, { opacity: 1, scale: 0.5, duration: 0.3 });
+            gsap.to(dot, { scale: 0, duration: 0.3 });
+          });
+          el.addEventListener("pointerleave", () => {
+            gsap.to(ring, { scale: 1, backgroundColor: "rgba(27,26,24,0)", color: "inherit", borderColor: "currentColor", duration: 0.4 });
+            gsap.to(label, { opacity: 0, scale: 0.4, duration: 0.2 });
+            gsap.to(dot, { scale: 1, duration: 0.3 });
+          });
+        });
+
+        /* Magnetic button. */
+        document.querySelectorAll(".magnetic").forEach((el) => {
+          const mx = gsap.quickTo(el, "x", { duration: 0.6, ease: "power3" }), my = gsap.quickTo(el, "y", { duration: 0.6, ease: "power3" });
+          el.addEventListener("pointermove", (e) => {
+            const r = el.getBoundingClientRect();
+            mx((e.clientX - r.left - r.width / 2) * 0.4); my((e.clientY - r.top - r.height / 2) * 0.4);
+          });
+          el.addEventListener("pointerleave", () => gsap.to(el, { x: 0, y: 0, duration: 1, ease: "elastic.out(1, .4)" }));
+        });
+      }
+
+      /* ---------- Loader → hero intro ---------- */
+      const counter = { v: 0 };
+      const countEl = document.querySelector(".count");
+      const loaderLine = document.querySelector(".loader-line");
+      const intro = gsap.timeline({ paused: true, defaults: { ease: "expo.out" } })
+        .from(".hero-name .ch", { yPercent: 120, scaleY: 2.6, duration: 1.4, stagger: 0.035 })
+        .from(".chip-wrap", { scale: 0, rotation: () => gsap.utils.random(-40, 40), duration: 1.2, ease: "elastic.out(1, .55)", stagger: { each: 0.06, from: "random" } }, 0.35)
+        .from(".reveal-up", { y: 30, opacity: 0, duration: 1, stagger: 0.1 }, 0.6)
+        .from(".marquee", { yPercent: 100, duration: 1 }, 0.6)
+        .from(".nav > *", { y: -30, opacity: 0, duration: 1, stagger: 0.1 }, 0.4)
+        /* The dot of the i drops in last, squashes on landing and settles. */
+        .fromTo(".hero-name .tittle", { y: "-3.2em", scale: 0 }, { y: 0, scale: 1, duration: 0.7, ease: "power3.in" }, 1.05)
+        .to(".hero-name .tittle", { scaleX: 1.5, scaleY: 0.55, duration: 0.12, ease: "power2.out" })
+        .to(".hero-name .tittle", { scaleX: 1, scaleY: 1, duration: 0.9, ease: "elastic.out(1.2, .3)" })
+        .add(() => !still && dotHop.play(), "+=1.5");
+
+      /* Every few seconds the dot hops, like it can't sit still. */
+      const dotHop = gsap.timeline({ paused: true, repeat: -1, repeatDelay: 3.5 })
+        .to(".hero-name .tittle", { scaleX: 1.3, scaleY: 0.7, duration: 0.12, ease: "power2.out" })
+        .to(".hero-name .tittle", { y: "-1.1em", scaleX: 0.85, scaleY: 1.2, duration: 0.35, ease: "power2.out" })
+        .to(".hero-name .tittle", { y: 0, scaleX: 1, scaleY: 1, duration: 0.35, ease: "power2.in" })
+        .to(".hero-name .tittle", { scaleX: 1.4, scaleY: 0.6, duration: 0.1, ease: "power2.out" })
+        .to(".hero-name .tittle", { scaleX: 1, scaleY: 1, duration: 0.7, ease: "elastic.out(1.2, .3)" });
+
+      const ready = () => {
+        document.body.classList.remove("loading");
+        lenis?.start();
+        intro.play();
+        startHero();
+      };
+      if (still) {
+        document.querySelector(".loader").remove();
+        document.body.classList.remove("loading");
+      } else {
+        gsap.timeline({ onComplete: ready })
+          .from(".loader-name .ch", { yPercent: 110, scaleY: 2, duration: 0.9, stagger: 0.04, ease: "expo.out" })
+          .to(counter, {
+            v: 100, duration: 2, ease: "power2.inOut",
+            onUpdate: () => {
+              countEl.textContent = Math.round(counter.v);
+              loaderLine.textContent = counter.v < 40 ? "Compilando ideas…" : counter.v < 85 ? "Revisando cada detalle…" : "Listo.";
+            },
+          }, 0.2)
+          .to(".loader-inner", { opacity: 0, y: -40, duration: 0.5, ease: "power2.in" })
+          .to(".loader-half.top", { yPercent: -100, scaleY: 1.3, duration: 1.1, ease: "expo.inOut" }, "-=0.1")
+          .to(".loader-half.bottom", { yPercent: 100, scaleY: 1.3, duration: 1.1, ease: "expo.inOut" }, "<")
+          .set(".loader", { display: "none" });
+        document.querySelectorAll(".loader-half").forEach((h, i) => (h.style.transformOrigin = i ? "50% 100%" : "50% 0%"));
+      }
+
+      /* ---------- Hero: floating, draggable skills; name stretches on scroll ---------- */
+      function startHero() {
+        document.querySelectorAll(".chip-float").forEach((f) => {
+          gsap.to(f, {
+            y: () => gsap.utils.random(-18, 18), x: () => gsap.utils.random(-10, 10), rotation: () => gsap.utils.random(-6, 6),
+            duration: () => gsap.utils.random(2.2, 4), ease: "sine.inOut", repeat: -1, yoyo: true, repeatRefresh: true,
+          });
+        });
+        Draggable.create(".chip", {
+          bounds: ".hero", inertia: true, edgeResistance: 0.65,
+          onPress() { gsap.to(this.target, { scale: 1.12, rotation: gsap.utils.random(-8, 8), duration: 0.3 }); },
+          onRelease() { gsap.to(this.target, { scale: 1, rotation: 0, duration: 0.8, ease: "elastic.out(1, .4)" }); },
+        });
+        if (finePointer) {
+          const wraps = gsap.utils.toArray(".chip-wrap").map((w, i) => ({
+            depth: 12 + (i % 4) * 10,
+            x: gsap.quickTo(w, "x", { duration: 1.2, ease: "power3" }),
+            y: gsap.quickTo(w, "y", { duration: 1.2, ease: "power3" }),
+          }));
+          addEventListener("pointermove", (e) => {
+            const nx = e.clientX / innerWidth - 0.5, ny = e.clientY / innerHeight - 0.5;
+            wraps.forEach((w) => { w.x(nx * w.depth); w.y(ny * w.depth); });
+          });
+        }
+      }
+
+      if (!still) {
+        /* On scroll the name stretches tall and the skills scatter outwards. */
+        gsap.timeline({ scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } })
+          .to(".hero-name .ch", { scaleY: 1.9, yPercent: (i) => -20 - (i % 3) * 18, ease: "none", stagger: 0.01 }, 0)
+          /* The dot stays round while its letter stretches. */
+          .to(".hero-name .tittle-wrap", { scaleY: 1 / 1.9, ease: "none" }, 0)
+          .to(".skills", { scale: 1.35, opacity: 0, ease: "none" }, 0)
+          .to(".hero-sub, .drag-hint", { opacity: 0, y: -60, ease: "none" }, 0);
+
+        /* Marquee: speed and skew follow how fast you scroll. */
+        const marquee = gsap.to(".marquee-track", { xPercent: -50, duration: 24, ease: "none", repeat: -1 });
+        const skew = gsap.quickTo(".marquee-track", "skewX", { duration: 0.4 });
+        const rowSkew = gsap.quickTo(".row-name", "skewY", { duration: 0.5 });
+        ScrollTrigger.create({
+          start: 0, end: "max",
+          onUpdate(self) {
+            const v = self.getVelocity();
+            gsap.to(marquee, { timeScale: (self.direction || 1) * (1 + Math.min(Math.abs(v) / 300, 6)), duration: 0.3, overwrite: true });
+            gsap.to(marquee, { timeScale: self.direction || 1, duration: 1.2, delay: 0.3 });
+            skew(gsap.utils.clamp(-14, 14, v / -120));
+            rowSkew(gsap.utils.clamp(-6, 6, v / -250));
+          },
+        });
+        ScrollTrigger.addEventListener("scrollEnd", () => { skew(0); rowSkew(0); });
+
+        /* Theme: the page turns ink-dark while the projects are on screen. */
+        const dark = { "--bg": "#1b1a18", "--fg": "#efebe4", "--muted": "#8f8a80", "--line": "rgba(239,235,228,.16)" };
+        const light = { "--bg": "#efebe4", "--fg": "#1b1a18", "--muted": "#7b766d", "--line": "rgba(27,26,24,.14)" };
+        ScrollTrigger.create({
+          trigger: ".work", start: "top 55%", end: "bottom 45%",
+          onToggle: (self) => gsap.to(document.documentElement, { ...(self.isActive ? dark : light), duration: 0.8, ease: "power2.inOut" }),
+        });
+
+        /* Section titles stretch up into place. */
+        gsap.utils.toArray(".stretch-in").forEach((el) => {
+          gsap.from(el.querySelectorAll(".ch"), {
+            yPercent: 120, scaleY: 3, duration: 1.3, ease: "expo.out", stagger: 0.04,
+            scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
+          });
+        });
+
+        /* Project rows: divider draws, name rises. */
+        gsap.utils.toArray(".row").forEach((row) => {
+          gsap.timeline({ scrollTrigger: { trigger: row, start: "top 90%", toggleActions: "play none none reverse" } })
+            .from(row.querySelector(".row-line"), { scaleX: 0, duration: 1.2, ease: "expo.inOut" })
+            .from(row.querySelector(".row-name"), { yPercent: 110, duration: 1, ease: "expo.out" }, 0.25)
+            .from(row.querySelectorAll(".mono, .row-arrow"), { opacity: 0, x: -20, duration: 0.8, stagger: 0.1 }, 0.4);
+        });
+
+        /* About: words light up as you read, numbers count up, rows slide in. */
+        gsap.fromTo(".statement .w", { opacity: 0.12 }, {
+          opacity: 1, stagger: 0.08, ease: "none",
+          scrollTrigger: { trigger: ".statement", start: "top 80%", end: "bottom 45%", scrub: true },
+        });
+        document.querySelectorAll("[data-count]").forEach((el) => {
+          const n = { v: 0 };
+          gsap.to(n, {
+            v: +el.dataset.count, duration: 2, ease: "power3.out",
+            onUpdate: () => (el.textContent = Math.round(n.v) + "+"),
+            scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
+          });
+        });
+        gsap.from(".stat", { y: 120, rotation: (i) => [-4, 3, -2][i], duration: 1.2, ease: "expo.out", stagger: 0.12, scrollTrigger: { trigger: ".stats", start: "top 85%" } });
+        /* Experience timeline: the accent line draws as you scroll; its head always sits
+           at 60% of the screen, and each job lights up the moment the head reaches it. */
+        const track = document.querySelector(".tl-track");
+        gsap.timeline({ scrollTrigger: { trigger: track, start: "top 60%", end: "bottom 60%", scrub: true, invalidateOnRefresh: true } })
+          .to(".tl-fill", { scaleY: 1, ease: "none" }, 0)
+          .to(".tl-head", { y: () => track.offsetHeight, ease: "none" }, 0);
+        gsap.from(".tl-head", { scale: 0, duration: 0.8, ease: "back.out(3)", scrollTrigger: { trigger: track, start: "top 75%", toggleActions: "play none none reverse" } });
+        gsap.utils.toArray(".tl-item").forEach((item) => {
+          const node = item.querySelector(".tl-node");
+          gsap.timeline({
+            scrollTrigger: { trigger: node, start: "center 60%", toggleActions: "play none none reverse", toggleClass: { targets: node, className: "on" } },
+          })
+            .fromTo(node, { scale: 0.5 }, { scale: 1.25, duration: 1, ease: "elastic.out(1, .35)" }, 0)
+            .from(item.querySelectorAll(".tl-yr .ch"), { yPercent: 120, scaleY: 2.6, duration: 1, ease: "expo.out", stagger: 0.05 }, 0)
+            .from(item.querySelector(".tl-range"), { yPercent: 110, duration: 0.8, ease: "expo.out" }, 0.15)
+            .from(item.querySelectorAll(".tl-role .ch"), { yPercent: 120, scaleY: 2.4, duration: 1, ease: "expo.out", stagger: 0.015 }, 0.05)
+            .from(item.querySelector(".tl-body p"), { y: 24, opacity: 0, duration: 0.9, ease: "expo.out" }, 0.25)
+            .from(item.querySelectorAll(".tl-tags li"), { scale: 0, rotation: () => gsap.utils.random(-20, 20), duration: 0.9, ease: "elastic.out(1, .5)", stagger: 0.06 }, 0.35)
+            .from(item.querySelector(".tl-place"), { x: 30, opacity: 0, duration: 0.8, ease: "expo.out" }, 0.3);
+        });
+        gsap.from(".stack span", { scale: 0, duration: 0.9, ease: "elastic.out(1, .5)", stagger: { each: 0.05, from: "random" }, scrollTrigger: { trigger: ".stack", start: "top 85%" } });
+      }
+
+      /* ---------- Projects: preview follows the cursor, slot-machine between rows ---------- */
+      const strip = preview.querySelector(".preview-strip");
+      const px = gsap.quickTo(preview, "x", { duration: 0.7, ease: "power3" });
+      const py = gsap.quickTo(preview, "y", { duration: 0.7, ease: "power3" });
+      const pr = gsap.quickTo(preview, "rotation", { duration: 0.6, ease: "power3" });
+      let lastX = 0;
+      const rows = document.querySelector(".rows");
+      rows.addEventListener("pointermove", (e) => {
+        px(e.clientX); py(e.clientY);
+        pr(gsap.utils.clamp(-18, 18, (e.clientX - lastX) * 0.6));
+        lastX = e.clientX;
+      });
+      rows.addEventListener("pointerenter", (e) => {
+        gsap.set(preview, { x: e.clientX, y: e.clientY });
+        gsap.to(preview, { scale: 1, duration: 0.6, ease: "expo.out" });
+      });
+      rows.addEventListener("pointerleave", () => gsap.to(preview, { scale: 0, rotation: 0, duration: 0.5, ease: "expo.in" }));
+      document.querySelectorAll(".row").forEach((row) => {
+        row.addEventListener("pointerenter", () => gsap.to(strip, { yPercent: (-100 / projects.length) * row.dataset.index, duration: 0.8, ease: "expo.out" }));
+        row.addEventListener("click", (e) => openCase(+row.dataset.index, e.clientX, e.clientY));
+      });
+
+      /* ---------- Case study: grows out of the click like ink ---------- */
+      const caseEl = document.querySelector(".case"), closeBtn = document.querySelector(".case-close");
+      const caseTitle = caseEl.querySelector(".case-title");
+      function openCase(i, x, y) {
+        const p = projects[i];
+        caseEl.style.background = p.tone;
+        caseEl.querySelector(".case-num").textContent = `Proyecto 0${i + 1}`;
+        caseEl.querySelector(".case-type").textContent = p.type;
+        caseEl.querySelector(".case-year").textContent = p.year;
+        caseTitle.innerHTML = p.name.split(" ").map((w) => `<span class="line-mask">${[...w].map((c) => `<span class="ch">${c}</span>`).join("")}</span>`).join("");
+        lenis?.stop();
+        gsap.to(preview, { scale: 0, duration: 0.3 });
+        gsap.set([caseEl, closeBtn], { display: "block" });
+        gsap.timeline()
+          .fromTo(caseEl, { clipPath: `circle(0px at ${x}px ${y}px)` }, { clipPath: `circle(150% at ${x}px ${y}px)`, duration: 1.1, ease: "expo.inOut" })
+          .from(caseTitle.querySelectorAll(".ch"), { yPercent: 120, scaleY: 2.8, duration: 1.2, ease: "expo.out", stagger: 0.03 }, 0.5)
+          .from(caseEl.querySelectorAll(".case-meta > div, .case-num"), { y: 30, opacity: 0, duration: 0.8, stagger: 0.08 }, 0.8)
+          .from(closeBtn, { scale: 0, duration: 0.6, ease: "back.out(2)" }, 0.8);
+        closeBtn.dataset.x = x; closeBtn.dataset.y = y;
+      }
+      function closeCase() {
+        const { x, y } = closeBtn.dataset;
+        gsap.to(closeBtn, { scale: 0, duration: 0.3 });
+        gsap.to(caseEl, {
+          clipPath: `circle(0px at ${x}px ${y}px)`, duration: 0.9, ease: "expo.inOut",
+          onComplete: () => { gsap.set([caseEl, closeBtn], { display: "none", scale: 1 }); lenis?.start(); },
+        });
+      }
+      closeBtn.addEventListener("click", closeCase);
+      addEventListener("keydown", (e) => e.key === "Escape" && caseEl.style.display === "block" && closeCase());
+
+      /* ---------- Navbar hides going down, returns going up ---------- */
+      const nav = document.querySelector(".nav");
+      ScrollTrigger.create({
+        start: 120, end: "max",
+        onUpdate: (self) => gsap.to(nav, { yPercent: self.direction > 0 ? -120 : 0, duration: 0.5, ease: "power3", overwrite: "auto" }),
+        onLeaveBack: () => gsap.to(nav, { yPercent: 0, duration: 0.5 }),
+      });
+
+      /* ---------- Footer: revealed underneath; the wordmark stretches up ---------- */
+      const footer = document.querySelector(".footer"), main = document.querySelector("main"), wordmark = document.querySelector(".wordmark");
+      const sizeFooter = () => {
+        wordmark.style.fontSize = "100px";
+        wordmark.style.fontSize = (100 * (footer.clientWidth - 56)) / wordmark.scrollWidth + "px";
+        main.style.marginBottom = footer.offsetHeight + "px";
+        ScrollTrigger.refresh();
+      };
+      document.fonts.ready.then(sizeFooter);
+      addEventListener("resize", sizeFooter);
+      if (!still) {
+        gsap.fromTo(".wordmark .ch", { scaleY: 0.1, yPercent: 40 }, {
+          scaleY: 1, yPercent: 0, ease: "none", stagger: 0.03,
+          scrollTrigger: { trigger: main, start: "bottom bottom", end: () => `bottom ${innerHeight - footer.offsetHeight}px`, scrub: true },
+        });
+        gsap.from(".cols a", {
+          y: 60, opacity: 0, stagger: 0.06, ease: "none",
+          scrollTrigger: { trigger: main, start: "bottom bottom", end: () => `bottom ${innerHeight - footer.offsetHeight * 0.4}px`, scrub: true },
+        });
+      }
+    </script>
+  </body>
+</html>
