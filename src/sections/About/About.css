@@ -1,6 +1,6 @@
 @layer components {
   .about {
-    padding: 160px var(--gutter);
+    padding: 100px var(--gutter) 160px;
   }
 
   .statement {
@@ -255,7 +255,7 @@
 
   @media (max-width: 760px) {
     .about {
-      padding-block: 120px;
+      padding-block: 70px 120px;
     }
 
     .stats {

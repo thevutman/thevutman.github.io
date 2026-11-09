@@ -38,7 +38,8 @@ export function Projects() {
       ScrollTrigger.create({
         trigger: root,
         start: "top 55%",
-        end: "bottom 45%",
+        // Light comes back while the last row is still on screen, so Sobre mí arrives in light.
+        end: "bottom 70%",
         onToggle: (self) =>
           gsap.to(document.documentElement, {
             ...(self.isActive ? darkTheme : lightTheme),

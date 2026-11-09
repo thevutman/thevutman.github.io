@@ -1,7 +1,7 @@
 @layer components {
   .work {
     position: relative;
-    padding: 160px var(--gutter) 180px;
+    padding: 160px var(--gutter) 90px;
   }
 
   .work-head {
@@ -507,6 +507,10 @@
   }
 
   @media (max-width: 760px) {
+    .work {
+      padding-bottom: 50px;
+    }
+
     .row-inner {
       grid-template-columns: 34px 1fr 24px;
       gap: 12px;
