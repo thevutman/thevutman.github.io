@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from "react";
 import { SplitText } from "@/components/SplitText/SplitText";
-import { about, experience } from "@/data/profile";
+import { about, experience, stats } from "@/data/profile";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import "./About.css";
 
@@ -160,7 +160,7 @@ export function About() {
       </p>
 
       <div className="stats">
-        {about.stats.map((stat) => (
+        {stats.map((stat) => (
           <div key={stat.label} className="stat">
             <strong data-count={stat.value}>{stat.value}+</strong>
             <span>{stat.label}</span>
@@ -169,7 +169,7 @@ export function About() {
       </div>
 
       <div className="about-block">
-        <h3 className="mono muted block-label">Experiencia</h3>
+        <h3 className="mono muted block-label">Experiencia y estudios</h3>
         <ol className="timeline">
           <li className="tl-track" aria-hidden="true">
             <span className="tl-fill" />

@@ -28,6 +28,13 @@ más adelante.
 - [ ] **Dominio y correo.** El sitio usa `valeriavelasco.com` (en index.html, sitemap, robots y el
       enlace de correo), que es de otra persona. Definir con Valeria el dominio y el correo reales.
 
+## Sobre mí
+
+- [ ] **SENA, Técnico en Sistemas.** Falta la fecha para agregarlo a "Experiencia y estudios"
+      (`experience` en `src/data/profile.ts`). Está en LinkedIn.
+- [ ] Revisar con LinkedIn los demás estudios y certificados, y sus fechas exactas.
+- [ ] Opcional: mostrar el inglés (B1) en algún lugar de la sección.
+
 ## General
 
 - [ ] Las capturas de cada caso de estudio están en `src/assets/projects/screens/`. Si un sitio

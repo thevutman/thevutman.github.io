@@ -51,26 +51,35 @@ export const skills: Skill[] = [
 
 export const about = {
   statement:
-    "Me interesa entender cómo funciona un producto en todas sus capas, de la interfaz que tocas a la lógica que la sostiene.",
-  /** Por confirmar: replace with real numbers. */
-  stats: [
-    { value: 3, label: "años programando" },
-    { value: 12, label: "proyectos construidos" },
-    { value: 10, label: "tecnologías en mi día a día" },
-  ],
+    "Trabajo como desarrollador backend en Bitiot y estudio Ingeniería en Diseño de Entretenimiento Digital en la UPB. Me interesa entender un producto en todas sus capas, de la interfaz que tocas a la lógica que la sostiene.",
   stack: [
     "React",
     "TypeScript",
     "JavaScript",
     "Node.js",
+    "Python",
+    "Java · Spring Boot",
+    "Angular",
     "PostgreSQL",
+    "MongoDB",
     "Docker",
     "Git",
-    "GSAP",
     "Tailwind",
+    "GSAP",
     "Figma",
+    "Unity",
   ],
 };
+
+/**
+ * Counters under the statement. Programming since the Platzi courses of January 2022 (the
+ * GitHub account is from February 2022); repositories are the public ones on GitHub.
+ */
+export const stats = [
+  { value: new Date().getFullYear() - 2022, label: "años programando" },
+  { value: 46, label: "repositorios en GitHub" },
+  { value: about.stack.length, label: "tecnologías con las que trabajo" },
+];
 
 export type Job = {
   /** Big label in the timeline: a year, or "Hoy" for the current job. */
@@ -84,32 +93,47 @@ export type Job = {
   current?: boolean;
 };
 
-/** Newest first. Placeholders until the real experience is filled in. */
+/**
+ * Work and studies, newest first. From the CV for the UPB internship and the local repos;
+ * Volga is Bitiot's product, so it is described without client or internal details.
+ */
 export const experience: Job[] = [
   {
     year: "Hoy",
-    range: "2025 — Actual",
-    role: "Cargo por completar",
-    description: "Empresa o proyecto. Qué construiste, para quién y qué cambió gracias a eso.",
-    place: "Remoto",
-    tags: ["React", "Node.js", "PostgreSQL"],
+    range: "Mayo 2025 — Actual",
+    role: "Desarrollador Backend · Bitiot",
+    description:
+      "Trabajo en Volga, la plataforma de analítica de Bitiot para sus clientes. Construyo servicios en Python que reciben eventos por MQTT y generan alertas, un sistema que vigila la conexión y la hora de las cámaras de cada sede y lo expone por una API REST, y módulos del panel web en Angular.",
+    place: "Medellín",
+    tags: ["Python", "PostgreSQL", "MQTT", "Docker", "Angular"],
     current: true,
   },
   {
-    year: "2024",
-    range: "2024 — 2025",
-    role: "Cargo por completar",
-    description: "Empresa o proyecto. Un logro concreto, con números si los tienes.",
-    place: "Ciudad",
-    tags: ["TypeScript", "APIs REST", "Docker"],
+    year: "2023",
+    range: "2023 — Actual",
+    role: "Ingeniería en Diseño de Entretenimiento Digital",
+    description:
+      "Universidad Pontificia Bolivariana, séptimo de ocho semestres. Desarrollo web, experiencias interactivas y videojuegos. Con Memoria Viva, un libro que se hojea con la mano frente a la cámara, recibimos mención de honor en el Taller 6 de Experiencias Interactivas.",
+    place: "UPB · Medellín",
+    tags: ["React", "Unity", "Visión artificial", "Figma"],
   },
   {
-    year: "2023",
-    range: "2023 — 2024",
-    role: "Proyectos freelance",
-    description: "Sitios y aplicaciones para clientes, de la idea al despliegue.",
-    place: "—",
-    tags: ["JavaScript", "GSAP", "Figma"],
+    year: "2022",
+    range: "2022",
+    role: "Misión TIC 2022",
+    description:
+      "La ruta del Ministerio TIC para aprender a programar, de los fundamentos al desarrollo full stack. En el ciclo 4 lideré el proyecto final: Notflix, una plataforma de streaming con Spring Boot, MongoDB y React.",
+    place: "Virtual",
+    tags: ["Java", "Spring Boot", "MongoDB", "React"],
+  },
+  {
+    year: "2022",
+    range: "Enero 2022",
+    role: "Primeros pasos en Platzi",
+    description:
+      "Empecé por mi cuenta con los cursos de Platzi: HTML, CSS, JavaScript y Node.js, con proyectos pequeños como un cajero, un juego y la primera versión de Steam Burger.",
+    place: "Virtual",
+    tags: ["HTML", "CSS", "JavaScript"],
   },
 ];
 
