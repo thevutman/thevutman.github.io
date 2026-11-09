@@ -1,4 +1,5 @@
 import notflixCover from "@/assets/projects/notflix.webp";
+import steamBurgerCover from "@/assets/projects/steam-burger.webp";
 import valeriaCover from "@/assets/projects/valeria-velasco.webp";
 import type { Tone } from "@/data/profile";
 
@@ -101,7 +102,33 @@ export const projects: Project[] = [
     liveUrl: "https://weddingportfolio-pi.vercel.app",
     repositoryUrl: "https://github.com/valevelasco/weddingportfolio",
   },
-  { id: "proyecto-tres", name: "Proyecto Tres", type: "API y panel", year: "2025", tone: "taupe" },
+  {
+    id: "steam-burger",
+    name: "Steam Burger",
+    type: "Tienda full stack",
+    year: "2023 · 2026",
+    tone: "taupe",
+    role: "Diseño y Full Stack",
+    summary:
+      "Una hamburguesería donde pides en línea y ves tu pedido avanzar en vivo, mientras la cocina lo mueve desde su propio panel. Fue mi primera página y en 2026 la convertí en una tienda de verdad.",
+    technologies: ["Node.js", "Express", "TypeScript", "MongoDB Atlas", "Server-Sent Events", "Zod", "React", "Tailwind", "Vitest"],
+    cover: {
+      src: steamBurgerCover,
+      alt: "Inicio de Steam Burger: la barra roja con el logo en cursiva, el banner de la Premium Burger y el menú",
+      width: 1600,
+      height: 1100,
+    },
+    caseStudy: {
+      context:
+        "Steam Burger fue lo primero que diseñé y programé, en 2023: una landing en HTML, CSS y JavaScript con un carrito que no hacía nada, un carrusel que quedó comentado y un botón de \"menú completo\" que no llevaba a ningún lado.",
+      process:
+        "La reconstruí sin tocar su cara: el mismo rojo, el logo en Dancing Script, la letra Comfortaa, mi dibujo de la salsa bajo cada título y el footer de contacto. Por dentro le hice una API en Express con TypeScript que calcula los totales en el servidor, valida cada pedido con Zod, limita abusos y avisa los cambios en tiempo real con Server-Sent Events.",
+      solution:
+        "Hoy tiene menú completo, carrito, pedido a domicilio o para recoger y una página de seguimiento que avanza sola. La cocina tiene su panel con contraseña y un modo demo para que cualquiera pruebe los dos lados: pide en una pestaña y mueve el pedido en la otra.",
+    },
+    liveUrl: "https://steam-burger.vercel.app",
+    repositoryUrl: "https://github.com/thevutman/SteamBurger",
+  },
   { id: "proyecto-cuatro", name: "Proyecto Cuatro", type: "Juego web", year: "2024", tone: "clay" },
   {
     id: "proyecto-cinco",
