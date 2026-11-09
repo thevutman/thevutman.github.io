@@ -19,11 +19,35 @@
     margin-bottom: 120px;
   }
 
+  /*
+   * Each card carries one colour (--c, from the skills palette) in two places only: the "+" and
+   * a soft glow in the corner. The number stays ink, so it still reads first.
+   */
   .stat {
+    position: relative;
+    isolation: isolate;
     padding: 28px;
     overflow: hidden;
     border-radius: 26px;
     background: var(--paper-2);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 14%, transparent);
+  }
+
+  .stat-glow {
+    position: absolute;
+    top: -45%;
+    right: -25%;
+    z-index: -1;
+    width: 75%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--c) 42%, transparent) 0%, transparent 68%);
+    pointer-events: none;
+    transition: scale 0.9s var(--ease-out-expo);
+  }
+
+  .stat:hover .stat-glow {
+    scale: 1.3;
   }
 
   .stat strong {
@@ -34,7 +58,11 @@
     line-height: 0.9;
   }
 
-  .stat span {
+  .stat-plus {
+    color: var(--c);
+  }
+
+  .stat-label {
     display: block;
     margin-top: 14px;
     font-size: 15px;

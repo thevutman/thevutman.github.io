@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, type CSSProperties } from "react";
 import { SplitText } from "@/components/SplitText/SplitText";
 import { about, experience, stats } from "@/data/profile";
 import { gsap, lettersIn, prefersReducedMotion } from "@/lib/gsap";
@@ -33,13 +33,13 @@ export function About() {
 
       gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
         const counter = { value: 0 };
-        el.textContent = "0+";
+        el.textContent = "0";
         gsap.to(counter, {
           value: Number(el.dataset.count),
           duration: 2,
           ease: "power3.out",
           onUpdate: () => {
-            el.textContent = `${Math.round(counter.value)}+`;
+            el.textContent = String(Math.round(counter.value));
           },
           scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
         });
@@ -50,6 +50,16 @@ export function About() {
         duration: 1.2,
         ease: "expo.out",
         stagger: 0.12,
+        scrollTrigger: { trigger: ".stats", start: "top 85%" },
+      });
+      // Each card's glow blooms out of its corner as the card lands.
+      gsap.from(".stat-glow", {
+        scale: 0.2,
+        opacity: 0,
+        duration: 1.6,
+        ease: "expo.out",
+        stagger: 0.12,
+        delay: 0.3,
         scrollTrigger: { trigger: ".stats", start: "top 85%" },
       });
 
@@ -161,9 +171,15 @@ export function About() {
 
       <div className="stats">
         {stats.map((stat) => (
-          <div key={stat.label} className="stat">
-            <strong data-count={stat.value}>{stat.value}+</strong>
-            <span>{stat.label}</span>
+          <div key={stat.label} className="stat" style={{ "--c": stat.color } as CSSProperties}>
+            <span className="stat-glow" aria-hidden="true" />
+            <strong>
+              <span data-count={stat.value}>{stat.value}</span>
+              <span className="stat-plus" aria-hidden="true">
+                +
+              </span>
+            </strong>
+            <span className="stat-label">{stat.label}</span>
           </div>
         ))}
       </div>

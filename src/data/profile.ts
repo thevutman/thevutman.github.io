@@ -76,9 +76,10 @@ export const about = {
  * school; repositories are the public ones on GitHub.
  */
 export const stats = [
-  { value: new Date().getFullYear() - 2021, label: "años programando" },
-  { value: 46, label: "repositorios en GitHub" },
-  { value: about.stack.length, label: "tecnologías con las que trabajo" },
+  // `color` is the "+" and the corner glow of each card, from the same palette as the skills.
+  { value: new Date().getFullYear() - 2021, label: "años programando", color: "#2f4bff" },
+  { value: 46, label: "repositorios en GitHub", color: "#ff3d8b" },
+  { value: about.stack.length, label: "tecnologías con las que trabajo", color: "#14b88a" },
 ];
 
 export type Job = {
