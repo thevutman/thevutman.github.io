@@ -31,8 +31,10 @@ export type Project = {
   /** Kind of project, e.g. "Aplicación web". */
   type: string;
   year: string;
-  /** Background of the hover preview and the case study. */
+  /** Fallback background while the project has no colors of its own. */
   tone: Exclude<Tone, "ink">;
+  /** The project's own colors, taken from its site: background and text of its preview and case study. */
+  colors?: { bg: string; fg: string };
   role?: string;
   summary?: string;
   technologies?: string[];
@@ -55,6 +57,7 @@ export const projects: Project[] = [
     type: "Streaming full stack",
     year: "2022 · 2026",
     tone: "clay",
+    colors: { bg: "#81161c", fg: "#ffffff" },
     role: "Líder y Full Stack",
     summary:
       "Una plataforma de streaming de clásicos del cine de dominio público: gratis y 0 % piratas. Nació como proyecto final de Misión TIC y en 2026 la reviví de punta a punta.",
@@ -82,6 +85,7 @@ export const projects: Project[] = [
     type: "Sitio para cliente",
     year: "2026",
     tone: "peach",
+    colors: { bg: "#f8f6f1", fg: "#292725" },
     role: "Diseño y desarrollo",
     summary:
       "El portafolio de una fotógrafa de bodas en Suiza: editorial, en tres idiomas y con un CMS para que ella misma publique cada boda sin tocar código.",
@@ -109,6 +113,7 @@ export const projects: Project[] = [
     type: "Tienda full stack",
     year: "2023 · 2026",
     tone: "taupe",
+    colors: { bg: "#edd1aa", fg: "#880d0d" },
     role: "Diseño y Full Stack",
     summary:
       "Una hamburguesería donde pides en línea y ves tu pedido avanzar en vivo, mientras la cocina lo mueve desde su propio panel. Fue mi primera página y en 2026 la convertí en una tienda de verdad.",
@@ -144,6 +149,7 @@ export const projects: Project[] = [
     type: "Sitio para cliente",
     year: "2022 · 2026",
     tone: "sage",
+    colors: { bg: "#d2d92e", fg: "#141414" },
     role: "Diseño y desarrollo",
     summary:
       "El sitio de un hospedaje con bar en Coconuco, Cauca: sus cabañas con precios y fotos reales, y una reserva que valida las fechas y abre WhatsApp con la solicitud ya escrita.",
@@ -187,6 +193,11 @@ export const projects: Project[] = [
  *   repositoryUrl: "https://github.com/…",
  * }
  */
+
+/** Background and text color of a project's preview and case study. */
+export function projectColors(project: Project) {
+  return project.colors ?? { bg: `var(--${project.tone})`, fg: "var(--ink)" };
+}
 
 /** Two-digit position, e.g. "01". */
 export function projectNumber(index: number) {

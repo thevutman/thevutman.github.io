@@ -1,6 +1,6 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { SplitText } from "@/components/SplitText/SplitText";
-import { projectNumber, projects } from "@/data/projects";
+import { projectColors, projectNumber, projects } from "@/data/projects";
 import { gsap, hasFinePointer, prefersReducedMotion, ScrollTrigger } from "@/lib/gsap";
 import { ProjectCase, type CaseOrigin } from "./ProjectCase";
 import "./Projects.css";
@@ -201,7 +201,10 @@ export function Projects() {
       <div ref={previewRef} className="preview" aria-hidden="true">
         <div className="preview-strip">
           {projects.map((project, i) => (
-            <div key={project.id} style={{ background: `var(--${project.tone})` }}>
+            <div
+              key={project.id}
+              style={{ "--p-bg": projectColors(project).bg, "--p-fg": projectColors(project).fg } as CSSProperties}
+            >
               <span className="mono">
                 {projectNumber(i)} — {project.type}
               </span>

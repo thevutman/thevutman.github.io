@@ -123,7 +123,8 @@
     height: 380px;
     padding: 18px;
     box-sizing: border-box;
-    color: var(--ink);
+    background: var(--p-bg);
+    color: var(--p-fg);
   }
 
   .preview-strip img {
@@ -147,7 +148,8 @@
     z-index: var(--z-case);
     overflow-y: auto;
     overscroll-behavior: contain;
-    color: var(--ink);
+    background: var(--p-bg);
+    color: var(--p-fg);
   }
 
   .case-inner {
@@ -205,7 +207,7 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
     padding-top: 24px;
-    border-top: 1px solid rgb(27 26 24 / 20%);
+    border-top: 1px solid color-mix(in srgb, var(--p-fg) 25%, transparent);
   }
 
   .case-meta b {
@@ -225,8 +227,8 @@
     padding: 12px 20px;
     border: 0;
     border-radius: 999px;
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--p-fg);
+    color: var(--p-bg);
     cursor: pointer;
   }
 

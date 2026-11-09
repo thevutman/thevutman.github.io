@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { SplitText } from "@/components/SplitText/SplitText";
-import { caseStudySections, projectNumber, projects } from "@/data/projects";
+import { caseStudySections, projectColors, projectNumber, projects } from "@/data/projects";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { lockScroll } from "@/lib/smoothScroll";
 
@@ -85,7 +85,7 @@ export function ProjectCase({ origin, onClose }: { origin: CaseOrigin; onClose: 
       role="dialog"
       aria-modal="true"
       aria-labelledby="case-title"
-      style={{ background: `var(--${project.tone})` }}
+      style={{ "--p-bg": projectColors(project).bg, "--p-fg": projectColors(project).fg } as CSSProperties}
       data-lenis-prevent
     >
       <button
