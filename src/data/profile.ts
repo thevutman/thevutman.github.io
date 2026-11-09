@@ -9,34 +9,44 @@ export const person = {
   lastName: "Velasco",
   fullName: "Santiago Velasco",
   role: "Desarrollador Full Stack",
-  tagline: ["Construyo productos web completos,", "de la interfaz al servidor."],
+  /** Hero message, line by line. Text between *asterisks* gets the accent marker. */
+  tagline: ["Construyo productos web *completos*,", "de la interfaz al *servidor*."],
 };
 
-/** Palette tones a chip, project or case study can use. */
+/** Palette tones a project or case study can use. */
 export type Tone = "peach" | "sage" | "taupe" | "clay" | "olive" | "ink";
+
+/**
+ * Chip colours: the same five accents the dot of the i cycles through (src/lib/accent.ts),
+ * plus ink. So the skills belong to the site's palette instead of fighting it.
+ */
+export type ChipColor = "orange" | "cobalt" | "lime" | "pink" | "green" | "ink";
 
 export type Skill = {
   name: string;
   /** Filled chip colour; omit for an outlined chip. */
-  tone?: Tone;
+  color?: ChipColor;
   big?: boolean;
   /** Starting position in the hero, as a percentage of its width and height. */
   x: number;
   y: number;
+  /** Height on phones when `y` would put the chip behind the message. */
+  my?: number;
 };
 
 /** Floating, draggable chips in the hero. Also feed the marquee. */
 export const skills: Skill[] = [
-  { name: "React", tone: "peach", big: true, x: 8, y: 16 },
-  { name: "TypeScript", tone: "sage", x: 30, y: 12 },
-  { name: "Node.js", tone: "ink", big: true, x: 70, y: 14 },
-  { name: "PostgreSQL", tone: "taupe", x: 84, y: 34 },
-  { name: "GSAP", tone: "clay", x: 6, y: 62 },
-  { name: "Docker", tone: "olive", x: 74, y: 64 },
-  { name: "Git", x: 24, y: 80 },
-  { name: "Tailwind", tone: "sage", x: 60, y: 84 },
+  // The band from y 70% to 86% around the centre is kept free for the message.
+  { name: "React", color: "cobalt", big: true, x: 8, y: 16 },
+  { name: "TypeScript", color: "lime", x: 30, y: 12 },
+  { name: "Node.js", color: "ink", big: true, x: 70, y: 14 },
+  { name: "PostgreSQL", color: "pink", x: 84, y: 34 },
+  { name: "GSAP", color: "green", x: 6, y: 58 },
+  { name: "Docker", color: "orange", x: 80, y: 56 },
+  { name: "Git", x: 12, y: 76, my: 65 },
+  { name: "Tailwind", color: "cobalt", x: 72, y: 84 },
   { name: "APIs REST", x: 50, y: 18 },
-  { name: "Figma", tone: "peach", x: 88, y: 76 },
+  { name: "Figma", color: "lime", x: 88, y: 72, my: 65 },
 ];
 
 export const about = {

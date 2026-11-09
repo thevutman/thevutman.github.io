@@ -57,6 +57,8 @@ export function Hero({ ready }: { ready: boolean }) {
           0.35,
         )
         .from(".hero-reveal", { y: 30, opacity: 0, duration: 1, stagger: 0.1 }, 0.6)
+        // The accent marker draws itself under the key words once the message is in.
+        .from(".hero-mark", { "--mark": 0, duration: 0.9, ease: "expo.inOut", stagger: 0.25 }, 1.2)
         .from(".marquee", { yPercent: 100, duration: 1 }, 0.6)
         // The navbar lives outside this section, so it is passed as elements, not a scoped selector.
         .from(
@@ -202,9 +204,20 @@ export function Hero({ ready }: { ready: boolean }) {
         </span>
       </h1>
       <p className="hero-sub hero-reveal">
-        {person.tagline[0]}
-        <br />
-        {person.tagline[1]}
+        {person.tagline.map((line, i) => (
+          <span key={line} className="hero-sub-line">
+            {line.split(/\*(.+?)\*/).map((part, j) =>
+              j % 2 ? (
+                <mark key={j} className="hero-mark">
+                  {part}
+                </mark>
+              ) : (
+                part
+              ),
+            )}
+            {i < person.tagline.length - 1 ? <br /> : null}
+          </span>
+        ))}
       </p>
       <span className="drag-hint mono muted hero-reveal" aria-hidden="true">
         ↖ Arrastra mis skills
@@ -214,14 +227,13 @@ export function Hero({ ready }: { ready: boolean }) {
           <li
             key={s.name}
             className="chip-wrap"
-            style={{ left: `${s.x}%`, top: `${s.y}%`, "--x": s.x } as CSSProperties}
+            style={{ left: `${s.x}%`, "--y": `${s.y}%`, "--my": `${s.my ?? s.y}%`, "--x": s.x } as CSSProperties}
           >
             <div className="chip-float">
               <div
-                className={["chip", s.big && "big", s.tone ? `tone-${s.tone}` : "is-outline"]
+                className={["chip", s.big && "big", s.color ? `chip-${s.color}` : "is-outline"]
                   .filter(Boolean)
                   .join(" ")}
-                style={s.tone ? ({ "--tone": `var(--${s.tone})` } as CSSProperties) : undefined}
                 data-cursor="Arrastra"
               >
                 <i />
