@@ -1,3 +1,5 @@
+import memoriaVivaCover from "@/assets/projects/memoria-viva.webp";
+import beeperCover from "@/assets/projects/beeper.webp";
 import cabanasCover from "@/assets/projects/cabanas-la-marquesa.webp";
 import notflixCover from "@/assets/projects/notflix.webp";
 import steamBurgerCover from "@/assets/projects/steam-burger.webp";
@@ -8,9 +10,8 @@ import { screens, type Screen } from "@/data/screens";
 /**
  * Portfolio projects.
  *
- * Notflix is real; the entries after it are still placeholders. Replace each one with a real
- * project: fill in what you have and leave the rest out — empty case-study
- * sections and links are simply not rendered.
+ * The six selected projects, in order. Anything left out of an entry (a link, a case-study
+ * section, the screens) is simply not rendered. What is still pending is in PENDIENTES.md.
  */
 
 export type ProjectImage = {
@@ -161,13 +162,75 @@ export const projects: Project[] = [
     liveUrl: "https://steam-burger.vercel.app",
     repositoryUrl: "https://github.com/thevutman/SteamBurger",
   },
-  { id: "proyecto-cuatro", name: "Proyecto Cuatro", type: "Juego web", year: "2024", tone: "clay" },
   {
-    id: "proyecto-cinco",
-    name: "Proyecto Cinco",
-    type: "Herramienta",
-    year: "2024",
+    id: "beeper",
+    name: "Beeper",
+    type: "Concepto de producto · UI/UX",
+    year: "2026",
+    tone: "clay",
+    colors: { bg: "#0c0b0a", fg: "#ece8e1" },
+    role: "Diseño UI/UX y front-end",
+    summary:
+      "Un dispositivo de comunicación con IA para quienes trabajan en movimiento: hablas, la IA entiende y resume lo que dijiste, y lo envías con un botón. La landing cuenta el producto en 13 capítulos.",
+    technologies: ["UI/UX", "Diseño de producto", "Prototipado", "HTML", "CSS", "JavaScript", "Netlify"],
+    cover: {
+      src: beeperCover,
+      alt: "Portada de Beeper: el dispositivo negro con su pantalla OLED y el lema Say more. Send less.",
+      width: 1600,
+      height: 1100,
+    },
+    caseStudy: {
+      context:
+        "Proyecto de UI/UX: diseñar un producto y contar su historia. Partí de un problema real: en una obra, en el campo o con guantes, el celular pide siete pasos (desbloquear, abrir, buscar, escribir, corregir, cerrar alertas, enviar) justo cuando no le puedes dar atención.",
+      process:
+        "Diseñé el concepto completo: un aparato con tres botones físicos que se usan con guantes, una pantalla OLED mínima, un interruptor físico para el micrófono y una conexión que salta sola entre red celular, Wi-Fi y satélite. Definí cuatro niveles de mensaje (normal, importante, prioridad y emergencia), los modos de uso y la app del celular que lo configura.",
+      solution:
+        "Una landing de 13 capítulos que se recorre con el scroll: del problema a la idea, la voz que se vuelve mensaje (25 palabras quedan en 9), el diseño para el campo, la privacidad, el dispositivo pieza por pieza y la lista de espera. Todo el recorrido pasa de siete pasos a cuatro: presionar, hablar, confirmar y enviar.",
+    },
+    screens: screens([
+      ["beeper-problem", "Capítulo del problema: los lugares donde comunicarse se complica"],
+      ["beeper-voice", "Capítulo de voz a mensaje con la frase original y la versión resumida"],
+      ["beeper-field", "Beeper en la mesa de obra y en el chaleco de un trabajador"],
+      ["beeper-priority", "Los cuatro niveles de mensaje: normal, importante, prioridad y emergencia"],
+      ["beeper-device", "El dispositivo con sus partes señaladas: OLED, navegación, botón de voz y privacidad"],
+      ["beeper-app", "La app compañera del celular con contactos, prioridades y modos"],
+    ]),
+    liveUrl: "https://stellular-banoffee-6e723b.netlify.app",
+  },
+  {
+    id: "memoria-viva",
+    name: "Memoria Viva",
+    type: "Libro interactivo con IA",
+    year: "2026",
     tone: "olive",
+    colors: { bg: "#31452c", fg: "#f2e8dc" },
+    role: "Desarrollador",
+    summary:
+      "Un libro digital sobre los saberes de las matronas de Santa Fe de Antioquia que se hojea con la mano frente a la cámara, y una cabina donde la gente graba sus chismes y memorias para que una IA los transcriba, los modere y los publique. Ganó mención de honor.",
+    technologies: ["React", "TypeScript", "MediaPipe", "Visión artificial", "GSAP", "Supabase", "Gemini", "Tailwind"],
+    cover: {
+      src: memoriaVivaCover,
+      alt: "Portada del libro Memoria Viva: una casa colonial con raíces y el título sobre papel crema",
+      width: 1600,
+      height: 1100,
+    },
+    caseStudy: {
+      context:
+        "Proyecto del taller con el equipo Memoria Viva: Simón lideró el grupo, Sofía y Felipe hicieron el diseño, Luis Parra y Sebastián González la investigación, y yo lo desarrollé. La idea era guardar los saberes de las matronas de Santa Fe de Antioquia (cocina, plantas, partería) y las memorias cotidianas del pueblo.",
+      process:
+        "Llevé el diseño a un libro que pasa sus hojas en 3D con GSAP. Con MediaPipe la cámara sigue la mano: al pellizcar y arrastrar, la página se voltea, sin tocar nada. El Chismógrafo graba la voz en el navegador y la manda a una función de Supabase, donde Gemini transcribe, filtra lo ofensivo, le pone título y un resumen en tono de chisme.",
+      solution:
+        "Lo expusimos con el libro y la cabina funcionando y el proyecto ganó mención de honor. Los chismes aprobados quedan en las Historias, con su audio, para que cualquiera los escuche.",
+    },
+    screens: screens([
+      ["memoria-index", "Índice del libro con sus capítulos de colores"],
+      ["memoria-chapter1", "Capítulo de las matronas con flores ilustradas"],
+      ["memoria-recipe", "Receta del tamal de naranja agria en la cocina de relatos"],
+      ["memoria-herbs", "Capítulo de las herbarias con la ilustración de una matrona"],
+      ["memoria-cabina", "Cabina de grabación del Chismógrafo"],
+    ]),
+    liveUrl: "https://taller6-nine.vercel.app",
+    repositoryUrl: "https://github.com/thevutman/taller6",
   },
   {
     id: "cabanas-la-marquesa",
