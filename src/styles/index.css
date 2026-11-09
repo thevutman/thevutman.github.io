@@ -73,10 +73,13 @@
     color: var(--muted);
   }
 
-  /* Clips text that rises into place; the padding keeps descenders visible. */
+  /*
+   * Line that text rises into. It used to clip (overflow: hidden), which cut letters in half
+   * mid-animation; now they fade in as they rise (see lettersIn in lib/gsap.ts), so nothing
+   * needs clipping. The padding keeps descenders clear of the next line.
+   */
   .line-mask {
     display: block;
-    overflow: hidden;
     padding-bottom: 0.14em;
     margin-bottom: -0.14em;
   }

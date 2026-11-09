@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, type CSSProperties } from "react";
 import { SplitText } from "@/components/SplitText/SplitText";
 import { person, skills } from "@/data/profile";
-import { Draggable, gsap, hasFinePointer, prefersReducedMotion, ScrollTrigger } from "@/lib/gsap";
+import { Draggable, gsap, hasFinePointer, lettersIn, prefersReducedMotion, ScrollTrigger } from "@/lib/gsap";
 import "./Hero.css";
 
 /**
@@ -44,7 +44,7 @@ export function Hero({ ready }: { ready: boolean }) {
 
       introRef.current = gsap
         .timeline({ paused: true, defaults: { ease: "expo.out" } })
-        .from(".hero-name .ch", { yPercent: 120, scaleY: 2.6, duration: 1.4, stagger: 0.035 })
+        .from(".hero-name .ch", { ...lettersIn, duration: 1.4, stagger: 0.035 })
         .from(
           ".chip-wrap",
           {
@@ -95,7 +95,8 @@ export function Hero({ ready }: { ready: boolean }) {
         // The dot stays round while its letter stretches.
         .to(".hero-name .tittle-wrap", { scaleY: 1 / 1.9, ease: "none" }, 0)
         .to(".skills", { scale: 1.35, opacity: 0, ease: "none" }, 0)
-        .to(".hero-sub, .drag-hint", { opacity: 0, y: -60, ease: "none" }, 0);
+        // The message leaves in the first third of the scroll, before the chips fly over it.
+        .to(".hero-sub, .drag-hint", { opacity: 0, y: -40, ease: "power1.in", duration: 0.3 }, 0);
 
       // Marquee: speed and skew follow how fast you scroll.
       const track = root.querySelector(".marquee-track");

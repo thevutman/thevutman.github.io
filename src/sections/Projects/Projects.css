@@ -172,7 +172,6 @@
   }
 
   .case-title .word {
-    overflow: hidden;
     padding-bottom: 0.1em;
     margin-bottom: -0.1em;
   }
@@ -377,7 +376,6 @@
   }
 
   .case-next-name .word {
-    overflow: hidden;
     padding-bottom: 0.1em;
   }
 

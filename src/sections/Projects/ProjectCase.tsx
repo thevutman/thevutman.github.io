@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { SplitText } from "@/components/SplitText/SplitText";
 import { caseStudySections, projectColors, projectNumber, projects, type Project } from "@/data/projects";
 import type { Screen } from "@/data/screens";
-import { Draggable, gsap, hasFinePointer, prefersReducedMotion, ScrollTrigger } from "@/lib/gsap";
+import { Draggable, gsap, hasFinePointer, lettersIn, prefersReducedMotion, ScrollTrigger } from "@/lib/gsap";
 import { lockScroll } from "@/lib/smoothScroll";
 
 export type CaseOrigin = { index: number; x: number; y: number };
@@ -67,7 +67,7 @@ export function ProjectCase({ origin, onClose }: { origin: CaseOrigin; onClose: 
     const ctx = gsap.context(() => {
       gsap
         .timeline({ delay })
-        .from(".case-title .ch", { yPercent: 120, scaleY: 2.8, duration: 1.2, ease: "expo.out", stagger: 0.03 })
+        .from(".case-title .ch", { ...lettersIn, duration: 1.2, stagger: 0.03 })
         .from(".case-reveal", { y: 30, opacity: 0, duration: 0.8, stagger: 0.08 }, 0.3);
 
       const scroller = root;
@@ -129,9 +129,8 @@ export function ProjectCase({ origin, onClose }: { origin: CaseOrigin; onClose: 
         );
       });
       gsap.from(".case-next .ch", {
-        yPercent: 110,
+        ...lettersIn,
         duration: 1,
-        ease: "expo.out",
         stagger: 0.02,
         scrollTrigger: { trigger: ".case-next", scroller, start: "top 92%" },
       });

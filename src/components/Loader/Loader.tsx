@@ -1,13 +1,13 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { SplitText } from "@/components/SplitText/SplitText";
 import { person } from "@/data/profile";
-import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, lettersIn, prefersReducedMotion } from "@/lib/gsap";
 import "./Loader.css";
 
 const messages = ["Compilando ideas…", "Revisando cada detalle…", "Listo."];
 
 /**
- * Opening screen: the name stretches in, a counter runs to 100 and the screen
+ * Opening screen: the name rises in, a counter runs to 100 and the screen
  * splits open in two halves. Calls onDone as the halves start to part, so the
  * hero intro plays underneath them.
  */
@@ -28,13 +28,7 @@ export function Loader({ onDone }: { onDone: () => void }) {
     const ctx = gsap.context(() => {
       gsap
         .timeline({ onComplete: () => setGone(true) })
-        .from(".loader-name .ch", {
-          yPercent: 110,
-          scaleY: 2,
-          duration: 0.9,
-          stagger: 0.04,
-          ease: "expo.out",
-        })
+        .from(".loader-name .ch", { ...lettersIn, duration: 0.9, stagger: 0.04 })
         .to(
           counter,
           {

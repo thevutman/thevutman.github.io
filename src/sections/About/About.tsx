@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { SplitText } from "@/components/SplitText/SplitText";
 import { about, experience, stats } from "@/data/profile";
-import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, lettersIn, prefersReducedMotion } from "@/lib/gsap";
 import "./About.css";
 
 /**
@@ -99,17 +99,17 @@ export function About() {
           )
           .from(
             item.querySelectorAll(".tl-year .ch"),
-            { yPercent: 120, scaleY: 2.6, duration: 1, ease: "expo.out", stagger: 0.05 },
+            { ...lettersIn, duration: 1, stagger: 0.05 },
             0,
           )
           .from(
             item.querySelector(".tl-range"),
-            { yPercent: 110, duration: 0.8, ease: "expo.out" },
+            { yPercent: 100, opacity: 0, duration: 0.8, ease: "expo.out" },
             0.15,
           )
           .from(
             item.querySelectorAll(".tl-role .ch"),
-            { yPercent: 120, scaleY: 2.4, duration: 1, ease: "expo.out", stagger: 0.015 },
+            { ...lettersIn, duration: 1, stagger: 0.012 },
             0.05,
           )
           .from(

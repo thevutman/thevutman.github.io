@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { SplitText } from "@/components/SplitText/SplitText";
 import { projectColors, projectNumber, projects } from "@/data/projects";
-import { gsap, hasFinePointer, prefersReducedMotion, ScrollTrigger } from "@/lib/gsap";
+import { gsap, hasFinePointer, lettersIn, prefersReducedMotion, ScrollTrigger } from "@/lib/gsap";
 import { ProjectCase, type CaseOrigin } from "./ProjectCase";
 import "./Projects.css";
 
@@ -49,10 +49,8 @@ export function Projects() {
       if (still) return;
 
       gsap.from(".work-title .ch", {
-        yPercent: 120,
-        scaleY: 3,
+        ...lettersIn,
         duration: 1.3,
-        ease: "expo.out",
         stagger: 0.04,
         scrollTrigger: {
           trigger: ".work-title",
@@ -72,7 +70,7 @@ export function Projects() {
           .from(row.querySelector(".row-line"), { scaleX: 0, duration: 1.2, ease: "expo.inOut" })
           .from(
             row.querySelector(".row-name"),
-            { yPercent: 110, duration: 1, ease: "expo.out" },
+            { yPercent: 100, opacity: 0, duration: 1, ease: "expo.out" },
             0.25,
           )
           .from(
